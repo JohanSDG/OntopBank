@@ -1,0 +1,37 @@
+{
+  "id": "EXP-2026-104",
+  "nombres": "Camila Fernanda",
+  "apellidos": "Rojas Pineda",
+  "email": "camila.rojas@designremote.net",
+  "telefono": "+1 (646) 338-1129",
+  "fechaNacimiento": "1996-06-25",
+  "perfilMigratorio": "Migrante en EE. UU. (En trámite)",
+  "tipoId": "Licencia EE. UU.",
+  "numeroId": "NY-774829104",
+  "residencia": "Queens, New York, EE. UU.",
+  "lugarTrabajo": "Manhattan Hospitality & Catering Group",
+  "funcionesTrabajo": "Supervisora de Eventos Corporativos y Atención al Cliente",
+  "ingresosMensuales": 6200,
+  "fuenteIngresos": "Kash",
+  "scoreCredito": 625,
+  "montoSolicitado": 28500,
+  "propositoPrestamo": "Vehículo / Auto",
+  "entidadFinanciera": "Stilt & Nova Credit Migrant FinTech",
+  "estadoProceso": "4. Pre-Aprobado",
+  "adjuntos": [
+    {
+      "name": "EAD_Permiso_Trabajo_USCIS.pdf",
+      "size": 390000,
+      "type": "application/pdf",
+      "category": "KYC"
+    }
+  ],
+  "notasConsultor": "Recibe pagos verificables vía Kash. En recolección de cotización del vehículo.",
+  "fechaCreacion": "2026-11-08 16:00",
+  "fechaActualizacion": "2026-11-14 02:03",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
+  "cardLast4": "9692",
+  "cardExpiry": "08/29",
+  "contratoAprobado": true
+}

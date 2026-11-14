@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TopBank | Originación y Gestión de Préstamos por Pasos (ADN Ontop)</title>
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/Contenido/White.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ====================================================================
+         1. HEADER FLOTANTE (ESTILO ONTOP LIMPIO Y ENFOCADO)
+         ==================================================================== -->
+    <header class="ontop-floating-header">
+      <a href="#" class="brand-cluster">
+        <div class="brand-logo-wrap">
+          <img src="/Contenido/White.png" alt="TopBank Ontop Logo" onerror="this.onerror=null; this.src='../Contenido/White.png';" />
+        </div>
+        <div class="brand-title-group">
+          <div class="brand-name">
+            <span class="gradient-title">TopBank</span>
+            <span class="brand-badge-ai">ONTOP FINTECH</span>
+          </div>
+          <span class="brand-subtitle">Originación Guiada por Pasos · EE. UU. &amp; Internacional</span>
+        </div>
+      </a>
+
+      <!-- Indicador Central de Sincronización con Google Drive -->
+      <div class="header-center-sync">
+        <div class="drive-sync-pill" id="driveSyncStatusPill" title="Haz clic para configurar o sincronizar con tu carpeta de Google Drive">
+          <span class="sync-dot"></span>
+          <span id="syncStatusText">Sincronizado en Drive Local</span>
+          <span class="sync-meta-tag" id="syncMetaInfo">XLS + JSON Activo</span>
+        </div>
+        <a
+          href="https://drive.google.com/drive/u/0/folders/1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-pill-ghost"
+          id="btnQuickDriveXls"
+          title="Descarga el .xls actualizado y abre tu carpeta de Google Drive (1q7tTJCz...)"
+          style="text-decoration:none;"
+        >
+          <span>📂</span> Abrir Mi Carpeta Drive + XLS
+        </a>
+      </div>
+
+      <!-- Acciones Derecha + Menú Desplegable -->
+      <div class="header-actions">
+        <button type="button" class="btn-pill-primary" id="btnNewClientHeader">
+          <span>＋</span> Nueva Solicitud por Pasos
+        </button>
+
+        <div class="dropdown-container">
+          <button type="button" class="btn-pill-ghost" id="headerMenuTrigger">
+            <span>⚙️ Exportar / Drive</span>
+            <span>▾</span>
+          </button>
+
+          <div class="dropdown-menu" id="headerDropdownMenu">
+            <div class="dropdown-header-info">
+              <strong>Carpeta Drive Vinculada</strong>
+              <span>ID: 1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39</span>
+            </div>
+            <button type="button" class="dropdown-item" id="menuOpenDriveConfig">
+              <span>☁️</span> Configurar Conector Google Drive
+            </button>
+            <div class="dropdown-divider"></div>
+            <button type="button" class="dropdown-item" id="menuExportExcel">
+              <span>📊</span> Descargar Excel (.xls) para Drive
+            </button>
+            <button type="button" class="dropdown-item" id="menuExportCsv">
+              <span>📑</span> Descargar Espejo CSV (.csv)
+            </button>
+            <button type="button" class="dropdown-item" id="menuExportJson">
+              <span>🗄️</span> Descargar Base Maestra (.json)
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         2. FILA DE 4 TARJETAS KPI SUPERIORES
+         ==================================================================== -->
+    <section class="kpi-grid" aria-label="Indicadores Clave de Desempeño">
+      <article class="glass-card kpi-card">
+        <div class="kpi-top-row">
+          <span class="kpi-label">TOTAL SOLICITANTES</span>
+          <div class="kpi-icon-box">👥</div>
+        </div>
+        <div class="kpi-value" id="kpiTotalSolicitantes">0</div>
+        <div class="kpi-subtext">
+          <span>Expedientes registrados</span>
+        </div>
+      </article>
+
+      <article class="glass-card kpi-card">
+        <div class="kpi-top-row">
+          <span class="kpi-label">PRÉSTAMOS EN PROCESO</span>
+          <div class="kpi-icon-box">⚡</div>
+        </div>
+        <div class="kpi-value" id="kpiPrestamosProceso">0</div>
+        <div class="kpi-subtext">
+          <span>Solicitudes activas</span>
+        </div>
+      </article>
+
+      <article class="glass-card kpi-card">
+        <div class="kpi-top-row">
+          <span class="kpi-label">VOLUMEN SOLICITADO (USD)</span>
+          <div class="kpi-icon-box emerald">💲</div>
+        </div>
+        <div class="kpi-value usd-highlight" id="kpiVolumenSolicitado">$0</div>
+        <div class="kpi-subtext">
+          <span class="usd-badge">USD Capital</span>
+          <span>en gestión</span>
+        </div>
+      </article>
+
+      <article class="glass-card kpi-card">
+        <div class="kpi-top-row">
+          <span class="kpi-label">TOTAL ADJUNTOS / EXPEDIENTES</span>
+          <div class="kpi-icon-box">📂</div>
+        </div>
+        <div class="kpi-value" id="kpiTotalAdjuntos">0</div>
+        <div class="kpi-subtext">
+          <span>Soportes sincronizados</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- ====================================================================
+         3. BARRA DE NAVEGACIÓN POR PESTAÑAS (TABS)
+         ==================================================================== -->
+    <nav class="glass-card tabs-nav-bar" aria-label="Módulos del Sistema">
+      <button type="button" class="tab-btn active" data-tab="solicitantes">
+        <span>👥 Gestión de Solicitantes (Clientes)</span>
+        <span class="tab-counter" id="tabCountClients">0</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="pipeline">
+        <span>💳 Créditos Aprobados</span>
+        <span class="tab-counter" id="tabCountPipeline">0</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="citas">
+        <span>📅 Agendar Citas de Consultoría</span>
+        <span class="tab-counter" id="tabCountAppointments">0</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="lenders">
+        <span>🏦 Entidades Financieras Aliadas (Lenders)</span>
+        <span class="tab-counter" id="tabCountLenders">0</span>
+      </button>
+    </nav>
+
+    <!-- ====================================================================
+         4. SECCIÓN PRINCIPAL DE GESTIÓN DE SOLICITANTES + WIZARD POR PASOS
+         ==================================================================== -->
+    <main>
+      <section class="tab-panel active" id="panel-solicitantes">
+
+        <!-- ================================================================
+             ASISTENTE GUIADO POR PASOS (ESTILO IMAGEN 1 CON PROGRESO LATERAL)
+             Se activa al crear o editar una solicitud para no sobrecargar la vista
+             ================================================================ -->
+        <div class="wizard-view-container" id="wizardViewContainer">
+          <!-- Barra superior de progreso -->
+          <div class="wizard-top-progress-track">
+            <div class="wizard-top-progress-fill" id="wizardTopProgressBar"></div>
+          </div>
+
+          <form id="clientBrainForm" novalidate>
+            <div class="wizard-layout-split">
+
+              <!-- ESCENARIO PRINCIPAL DE PASOS (IZQUIERDA) -->
+              <div class="wizard-main-stage">
+
+                <!-- ========================================================
+                     PASO 1 DE 2: DATOS PERSONALES, MIGRATORIOS Y LABORALES
+                     ======================================================== -->
+                <div class="wizard-step-pane active" id="wizardStep1Pane">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                      <span class="wizard-step-kicker">🛂 PASO 1 DE 2 · IDENTIDAD Y ACTIVIDAD LABORAL</span>
+                      <button type="button" class="btn-pill-ghost" id="btnBackToTableFromStep1">
+                        ← Volver al Listado de Solicitantes
+                      </button>
+                    </div>
+
+                    <h2 class="wizard-step-heading gradient-title" id="wizardMainTitleStep1">
+                      Paso 1 de 2: Datos Personales y Migratorios
+                    </h2>
+                    <p class="wizard-step-subtitle">
+                      Completa primero la información personal, estatus migratorio, lugar de trabajo y funciones del solicitante para habilitar el Paso 2 financiero.
+                    </p>
+
+                    <!-- Selector Visual de Estatus / Perfil Migratorio (Estilo Imagen 1) -->
+                    <div style="margin-bottom: 18px;">
+                      <label class="field-label" style="display:block; margin-bottom:8px; font-size:0.84rem;">
+                        ¿Cuál es el Estatus / Perfil del Cliente? <span class="req">*</span>
+                      </label>
+                      <div class="option-cards-grid-4" id="profileCardsGroup">
+                        <div class="visual-option-card selected" data-profile-card="Residente EE. UU. / Ciudadano">
+                          <span class="visual-option-icon">🗽</span>
+                          <span class="visual-option-title">Residente EE. UU. / Ciudadano</span>
+                          <span class="visual-option-desc">SSN / Green Card</span>
+                        </div>
+                        <div class="visual-option-card" data-profile-card="Migrante en EE. UU. (Con ITIN)">
+                          <span class="visual-option-icon">🪪</span>
+                          <span class="visual-option-title">Migrante en EE. UU. (Con ITIN)</span>
+                          <span class="visual-option-desc">Declarante IRS ITIN</span>
+                        </div>
+                        <div class="visual-option-card" data-profile-card="Migrante en EE. UU. (En trámite)">
+                          <span class="visual-option-icon">📋</span>
+                          <span class="visual-option-title">Migrante en EE. UU. (En trámite)</span>
+                          <span class="visual-option-desc">Permiso / En proceso</span>
+                        </div>
+                        <div class="visual-option-card" data-profile-card="Contratista Internacional / No Residente">
+                          <span class="visual-option-icon">🌎</span>
+                          <span class="visual-option-title">Contratista Internacional</span>
+                          <span class="visual-option-desc">No Residente / Global</span>
+                        </div>
+                      </div>
+                      <!-- Select sincronizado -->
+                      <select id="fieldPerfilMigratorio" class="select-control" style="display:none;">
+                        <option value="Residente EE. UU. / Ciudadano">Residente EE. UU. / Ciudadano</option>
+                        <option value="Migrante en EE. UU. (Con ITIN)">Migrante en EE. UU. (Con ITIN)</option>
+                        <option value="Migrante en EE. UU. (En trámite)">Migrante en EE. UU. (En trámite)</option>
+                        <option value="Contratista Internacional / No Residente">Contratista Internacional / No Residente</option>
+                      </select>
+                    </div>
+
+                    <!-- Cuadrícula limpia de campos del Paso 1 -->
+                    <div class="fields-grid">
+                      <div class="field-group">
+                        <label class="field-label" for="fieldNombres">1. Nombres <span class="req">*</span></label>
+                        <input type="text" id="fieldNombres" class="input-control" placeholder="Ej. Mateo Alejandro" required />
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldApellidos">2. Apellidos <span class="req">*</span></label>
+                        <input type="text" id="fieldApellidos" class="input-control" placeholder="Ej. Vargas Restrepo" required />
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldEmail">3. Correo Electrónico (Email) <span class="req">*</span></label>
+                        <input type="email" id="fieldEmail" class="input-control" placeholder="cliente@correo.com" required />
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldTelefono">4. Teléfono / WhatsApp <span class="req">*</span></label>
+                        <input type="text" id="fieldTelefono" class="input-control" placeholder="+1 (305) 000-0000" required />
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldFechaNacimiento">5. Fecha de Nacimiento</label>
+                        <input type="date" id="fieldFechaNacimiento" class="input-control" />
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldResidencia">6. País / Estado de Residencia Actual <span class="req">*</span></label>
+                        <input type="text" id="fieldResidencia" class="input-control" placeholder="Ej. Miami, Florida, EE. UU." required />
+                      </div>
+
+                      <div class="field-group full-span">
+                        <label class="field-label">7. Tipo y Número de Identificación <span class="req">*</span></label>
+                        <div class="combo-id-row">
+                          <select id="fieldTipoId" class="select-control">
+                            <option value="SSN">SSN</option>
+                            <option value="ITIN">ITIN</option>
+                            <option value="Pasaporte">Pasaporte</option>
+                            <option value="Licencia EE. UU.">Licencia EE. UU.</option>
+                            <option value="ID Nacional">ID Nacional</option>
+                          </select>
+                          <input type="text" id="fieldNumeroId" class="input-control" placeholder="Número de SSN, ITIN o Pasaporte..." required />
+                        </div>
+                      </div>
+
+                      <!-- NUEVOS CAMPOS SOLICITADOS EN PASO 1: LUGAR DE TRABAJO Y FUNCIONES -->
+                      <div class="field-group">
+                        <label class="field-label" for="fieldLugarTrabajo">8. Lugar de Trabajo / Empresa Actual <span class="req">*</span></label>
+                        <input type="text" id="fieldLugarTrabajo" class="input-control" placeholder="Ej. Sunbelt Logistics Corp / Independiente LLC" required />
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldFuncionesTrabajo">9. Funciones / Cargo que Desempeña <span class="req">*</span></label>
+                        <input type="text" id="fieldFuncionesTrabajo" class="input-control" placeholder="Ej. Coordinador de Operaciones y Despacho" required />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Botonera del Paso 1 -->
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-top:28px; padding-top:18px; border-top:1px solid rgba(167,139,250,0.2);">
+                    <button type="button" class="btn-modal-cancel" id="btnCancelWizardStep1">
+                      Cancelar Solicitud
+                    </button>
+                    <button type="button" class="btn-modal-save" id="btnGoToStep2">
+                      Guardar Paso 1 y Continuar al Paso 2 →
+                    </button>
+                  </div>
+                </div>
+
+                <!-- ========================================================
+                     PASO 2 DE 2: PERFIL FINANCIERO Y ESTRUCTURA DEL PRÉSTAMO
+                     Aparece únicamente una vez gestionado el Paso 1
+                     ======================================================== -->
+                <div class="wizard-step-pane" id="wizardStep2Pane">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                      <span class="wizard-step-kicker">💎 PASO 2 DE 2 · ESTRUCTURA FINANCIERA Y SCORE MATEMÁTICO</span>
+                      <button type="button" class="btn-pill-ghost" id="btnBackToStep1Top">
+                        ← Volver a editar Paso 1
+                      </button>
+                    </div>
+
+                    <h2 class="wizard-step-heading gradient-title">
+                      Paso 2 de 2: Perfil Financiero y Estructura del Préstamo
+                    </h2>
+                    <p class="wizard-step-subtitle">
+                      Selecciona la fuente de ingresos y define el ingreso mensual y el monto solicitado. El sistema validará matemáticamente el Score (350 a 750) y la fecha automática.
+                    </p>
+
+                    <!-- Selector Visual + Lista Desplegable de Fuente / Plataforma de Ingresos (Opciones exactas solicitadas) -->
+                    <div style="margin-bottom: 18px;">
+                      <label class="field-label" for="fieldFuenteIngresos" style="display:block; margin-bottom:8px; font-size:0.84rem;">
+                        10. Fuente / Plataforma de Ingresos <span class="req">*</span>
+                      </label>
+                      <div class="option-cards-grid-4" id="incomeSourceCardsGroup">
+                        <div class="visual-option-card selected" data-income-card="Cuenta bancaria EEUU">
+                          <span class="visual-option-icon">🏦</span>
+                          <span class="visual-option-title">Cuenta bancaria EEUU</span>
+                          <span class="visual-option-desc">Checking / Savings US</span>
+                        </div>
+                        <div class="visual-option-card" data-income-card="Cheque">
+                          <span class="visual-option-icon">✍️</span>
+                          <span class="visual-option-title">Cheque</span>
+                          <span class="visual-option-desc">Payroll / Empresarial</span>
+                        </div>
+                        <div class="visual-option-card" data-income-card="Kash">
+                          <span class="visual-option-icon">💵</span>
+                          <span class="visual-option-title">Kash</span>
+                          <span class="visual-option-desc">Flujo directo / Efectivo</span>
+                        </div>
+                        <div class="visual-option-card" data-income-card="Remesas">
+                          <span class="visual-option-icon">🌐</span>
+                          <span class="visual-option-title">Remesas</span>
+                          <span class="visual-option-desc">Giros / Transferencias</span>
+                        </div>
+                      </div>
+
+                      <!-- Lista desplegable oficial con las 4 opciones exactas -->
+                      <select id="fieldFuenteIngresos" class="select-control">
+                        <option value="Cuenta bancaria EEUU">Cuenta bancaria EEUU</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Kash">Kash</option>
+                        <option value="Remesas">Remesas</option>
+                      </select>
+                    </div>
+
+                    <div class="fields-grid">
+                      <div class="field-group">
+                        <label class="field-label" for="fieldIngresosMensuales">
+                          11. Ingresos Mensuales Demostrables (USD) <span class="req">*</span>
+                          <span class="usd-badge" id="previewIngresosUsd" style="margin-left:4px; font-size:0.68rem;">$0 / mes</span>
+                        </label>
+                        <input type="number" id="fieldIngresosMensuales" class="input-control" placeholder="Ej. 6500" min="100" step="100" required />
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldMontoSolicitado">
+                          12. Monto del Préstamo Solicitado (USD) <span class="req">*</span>
+                          <span class="usd-badge" id="previewMontoUsd" style="margin-left:4px; font-size:0.68rem;">$0</span>
+                        </label>
+                        <input type="number" id="fieldMontoSolicitado" class="input-control" placeholder="Ej. 45000" min="500" step="500" required />
+                      </div>
+
+                      <!-- SCORE DE CRÉDITO ESTIMADO (350 A 750) - MATEMÁTICO Y BLOQUEADO -->
+                      <div class="field-group full-span">
+                        <label class="field-label" for="fieldScoreCredito">
+                          13. Score de Crédito Estimado (FICO / Buró) — 🔒 Cálculo Matemático Automático (Rango 350 a 750, No Editable)
+                        </label>
+                        <div class="score-math-box">
+                          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <input
+                              type="number"
+                              id="fieldScoreCredito"
+                              class="input-control readonly-locked-input"
+                              style="max-width: 170px; font-size: 1.05rem; text-align:center;"
+                              value="350"
+                              min="350"
+                              max="750"
+                              readonly
+                              tabindex="-1"
+                            />
+                            <div style="flex:1;">
+                              <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px;">
+                                <span style="color:var(--text-muted);">Mínimo: 350</span>
+                                <strong id="scoreMathFormulaLabel" style="color:#6EE7B7;">Introduce Ingresos y Monto para validar Score</strong>
+                                <span style="color:var(--text-muted);">Máximo: 750</span>
+                              </div>
+                              <div class="score-meter-track">
+                                <div class="score-meter-fill" id="scoreMeterFill" style="width: 0%;"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldPropositoPrestamo">14. Propósito del Préstamo (Calidad de Vida)</label>
+                        <select id="fieldPropositoPrestamo" class="select-control">
+                          <option value="Compra de Vivienda / Hipotecario">Compra de Vivienda / Hipotecario</option>
+                          <option value="Vehículo / Auto">Vehículo / Auto</option>
+                          <option value="Capital de Trabajo / Negocio">Capital de Trabajo / Negocio</option>
+                          <option value="Consolidación de Deuda">Consolidación de Deuda</option>
+                          <option value="Educación / Salud / Libre Inversión">Educación / Salud / Libre Inversión</option>
+                        </select>
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldEntidadFinanciera">15. Entidad Financiera Asignada (Lender)</label>
+                        <select id="fieldEntidadFinanciera" class="select-control"></select>
+                      </div>
+
+                      <div class="field-group">
+                        <label class="field-label" for="fieldEstadoProceso">16. Estado del Proceso</label>
+                        <select id="fieldEstadoProceso" class="select-control">
+                          <option value="1. Captura Inicial">1. Captura Inicial</option>
+                          <option value="2. Recolección Documental">2. Recolección Documental</option>
+                          <option value="3. En Estudio por Entidad (Underwriting)">3. En Estudio por Entidad (Underwriting)</option>
+                          <option value="4. Pre-Aprobado">4. Pre-Aprobado</option>
+                          <option value="5. Aprobado y Desembolsado">5. Aprobado y Desembolsado</option>
+                          <option value="6. Rechazado / En Corrección">6. Rechazado / En Corrección</option>
+                        </select>
+                      </div>
+
+                      <!-- FECHA DE CREACIÓN / ACTUALIZACIÓN AUTOMÁTICA SIN PODER EDITAR -->
+                      <div class="field-group">
+                        <label class="field-label" for="fieldFechaCreacion">
+                          17. Fecha de Creación / Actualización — 🔒 Automática (No Editable)
+                        </label>
+                        <input
+                          type="text"
+                          id="fieldFechaCreacion"
+                          class="input-control readonly-locked-input"
+                          readonly
+                          tabindex="-1"
+                        />
+                      </div>
+
+                      <div class="field-group full-span">
+                        <label class="field-label" for="fieldAdjuntosInput">
+                          18. Adjuntos / Soportes (KYC, Extractos Cuenta EEUU / Cheque / Kash / Remesas)
+                        </label>
+                        <div class="file-upload-zone">
+                          <input type="file" id="fieldAdjuntosInput" class="input-control" multiple />
+                          <div class="attachment-chips" id="modalAttachmentsList"></div>
+                        </div>
+                      </div>
+
+                      <div class="field-group full-span">
+                        <label class="field-label" for="fieldNotasConsultor">19. Notas del Consultor Senior (Bitácora)</label>
+                        <textarea id="fieldNotasConsultor" class="textarea-control" rows="2" placeholder="Observaciones finales sobre capacidad de pago y garantías..."></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Botonera del Paso 2 -->
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-top:28px; padding-top:18px; border-top:1px solid rgba(167,139,250,0.2);">
+                    <div style="display:flex; gap:10px;">
+                      <button type="button" class="btn-modal-cancel" id="btnCancelWizardStep2">Cancelar</button>
+                      <button type="button" class="btn-pill-ghost" id="btnBackToStep1Bottom">← Volver al Paso 1</button>
+                    </div>
+                    <button type="submit" class="btn-modal-save">
+                      💾 Guardar Expediente y Actualizar XLS Drive
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- PANEL LATERAL DERECHO: PROGRESO DE SOLICITUD (INSPIRADO EN IMAGEN 1) -->
+              <aside class="wizard-sidebar-progress">
+                <div>
+                  <div class="progress-brand-kicker">TOPBANK PROGRESO</div>
+                  <p class="progress-helper-copy">
+                    Estos datos son los más importantes para estructurar una oferta certera y calcular matemáticamente el Score (350 a 750). Procura que la información ingresada sea real.
+                  </p>
+
+                  <div class="vertical-steps-timeline">
+                    <div class="v-step-item active" id="vStepIndicator1">
+                      <span class="v-step-title">1. DATOS PERSONALES Y LABORALES</span>
+                      <span class="v-step-sub">Perfil migratorio, identificación, lugar de trabajo y funciones</span>
+                    </div>
+                    <div class="v-step-item" id="vStepIndicator2">
+                      <span class="v-step-title">2. PERFIL FINANCIERO Y PRÉSTAMO</span>
+                      <span class="v-step-sub">Fuente (EEUU/Cheque/Kash/Remesas), Score matemático 350–750 y Lender</span>
+                    </div>
+                  </div>
+
+                  <!-- Resumen vivo de lo capturado en el Paso 1 -->
+                  <div class="step1-captured-summary" id="step1LiveSummaryBox">
+                    <strong style="color:#DDD6FE; display:block; margin-bottom:6px;">📌 Resumen Capturado:</strong>
+                    <div id="step1SummaryContent">Completa el Paso 1 para ver el resumen validado del solicitante aquí.</div>
+                  </div>
+                </div>
+
+                <div style="font-size:0.73rem; color:var(--text-muted); border-top:1px solid rgba(167,139,250,0.16); padding-top:12px;">
+                  <div>☁️ <strong>Drive Destino:</strong> <code>1q7tTJCz...</code></div>
+                  <div>📊 Genera <code>clientes_prestamos.xls</code> automáticamente</div>
+                </div>
+              </aside>
+
+            </div>
+          </form>
+        </div>
+
+        <!-- ================================================================
+             LISTADO PRINCIPAL DE SOLICITANTES (VISTA LIMPIA Y DESPEJADA)
+             ================================================================ -->
+        <div class="glass-card main-module-card" id="clientsListCardContainer">
+          <div class="section-banner-header">
+            <div class="section-title-group">
+              <h2 class="gradient-title">Gestión de Solicitantes y Originación de Crédito</h2>
+              <p>Haz clic en <strong>+ Nueva Solicitud / Cliente</strong> para iniciar el asistente guiado de 2 pasos.</p>
+            </div>
+            <button type="button" class="btn-pill-primary" id="btnNewClientMain">
+              <span>＋</span> Nueva Solicitud / Cliente (Por Pasos)
+            </button>
+          </div>
+
+          <!-- Barra de búsqueda en tiempo real + Filtros -->
+          <div class="toolbar-filters">
+            <div class="search-input-wrap">
+              <span class="search-icon">🔍</span>
+              <input
+                type="search"
+                id="searchInput"
+                class="input-control"
+                placeholder="Buscar por nombre, apellido, empresa, funciones, ITIN/SSN o entidad financiera..."
+              />
+            </div>
+
+            <select id="filterStatus" class="select-control" aria-label="Filtrar por Estado del Préstamo">
+              <option value="ALL">Todos los Estados del Proceso</option>
+              <option value="1. Captura Inicial">1. Captura Inicial</option>
+              <option value="2. Recolección Documental">2. Recolección Documental</option>
+              <option value="3. En Estudio por Entidad (Underwriting)">3. En Estudio por Entidad (Underwriting)</option>
+              <option value="4. Pre-Aprobado">4. Pre-Aprobado</option>
+              <option value="5. Aprobado y Desembolsado">5. Aprobado y Desembolsado</option>
+              <option value="6. Rechazado / En Corrección">6. Rechazado / En Corrección</option>
+            </select>
+
+            <select id="filterProfile" class="select-control" aria-label="Filtrar por Perfil Migratorio">
+              <option value="ALL">Todos los Perfiles Migratorios</option>
+              <option value="Residente EE. UU. / Ciudadano">Residente EE. UU. / Ciudadano</option>
+              <option value="Migrante en EE. UU. (Con ITIN)">Migrante en EE. UU. (Con ITIN)</option>
+              <option value="Migrante en EE. UU. (En trámite)">Migrante en EE. UU. (En trámite)</option>
+              <option value="Contratista Internacional / No Residente">Contratista Internacional / No Residente</option>
+            </select>
+
+            <button type="button" class="btn-pill-ghost" id="btnResetFilters">Limpiar</button>
+          </div>
+
+          <!-- Tabla de Datos Completa -->
+          <div class="table-responsive">
+            <table class="fintech-table">
+              <thead>
+                <tr>
+                  <th>Solicitante / ID</th>
+                  <th>Lugar de Trabajo y Funciones</th>
+                  <th>Perfil / Residencia</th>
+                  <th>Monto y Fuente Ingresos</th>
+                  <th>Score (350-750)</th>
+                  <th>Lender Asignado</th>
+                  <th>Estado del Préstamo</th>
+                  <th>Fecha Automática</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="clientsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           PESTAÑA 2: CRÉDITOS APROBADOS (FLUJO EJECUTIVO EN 3 ETAPAS)
+           ================================================================== -->
+      <section class="glass-card main-module-card tab-panel" id="panel-pipeline">
+        <div class="section-banner-header">
+          <div class="section-title-group">
+            <h2 class="gradient-title">💳 Créditos Aprobados · Tablero Ejecutivo en 3 Etapas</h2>
+            <p>
+              Flujo automatizado: <strong>Etapa 1</strong> (Validación y Contrato con Timer de 6:00 min) →
+              <strong>Etapa 2</strong> (Pre-Aprobados, Emisión de Contrato y Generación de Tarjeta Virtual) →
+              <strong>Etapa 3</strong> (Créditos Activados y Listos para Desembolso).
+            </p>
+          </div>
+          <button type="button" class="btn-pill-primary" id="btnNewClientFromCredits">
+            <span>＋</span> Ingresar Cliente a Estudio (6:00 min)
+          </button>
+        </div>
+        <div class="credits-3stage-board" id="pipelineBoardContainer"></div>
+      </section>
+
+      <!-- ==================================================================
+           PESTAÑA 3: AGENDAR CITAS DE CONSULTORÍA
+           ================================================================== -->
+      <section class="glass-card main-module-card tab-panel" id="panel-citas">
+        <div class="section-banner-header">
+          <div class="section-title-group">
+            <h2 class="gradient-title">Agenda de Sesiones de Consultoría Financiera</h2>
+            <p>Coordina sesiones 1-a-1 con solicitantes para revisión de ingresos y cierre de préstamos.</p>
+          </div>
+        </div>
+
+        <form id="newAppointmentForm" style="padding: 20px 26px; border-bottom: 1px solid rgba(167,139,250,0.16); background: rgba(12,8,28,0.45);">
+          <div class="fields-grid" style="grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));">
+            <div class="field-group">
+              <label class="field-label">Solicitante / Cliente <span class="req">*</span></label>
+              <select id="citaClienteId" class="select-control" required></select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Fecha de Cita <span class="req">*</span></label>
+              <input type="date" id="citaFecha" class="input-control" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Hora (EST) <span class="req">*</span></label>
+              <input type="time" id="citaHora" class="input-control" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Canal de Reunión</label>
+              <select id="citaCanal" class="select-control">
+                <option value="Google Meet / Ontop Concierge">Google Meet / Ontop Concierge</option>
+                <option value="Zoom Ejecutivo">Zoom Ejecutivo</option>
+                <option value="WhatsApp Business Call">WhatsApp Business Call</option>
+                <option value="Presencial Brickell Miami">Presencial Brickell Miami</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Consultor Senior Asignado <span class="req">*</span></label>
+              <input type="text" id="citaConsultor" class="input-control" placeholder="Ej. Dra. Elena Vance" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Objetivo de la Consultoría <span class="req">*</span></label>
+              <input type="text" id="citaTema" class="input-control" placeholder="Ej. Pre-calificación Hipotecaria ITIN" required />
+            </div>
+            <div class="field-group full-span" style="display:flex; flex-direction:row; gap:12px; align-items:flex-end;">
+              <div style="flex:1;">
+                <label class="field-label">Notas Previas para la Sesión</label>
+                <input type="text" id="citaNotas" class="input-control" placeholder="Documentos requeridos durante la llamada..." />
+              </div>
+              <button type="submit" class="btn-modal-save">+ Agendar Cita</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="cards-grid-3" id="appointmentsGrid"></div>
+      </section>
+
+      <!-- ==================================================================
+           PESTAÑA 4: ENTIDADES FINANCIERAS ALIADAS (LENDERS)
+           ================================================================== -->
+      <section class="glass-card main-module-card tab-panel" id="panel-lenders">
+        <div class="section-banner-header">
+          <div class="section-title-group">
+            <h2 class="gradient-title">Directorio de Entidades Financieras Aliadas (Lenders)</h2>
+            <p>Las entidades registradas aquí alimentan dinámicamente el Paso 2 del asistente de solicitudes.</p>
+          </div>
+        </div>
+
+        <form id="newLenderForm" style="padding: 20px 26px; border-bottom: 1px solid rgba(167,139,250,0.16); background: rgba(12,8,28,0.45);">
+          <div class="fields-grid" style="grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));">
+            <div class="field-group">
+              <label class="field-label">Nombre de la Entidad (Lender) <span class="req">*</span></label>
+              <input type="text" id="lenderNombre" class="input-control" placeholder="Ej. Mercury Capital US" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Categoría / Especialidad <span class="req">*</span></label>
+              <input type="text" id="lenderTipo" class="input-control" placeholder="Ej. Banca Comercial / Fintech" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Jurisdicción / Estados</label>
+              <input type="text" id="lenderPais" class="input-control" placeholder="Ej. EE. UU. (50 Estados)" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Rango de Tasa APR Estimada</label>
+              <input type="text" id="lenderTasa" class="input-control" placeholder="Ej. 7.50% - 12.90% APR" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Monto Máximo (USD)</label>
+              <input type="number" id="lenderMontoMax" class="input-control" placeholder="250000" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Score Mínimo Requerido (350-750)</label>
+              <input type="text" id="lenderFico" class="input-control" value="550+ (Score Matemático TopBank)" required />
+            </div>
+            <div class="field-group full-span" style="display:flex; flex-direction:row; gap:12px; align-items:flex-end;">
+              <div style="flex:2;">
+                <label class="field-label">Perfiles Aceptados (separados por coma)</label>
+                <input
+                  type="text"
+                  id="lenderPerfiles"
+                  class="input-control"
+                  value="Residente EE. UU. / Ciudadano, Migrante en EE. UU. (Con ITIN), Contratista Internacional / No Residente"
+                />
+              </div>
+              <div style="flex:1;">
+                <label class="field-label">Email Underwriting</label>
+                <input type="email" id="lenderContacto" class="input-control" placeholder="deals@lender.com" />
+              </div>
+              <button type="submit" class="btn-modal-save">+ Registrar Lender</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="cards-grid-3" id="lendersGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ======================================================================
+       MODAL DE VISTA 360° DE EXPEDIENTE
+       ====================================================================== -->
+  <div class="modal-backdrop" id="dossierModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="gradient-title">Ficha Integral de Expediente Financiero 360°</h3>
+        <button type="button" class="modal-close-btn" id="btnCloseDossierModal">✕</button>
+      </div>
+      <div class="modal-body" id="dossierModalBody"></div>
+      <div class="modal-footer">
+        <span style="font-size:0.76rem; color:var(--text-muted);">Sincronizado con XLS de Google Drive</span>
+        <div class="modal-footer-right">
+          <button type="button" class="btn-modal-save" id="dossierEditBtn">✏️ Editar en Asistente por Pasos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL DE CONFIGURACIÓN GOOGLE DRIVE (VINCULADO A 1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="driveConfigModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window modal-md">
+      <div class="modal-header">
+        <h3 class="gradient-title">☁️ Sincronización con tu Google Drive (1q7tTJCz...)</h3>
+        <button type="button" class="modal-close-btn" id="btnCloseDriveConfig">✕</button>
+      </div>
+
+      <form id="driveConfigForm">
+        <div class="modal-body" style="display:flex; flex-direction:column; gap:18px;">
+
+          <div class="form-column-box">
+            <div class="column-section-title">📂 Carpeta de Google Drive del Usuario Vinculada</div>
+            <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:10px;">
+              Tu carpeta objetivo está configurada en:
+              <a href="https://drive.google.com/drive/u/0/folders/1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39" target="_blank" style="color:#6EE7B7; font-weight:700;">
+                https://drive.google.com/drive/u/0/folders/1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39
+              </a>
+            </p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button type="button" class="btn-pill-primary" id="btnDownloadAndOpenDrive">
+                📊 Descargar XLS Actualizado y Abrir Mi Drive
+              </button>
+              <button type="button" class="btn-pill-ghost" id="btnOpenExplorerFolder">
+                📁 Ver Archivos XLS/CSV en Carpeta Local del PC
+              </button>
+            </div>
+          </div>
+
+          <div class="form-column-box">
+            <div class="column-section-title">📁 1. Ruta Local en tu PC (Espejo Automático .XLS, .CSV y .JSON)</div>
+            <div class="field-group" style="margin-bottom:10px;">
+              <label class="field-label" for="cfgSyncFolderPath">Carpeta Local donde se guarda automáticamente <code>clientes_prestamos.xls</code></label>
+              <input type="text" id="cfgSyncFolderPath" class="input-control" placeholder="Ej. C:\STELARIX (Software IA)\TopBank\GoogleDrive_Local_Sync" />
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+              <span style="font-size:0.75rem; color:var(--text-muted);">
+                O vincula una carpeta directamente desde el navegador:
+              </span>
+              <button type="button" class="btn-pill-ghost" id="btnPickBrowserDirectory">
+                🔗 Vincular Carpeta con File System API
+              </button>
+            </div>
+          </div>
+
+          <div class="form-column-box">
+            <div class="column-section-title">🌐 2. Escritura Automática en la Nube en tu Carpeta Drive (ID: 1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39)</div>
+            <p style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:10px;">
+              El siguiente script ya tiene configurado tu ID de carpeta (<code>1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39</code>). Al publicarlo como Web App en <a href="https://script.google.com" target="_blank" style="color:#A78BFA;">script.google.com</a> y pegar su URL aquí, TopBank creará y actualizará automáticamente <code>clientes_prestamos.xls</code> y la hoja de cálculo dentro de tu Drive en cada guardado.
+            </p>
+
+            <div class="field-group" style="margin-bottom:10px;">
+              <label class="field-label" for="cfgAppsScriptUrl">URL de tu Google Apps Script Web App</label>
+              <div style="display:flex; gap:8px;">
+                <input
+                  type="url"
+                  id="cfgAppsScriptUrl"
+                  class="input-control"
+                  placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                />
+                <button type="button" class="btn-pill-ghost" id="btnTestCloudWebhook" style="white-space:nowrap;">⚡ Enviar XLS a Drive</button>
+              </div>
+            </div>
+
+            <label style="display:flex; align-items:center; gap:8px; font-size:0.79rem; color:#E2E8F0; cursor:pointer; margin-bottom:10px;">
+              <input type="checkbox" id="cfgAutoSyncCloud" checked />
+              Sincronizar automáticamente a mi carpeta de Google Drive al guardar cada solicitud
+            </label>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span class="field-label">Código preconfigurado para tu carpeta <code>1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39</code>:</span>
+              <button type="button" class="btn-pill-ghost" id="btnCopyAppsScript" style="padding:4px 10px; font-size:0.72rem;">📋 Copiar Código</button>
+            </div>
+            <pre class="code-snippet-box" id="appsScriptCodePreview"></pre>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <span style="font-size:0.75rem; color:var(--usd-emerald);">✔ Archivos .xls, .xlsx y .csv sincronizados</span>
+          <div class="modal-footer-right">
+            <button type="submit" class="btn-modal-save">Guardar Configuración</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL DE CONTRATO LEGAL OFICIAL DE PRÉSTAMO (2 HOJAS - PDF Y WORD)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="contractLegalModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window" style="max-width: 1020px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="gradient-title" id="contractModalTitle">📄 Contrato Oficial de Aprobación de Préstamo · OntopBank Legal (2 Hojas)</h3>
+          <span style="font-size:0.76rem; color:#A7F3D0;" id="contractModalSubtitle">
+            Interés 8.00% Anual · Plan a 12 Meses (*12 Meses) · Abono a Capital Permitido · Políticas de Privacidad OntopBank
+          </span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseContractModal">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px 20px; background: rgba(8, 5, 18, 0.9);">
+        <iframe id="contractPreviewIframe" class="contract-preview-iframe" title="Vista Previa Contrato Legal 2 Hojas"></iframe>
+      </div>
+
+      <div class="modal-footer">
+        <div style="font-size:0.75rem; color:var(--text-muted);">
+          ✔ Guardado en carpeta del cliente y sincronizado con Google Drive (<code>1q7tTJCz...</code>)
+        </div>
+        <div class="modal-footer-right" style="flex-wrap:wrap;">
+          <button type="button" class="btn-pill-ghost" id="btnPrintContractModal">🖨️ Imprimir</button>
+          <button type="button" class="btn-pill-ghost" id="btnDownloadContractWord">📝 Descargar Word (.doc)</button>
+          <button type="button" class="btn-modal-save" id="btnDownloadContractPdf" style="background: linear-gradient(135deg, #F43F5E 0%, #BE123C 100%);">
+            📥 Descargar Contrato en PDF Legal (.pdf)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL INTERACTIVO (SPLIT-VIEW): GENERADOR DE TARJETA VIRTUAL Y ACTIVACIÓN DE CUENTA
+       ====================================================================== -->
+  <div class="modal-backdrop" id="virtualCardModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window" style="max-width: 1060px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="gradient-title" id="vcardModalTitle">💳 Generador de Tarjeta Virtual y Activación de Cuenta Titular</h3>
+          <span style="font-size:0.77rem; color:#C4B5FD;" id="vcardModalSubtitle">
+            Emisión digital Ontop Visa Platinum y vinculación de cuenta para desembolso sin cargos ni depósitos previos
+          </span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseVirtualCardModal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="vcard-split-layout">
+
+          <!-- COLUMNA IZQUIERDA: VISUALIZACIÓN DE LA TARJETA VIRTUAL 3D Y RESUMEN DEL CRÉDITO -->
+          <div class="vcard-left-col">
+            <!-- Tarjeta Virtual 3D Estilo Ontop Visa Platinum -->
+            <div class="ontop-3d-card" id="vcardVisualCard">
+              <div class="ontop-card-glow"></div>
+              <div class="ontop-card-top">
+                <div class="ontop-card-brand">
+                  <span class="ontop-card-triangle">▲</span>
+                  <span class="ontop-card-brand-text">ontop</span>
+                </div>
+                <span class="ontop-card-status-pill" id="vcardStatusBadge">PENDIENTE DE ACTIVACIÓN</span>
+              </div>
+
+              <div class="ontop-card-chip-row">
+                <div class="emv-chip-metallic">
+                  <div class="emv-line-h"></div>
+                  <div class="emv-line-v"></div>
+                </div>
+                <span class="contactless-wave" title="Contactless NFC">)))</span>
+              </div>
+
+              <div class="ontop-card-number" id="vcardMaskedNumber">
+                •••• &nbsp;•••• &nbsp;•••• &nbsp;4829
+              </div>
+
+              <div class="ontop-card-bottom">
+                <div class="ontop-card-holder-box">
+                  <span class="ontop-card-meta-label">TITULAR DE LA CUENTA</span>
+                  <strong class="ontop-card-holder-name" id="vcardHolderName">MATEO ALEJANDRO VARGAS</strong>
+                </div>
+                <div class="ontop-card-expiry-box">
+                  <span class="ontop-card-meta-label">EXPIRA</span>
+                  <strong class="ontop-card-expiry-val" id="vcardExpiryDate">08/29</strong>
+                </div>
+                <div class="ontop-card-visa-box">
+                  <span class="visa-wordmark">VISA</span>
+                  <span class="visa-submark">Platinum</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Resumen de Fondos a Recibir -->
+            <div class="vcard-funds-summary-box">
+              <div class="column-section-title" style="margin-bottom:10px;">
+                💰 Resumen de Fondos y Envío de Tarjeta
+              </div>
+              <div class="vcard-summary-row">
+                <span>Capital del Crédito Pre-Aprobado:</span>
+                <strong class="usd-badge" id="vcardSummaryPrincipal">$85,000 USD</strong>
+              </div>
+              <div class="vcard-summary-row">
+                <span>Costo de Emisión y Activación de Tarjeta:</span>
+                <strong style="color:#6EE7B7;">$0.00 USD (Sin depósitos previos)</strong>
+              </div>
+              <div class="vcard-summary-row total-row">
+                <span>Total Disponible tras Desembolso:</span>
+                <strong class="vcard-total-usd" id="vcardSummaryTotal">$85,000 USD</strong>
+              </div>
+              <div class="vcard-summary-row" style="padding-top:8px; border-top:1px dashed rgba(167,139,250,0.2);">
+                <span>📍 Dirección de Envío Tarjeta Física:</span>
+                <strong style="color:#DDD6FE; text-align:right;" id="vcardSummaryAddress">Miami, FL, EE. UU.</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMNA DERECHA: INFORMACIÓN LEGAL DE HABILITACIÓN Y BOTÓN DE ACTIVACIÓN -->
+          <div class="vcard-right-col">
+            <div class="vcard-policy-shield-card">
+              <div class="vcard-policy-header">
+                <div class="shield-icon-badge">🛡️</div>
+                <div>
+                  <span class="vcard-policy-kicker">NORMATIVA DE SEGURIDAD Y DESEMBOLSO</span>
+                  <h4 class="vcard-policy-title">POLÍTICA DE HABILITACIÓN DE CUENTA Y ENVÍO DE TARJETA TITULAR</h4>
+                </div>
+              </div>
+
+              <div class="vcard-policy-body">
+                <p>
+                  <strong>1. Habilitación de Riel Financiero Sin Costo:</strong> Toda cuenta vinculada a un crédito pre-aprobado cuenta con generación de tarjeta virtual inmediata y asignación de riel bancario sin requerir depósitos, pagos ni movimientos monetarios anticipados por parte del titular.
+                </p>
+                <p>
+                  <strong>2. Titularidad y Seguridad KYC:</strong> La tarjeta virtual <strong>Ontop Visa Platinum</strong> se emite exclusivamente a nombre del solicitante verificado en el expediente y queda vinculada al contrato oficial al <strong>8.00% de interés anual (*12 meses)</strong> con opción de abono a capital.
+                </p>
+                <p>
+                  <strong>3. Despacho de Tarjeta Física y Desembolso:</strong> Al confirmar la activación en este panel, se programa el envío de la tarjeta física con chip EMV al lugar de residencia registrado y el expediente pasa de inmediato a la <strong>Etapa 3 (Créditos Activados y Listos para Desembolso)</strong>.
+                </p>
+              </div>
+
+              <div class="vcard-contract-quickbar">
+                <span>📄 Documento soporte vinculado al expediente:</span>
+                <button type="button" class="btn-pill-ghost" id="btnVcardOpenContract" style="padding:6px 12px; font-size:0.75rem;">
+                  📄 Ver / Descargar Contrato Legal (2 Hojas PDF)
+                </button>
+              </div>
+            </div>
+
+            <div class="vcard-action-box">
+              <button type="button" class="btn-activate-vcard-cta" id="btnConfirmActivateVcard">
+                <span>💳</span> Confirmar Tarjeta Virtual y Activar Cuenta para Desembolso
+              </button>
+              <button type="button" class="btn-pill-ghost" id="btnRegenerateCardDigits" style="width:100%; justify-content:center;">
+                🔄 Generar Nueva Numeración de Tarjeta Virtual
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div style="font-size:0.75rem; color:var(--usd-emerald);">
+          ✔ Emisión protegida bajo Políticas de Privacidad OntopBank · Sincronizado con Google Drive
+        </div>
+        <div class="modal-footer-right">
+          <button type="button" class="btn-pill-ghost" id="btnCancelVirtualCardModal">Cerrar Panel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor de Notificaciones Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts Modulares -->
+  <script src="js/seedData.js"></script>
+  <script src="js/contractGenerator.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

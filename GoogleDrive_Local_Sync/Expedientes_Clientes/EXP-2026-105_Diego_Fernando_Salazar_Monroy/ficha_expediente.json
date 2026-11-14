@@ -1,0 +1,37 @@
+{
+  "id": "EXP-2026-105",
+  "nombres": "Diego Fernando",
+  "apellidos": "Salazar Monroy",
+  "email": "diego.salazar@cloudarchitects.dev",
+  "telefono": "+1 (786) 402-1933",
+  "fechaNacimiento": "1989-02-14",
+  "perfilMigratorio": "Contratista Internacional / No Residente",
+  "tipoId": "Pasaporte",
+  "numeroId": "MX99381726",
+  "residencia": "Doral, Florida / CDMX",
+  "lugarTrabajo": "Salazar Remodeling & Construction LLC",
+  "funcionesTrabajo": "Contratista General de Obra Civil y Remodelación Residencial",
+  "ingresosMensuales": 9800,
+  "fuenteIngresos": "Cheque",
+  "scoreCredito": 604,
+  "montoSolicitado": 145000,
+  "propositoPrestamo": "Compra de Vivienda / Hipotecario",
+  "entidadFinanciera": "CrossBorder Capital Miami LLC",
+  "estadoProceso": "4. Pre-Aprobado",
+  "adjuntos": [
+    {
+      "name": "Pasaporte_Vigente_DiegoSalazar.pdf",
+      "size": 350000,
+      "type": "application/pdf",
+      "category": "KYC"
+    }
+  ],
+  "notasConsultor": "Pagos recibidos mediante Cheque empresarial en Florida. Cita inicial agendada.",
+  "fechaCreacion": "2026-11-11 10:10",
+  "fechaActualizacion": "2026-11-14 02:06",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
+  "cardLast4": "9765",
+  "cardExpiry": "08/29",
+  "contratoAprobado": true
+}

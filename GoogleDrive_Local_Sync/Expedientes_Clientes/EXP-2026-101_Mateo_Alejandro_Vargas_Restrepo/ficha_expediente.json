@@ -1,0 +1,44 @@
+{
+  "id": "EXP-2026-101",
+  "nombres": "Mateo Alejandro",
+  "apellidos": "Vargas Restrepo",
+  "email": "mateo.vargas@techglobal.io",
+  "telefono": "+1 (305) 842-9910",
+  "fechaNacimiento": "1991-04-18",
+  "perfilMigratorio": "Contratista Internacional / No Residente",
+  "tipoId": "Pasaporte",
+  "numeroId": "PE8849201",
+  "residencia": "Miami, FL (Brickell)",
+  "lugarTrabajo": "TechGlobal Cloud Solutions LLC",
+  "funcionesTrabajo": "Arquitecto de Software Cloud y Líder Técnico de Infraestructura",
+  "ingresosMensuales": 11800,
+  "fuenteIngresos": "Cuenta bancaria EEUU",
+  "scoreCredito": 652,
+  "montoSolicitado": 85000,
+  "propositoPrestamo": "Capital de Trabajo / Negocio",
+  "entidadFinanciera": "Ontop Global Credit Bridge",
+  "estadoProceso": "5. Aprobado y Desembolsado",
+  "adjuntos": [
+    {
+      "name": "KYC_Pasaporte_MateoVargas.pdf",
+      "size": 428100,
+      "type": "application/pdf",
+      "category": "KYC"
+    },
+    {
+      "name": "Extractos_Cuenta_EEUU_6Meses.pdf",
+      "size": 912400,
+      "type": "application/pdf",
+      "category": "Extractos"
+    }
+  ],
+  "notasConsultor": "Ingresos recurrentes en Cuenta bancaria EEUU por $11,800 USD/mes. Score matemático validado automáticamente.",
+  "fechaCreacion": "2026-11-02 09:30",
+  "fechaActualizacion": "2026-11-14 02:01",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
+  "cardLast4": "1795",
+  "cardExpiry": "08/29",
+  "cardActivated": true,
+  "cardActivatedAt": "2026-11-14 02:01"
+}

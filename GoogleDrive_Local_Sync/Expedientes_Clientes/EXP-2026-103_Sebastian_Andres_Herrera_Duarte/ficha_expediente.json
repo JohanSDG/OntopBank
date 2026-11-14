@@ -1,0 +1,40 @@
+{
+  "id": "EXP-2026-103",
+  "nombres": "Sebastián Andrés",
+  "apellidos": "Herrera Duarte",
+  "email": "sherrera@fintechstudio.co",
+  "telefono": "+1 (512) 904-7721",
+  "fechaNacimiento": "1994-12-03",
+  "perfilMigratorio": "Residente EE. UU. / Ciudadano",
+  "tipoId": "SSN",
+  "numeroId": "459-71-8820",
+  "residencia": "Austin, Texas, EE. UU.",
+  "lugarTrabajo": "Austin FinTech Studio Inc.",
+  "funcionesTrabajo": "Director de Producto Financiero y Estrategia B2B",
+  "ingresosMensuales": 14500,
+  "fuenteIngresos": "Cuenta bancaria EEUU",
+  "scoreCredito": 682,
+  "montoSolicitado": 62000,
+  "propositoPrestamo": "Consolidación de Deuda",
+  "entidadFinanciera": "SoFi & LendingClub US Prime",
+  "estadoProceso": "5. Aprobado y Desembolsado",
+  "adjuntos": [
+    {
+      "name": "Driver_License_Texas_SH.pdf",
+      "size": 280000,
+      "type": "application/pdf",
+      "category": "KYC"
+    },
+    {
+      "name": "Pagare_Desembolso_Firmado.pdf",
+      "size": 490000,
+      "type": "application/pdf",
+      "category": "Contrato"
+    }
+  ],
+  "notasConsultor": "Desembolso ACH completado exitosamente tras validación de ingresos y score matemático.",
+  "fechaCreacion": "2026-10-28 14:20",
+  "fechaActualizacion": "2026-11-14 00:45",
+  "cardLast4": "7118",
+  "cardExpiry": "08/29"
+}

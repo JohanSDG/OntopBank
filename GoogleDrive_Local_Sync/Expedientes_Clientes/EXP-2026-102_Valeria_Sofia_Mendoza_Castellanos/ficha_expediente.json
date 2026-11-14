@@ -1,0 +1,43 @@
+{
+  "id": "EXP-2026-102",
+  "nombres": "Valeria Sofía",
+  "apellidos": "Mendoza Castellanos",
+  "email": "valeria.mendoza@uslogistics.com",
+  "telefono": "+1 (786) 519-3304",
+  "fechaNacimiento": "1988-09-12",
+  "perfilMigratorio": "Migrante en EE. UU. (Con ITIN)",
+  "tipoId": "ITIN",
+  "numeroId": "942-88-1904",
+  "residencia": "Orlando, Florida, EE. UU.",
+  "lugarTrabajo": "US Sunbelt Logistics Corp",
+  "funcionesTrabajo": "Coordinadora de Operaciones de Transporte y Despacho Internacional",
+  "ingresosMensuales": 9400,
+  "fuenteIngresos": "Cuenta bancaria EEUU",
+  "scoreCredito": 551,
+  "montoSolicitado": 310000,
+  "propositoPrestamo": "Compra de Vivienda / Hipotecario",
+  "entidadFinanciera": "Quontic Bank (CDFI ITIN Mortgage)",
+  "estadoProceso": "5. Aprobado y Desembolsado",
+  "adjuntos": [
+    {
+      "name": "Carta_Asignacion_ITIN_IRS.pdf",
+      "size": 320000,
+      "type": "application/pdf",
+      "category": "KYC"
+    },
+    {
+      "name": "Bank_of_America_12M_Statements.pdf",
+      "size": 1580000,
+      "type": "application/pdf",
+      "category": "Extractos Banco"
+    }
+  ],
+  "notasConsultor": "Expediente hipotecario ITIN con Down Payment del 20% disponible en cuenta bancaria EE. UU.",
+  "fechaCreacion": "2026-11-04 11:15",
+  "fechaActualizacion": "2026-11-14 01:39",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
+  "contratoAprobado": true,
+  "cardLast4": "9546",
+  "cardExpiry": "08/29"
+}

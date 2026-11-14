@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+ <Styles>
+  <Style ss:ID="Header">
+   <Font ss:Bold="1" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#4C1D95" ss:Pattern="Solid"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Solicitantes_Prestamos">
+  <Table>
+   <Row ss:StyleID="Header">
+    <Cell><Data ss:Type="String">ID Expediente</Data></Cell>
+    <Cell><Data ss:Type="String">Nombres</Data></Cell>
+    <Cell><Data ss:Type="String">Apellidos</Data></Cell>
+    <Cell><Data ss:Type="String">Email</Data></Cell>
+    <Cell><Data ss:Type="String">Telefono / WhatsApp</Data></Cell>
+    <Cell><Data ss:Type="String">Fecha Nacimiento</Data></Cell>
+    <Cell><Data ss:Type="String">Estatus / Perfil Migratorio</Data></Cell>
+    <Cell><Data ss:Type="String">Identificacion</Data></Cell>
+    <Cell><Data ss:Type="String">Residencia Actual</Data></Cell>
+    <Cell><Data ss:Type="String">Lugar de Trabajo / Empresa</Data></Cell>
+    <Cell><Data ss:Type="String">Funciones / Cargo</Data></Cell>
+    <Cell><Data ss:Type="String">Ingresos Mensuales (USD)</Data></Cell>
+    <Cell><Data ss:Type="String">Fuente de Ingresos</Data></Cell>
+    <Cell><Data ss:Type="String">Score Matematico (350-750)</Data></Cell>
+    <Cell><Data ss:Type="String">Monto Solicitado (USD)</Data></Cell>
+    <Cell><Data ss:Type="String">Proposito del Prestamo</Data></Cell>
+    <Cell><Data ss:Type="String">Entidad Financiera (Lender)</Data></Cell>
+    <Cell><Data ss:Type="String">Estado del Proceso</Data></Cell>
+    <Cell><Data ss:Type="String">Num Adjuntos</Data></Cell>
+    <Cell><Data ss:Type="String">Notas Consultor Senior</Data></Cell>
+    <Cell><Data ss:Type="String">Fecha Creacion / Actualizacion</Data></Cell>
+   </Row>
+   
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-101</Data></Cell>
+        <Cell><Data ss:Type="String">Mateo Alejandro</Data></Cell>
+        <Cell><Data ss:Type="String">Vargas Restrepo</Data></Cell>
+        <Cell><Data ss:Type="String">mateo.vargas@techglobal.io</Data></Cell>
+        <Cell><Data ss:Type="String">+1 (305) 842-9910</Data></Cell>
+        <Cell><Data ss:Type="String">1991-04-18</Data></Cell>
+        <Cell><Data ss:Type="String">Contratista Internacional / No Residente</Data></Cell>
+        <Cell><Data ss:Type="String">Pasaporte: PE8849201</Data></Cell>
+        <Cell><Data ss:Type="String">Miami, FL (Brickell)</Data></Cell>
+        <Cell><Data ss:Type="String">TechGlobal Cloud Solutions LLC</Data></Cell>
+        <Cell><Data ss:Type="String">Arquitecto de Software Cloud y Líder Técnico de Infraestructura</Data></Cell>
+        <Cell><Data ss:Type="Number">11800</Data></Cell>
+        <Cell><Data ss:Type="String">Cuenta bancaria EEUU</Data></Cell>
+        <Cell><Data ss:Type="Number">652</Data></Cell>
+        <Cell><Data ss:Type="Number">85000</Data></Cell>
+        <Cell><Data ss:Type="String">Capital de Trabajo / Negocio</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">5. Aprobado y Desembolsado</Data></Cell>
+        <Cell><Data ss:Type="Number">2</Data></Cell>
+        <Cell><Data ss:Type="String">Ingresos recurrentes en Cuenta bancaria EEUU por $11,800 USD/mes. Score matemático validado automáticamente.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-14 02:01</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-102</Data></Cell>
+        <Cell><Data ss:Type="String">Valeria Sofía</Data></Cell>
+        <Cell><Data ss:Type="String">Mendoza Castellanos</Data></Cell>
+        <Cell><Data ss:Type="String">valeria.mendoza@uslogistics.com</Data></Cell>
+        <Cell><Data ss:Type="String">+1 (786) 519-3304</Data></Cell>
+        <Cell><Data ss:Type="String">1988-09-12</Data></Cell>
+        <Cell><Data ss:Type="String">Migrante en EE. UU. (Con ITIN)</Data></Cell>
+        <Cell><Data ss:Type="String">ITIN: 942-88-1904</Data></Cell>
+        <Cell><Data ss:Type="String">Orlando, Florida, EE. UU.</Data></Cell>
+        <Cell><Data ss:Type="String">US Sunbelt Logistics Corp</Data></Cell>
+        <Cell><Data ss:Type="String">Coordinadora de Operaciones de Transporte y Despacho Internacional</Data></Cell>
+        <Cell><Data ss:Type="Number">9400</Data></Cell>
+        <Cell><Data ss:Type="String">Cuenta bancaria EEUU</Data></Cell>
+        <Cell><Data ss:Type="Number">551</Data></Cell>
+        <Cell><Data ss:Type="Number">310000</Data></Cell>
+        <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
+        <Cell><Data ss:Type="String">Quontic Bank (CDFI ITIN Mortgage)</Data></Cell>
+        <Cell><Data ss:Type="String">5. Aprobado y Desembolsado</Data></Cell>
+        <Cell><Data ss:Type="Number">2</Data></Cell>
+        <Cell><Data ss:Type="String">Expediente hipotecario ITIN con Down Payment del 20% disponible en cuenta bancaria EE. UU.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-14 01:39</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-103</Data></Cell>
+        <Cell><Data ss:Type="String">Sebastián Andrés</Data></Cell>
+        <Cell><Data ss:Type="String">Herrera Duarte</Data></Cell>
+        <Cell><Data ss:Type="String">sherrera@fintechstudio.co</Data></Cell>
+        <Cell><Data ss:Type="String">+1 (512) 904-7721</Data></Cell>
+        <Cell><Data ss:Type="String">1994-12-03</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">SSN: 459-71-8820</Data></Cell>
+        <Cell><Data ss:Type="String">Austin, Texas, EE. UU.</Data></Cell>
+        <Cell><Data ss:Type="String">Austin FinTech Studio Inc.</Data></Cell>
+        <Cell><Data ss:Type="String">Director de Producto Financiero y Estrategia B2B</Data></Cell>
+        <Cell><Data ss:Type="Number">14500</Data></Cell>
+        <Cell><Data ss:Type="String">Cuenta bancaria EEUU</Data></Cell>
+        <Cell><Data ss:Type="Number">682</Data></Cell>
+        <Cell><Data ss:Type="Number">62000</Data></Cell>
+        <Cell><Data ss:Type="String">Consolidación de Deuda</Data></Cell>
+        <Cell><Data ss:Type="String">SoFi &amp; LendingClub US Prime</Data></Cell>
+        <Cell><Data ss:Type="String">5. Aprobado y Desembolsado</Data></Cell>
+        <Cell><Data ss:Type="Number">2</Data></Cell>
+        <Cell><Data ss:Type="String">Desembolso ACH completado exitosamente tras validación de ingresos y score matemático.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-14 00:45</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-104</Data></Cell>
+        <Cell><Data ss:Type="String">Camila Fernanda</Data></Cell>
+        <Cell><Data ss:Type="String">Rojas Pineda</Data></Cell>
+        <Cell><Data ss:Type="String">camila.rojas@designremote.net</Data></Cell>
+        <Cell><Data ss:Type="String">+1 (646) 338-1129</Data></Cell>
+        <Cell><Data ss:Type="String">1996-06-25</Data></Cell>
+        <Cell><Data ss:Type="String">Migrante en EE. UU. (En trámite)</Data></Cell>
+        <Cell><Data ss:Type="String">Licencia EE. UU.: NY-774829104</Data></Cell>
+        <Cell><Data ss:Type="String">Queens, New York, EE. UU.</Data></Cell>
+        <Cell><Data ss:Type="String">Manhattan Hospitality &amp; Catering Group</Data></Cell>
+        <Cell><Data ss:Type="String">Supervisora de Eventos Corporativos y Atención al Cliente</Data></Cell>
+        <Cell><Data ss:Type="Number">6200</Data></Cell>
+        <Cell><Data ss:Type="String">Kash</Data></Cell>
+        <Cell><Data ss:Type="Number">625</Data></Cell>
+        <Cell><Data ss:Type="Number">28500</Data></Cell>
+        <Cell><Data ss:Type="String">Vehículo / Auto</Data></Cell>
+        <Cell><Data ss:Type="String">Stilt &amp; Nova Credit Migrant FinTech</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">1</Data></Cell>
+        <Cell><Data ss:Type="String">Recibe pagos verificables vía Kash. En recolección de cotización del vehículo.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-14 02:03</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-105</Data></Cell>
+        <Cell><Data ss:Type="String">Diego Fernando</Data></Cell>
+        <Cell><Data ss:Type="String">Salazar Monroy</Data></Cell>
+        <Cell><Data ss:Type="String">diego.salazar@cloudarchitects.dev</Data></Cell>
+        <Cell><Data ss:Type="String">+1 (786) 402-1933</Data></Cell>
+        <Cell><Data ss:Type="String">1989-02-14</Data></Cell>
+        <Cell><Data ss:Type="String">Contratista Internacional / No Residente</Data></Cell>
+        <Cell><Data ss:Type="String">Pasaporte: MX99381726</Data></Cell>
+        <Cell><Data ss:Type="String">Doral, Florida / CDMX</Data></Cell>
+        <Cell><Data ss:Type="String">Salazar Remodeling &amp; Construction LLC</Data></Cell>
+        <Cell><Data ss:Type="String">Contratista General de Obra Civil y Remodelación Residencial</Data></Cell>
+        <Cell><Data ss:Type="Number">9800</Data></Cell>
+        <Cell><Data ss:Type="String">Cheque</Data></Cell>
+        <Cell><Data ss:Type="Number">604</Data></Cell>
+        <Cell><Data ss:Type="Number">145000</Data></Cell>
+        <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
+        <Cell><Data ss:Type="String">CrossBorder Capital Miami LLC</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">1</Data></Cell>
+        <Cell><Data ss:Type="String">Pagos recibidos mediante Cheque empresarial en Florida. Cita inicial agendada.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-14 02:06</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-106</Data></Cell>
+        <Cell><Data ss:Type="String">Javier Eduardo</Data></Cell>
+        <Cell><Data ss:Type="String">Paredes Silva</Data></Cell>
+        <Cell><Data ss:Type="String">jparedes.builds@gmail.com</Data></Cell>
+        <Cell><Data ss:Type="String">+1 (832) 771-4092</Data></Cell>
+        <Cell><Data ss:Type="String">1985-11-29</Data></Cell>
+        <Cell><Data ss:Type="String">Migrante en EE. UU. (Con ITIN)</Data></Cell>
+        <Cell><Data ss:Type="String">ITIN: 918-45-3029</Data></Cell>
+        <Cell><Data ss:Type="String">Houston, Texas, EE. UU.</Data></Cell>
+        <Cell><Data ss:Type="String">Texas Gulf Roofing &amp; Services</Data></Cell>
+        <Cell><Data ss:Type="String">Maestro de Obra e Instalación de Techos Industriales</Data></Cell>
+        <Cell><Data ss:Type="Number">5100</Data></Cell>
+        <Cell><Data ss:Type="String">Remesas</Data></Cell>
+        <Cell><Data ss:Type="Number">571</Data></Cell>
+        <Cell><Data ss:Type="Number">45000</Data></Cell>
+        <Cell><Data ss:Type="String">Capital de Trabajo / Negocio</Data></Cell>
+        <Cell><Data ss:Type="String">Stilt &amp; Nova Credit Migrant FinTech</Data></Cell>
+        <Cell><Data ss:Type="String">6. Rechazado / En Corrección</Data></Cell>
+        <Cell><Data ss:Type="Number">1</Data></Cell>
+        <Cell><Data ss:Type="String">Flujos respaldados en comprobantes de Remesas. En plan de bancarización de 60 días.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-14 00:45</Data></Cell>
+      </Row>
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Citas_Consultoria">
+  <Table>
+   <Row ss:StyleID="Header">
+    <Cell><Data ss:Type="String">ID Cita</Data></Cell>
+    <Cell><Data ss:Type="String">Cliente</Data></Cell>
+    <Cell><Data ss:Type="String">Fecha</Data></Cell>
+    <Cell><Data ss:Type="String">Hora</Data></Cell>
+    <Cell><Data ss:Type="String">Canal</Data></Cell>
+    <Cell><Data ss:Type="String">Consultor Senior</Data></Cell>
+    <Cell><Data ss:Type="String">Objetivo / Tema</Data></Cell>
+    <Cell><Data ss:Type="String">Estado</Data></Cell>
+   </Row>
+   
+      <Row>
+        <Cell><Data ss:Type="String">CIT-301</Data></Cell>
+        <Cell><Data ss:Type="String">Mateo Alejandro Vargas Restrepo</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-15</Data></Cell>
+        <Cell><Data ss:Type="String">10:30</Data></Cell>
+        <Cell><Data ss:Type="String">Google Meet / Ontop Concierge</Data></Cell>
+        <Cell><Data ss:Type="String">Dra. Elena Vance (Senior Underwriter)</Data></Cell>
+        <Cell><Data ss:Type="String">Firma de Condiciones de Pre-Aprobación ($85,000 USD)</Data></Cell>
+        <Cell><Data ss:Type="String">Confirmada</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">CIT-302</Data></Cell>
+        <Cell><Data ss:Type="String">Valeria Sofía Mendoza Castellanos</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-16</Data></Cell>
+        <Cell><Data ss:Type="String">14:00</Data></Cell>
+        <Cell><Data ss:Type="String">Zoom Ejecutivo</Data></Cell>
+        <Cell><Data ss:Type="String">Carlos Andrés Rueda (Director Hipotecario)</Data></Cell>
+        <Cell><Data ss:Type="String">Revisión de Appraisal &amp; Cierre Hipotecario ITIN Quontic</Data></Cell>
+        <Cell><Data ss:Type="String">Confirmada</Data></Cell>
+      </Row>
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Entidades_Lenders">
+  <Table>
+   <Row ss:StyleID="Header">
+    <Cell><Data ss:Type="String">Entidad Financiera</Data></Cell>
+    <Cell><Data ss:Type="String">Categoria</Data></Cell>
+    <Cell><Data ss:Type="String">Jurisdiccion</Data></Cell>
+    <Cell><Data ss:Type="String">Perfiles Aceptados</Data></Cell>
+    <Cell><Data ss:Type="String">Tasa Estimada APR</Data></Cell>
+    <Cell><Data ss:Type="String">Monto Maximo (USD)</Data></Cell>
+    <Cell><Data ss:Type="String">Score Minimo</Data></Cell>
+   </Row>
+   
+      <Row>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">Fintech B2B/B2C &amp; Contratistas Globales</Data></Cell>
+        <Cell><Data ss:Type="String">EE. UU. / Global (Delaware LLC)</Data></Cell>
+        <Cell><Data ss:Type="String">Contratista Internacional / No Residente, Residente EE. UU. / Ciudadano, Migrante en EE. UU. (Con ITIN)</Data></Cell>
+        <Cell><Data ss:Type="String">8.90% - 14.50% APR</Data></Cell>
+        <Cell><Data ss:Type="Number">150000</Data></Cell>
+        <Cell><Data ss:Type="String">550+ (Score Matemático TopBank)</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">Quontic Bank (CDFI ITIN Mortgage)</Data></Cell>
+        <Cell><Data ss:Type="String">Banco Federal CDFI EE. UU.</Data></Cell>
+        <Cell><Data ss:Type="String">Estados Unidos (NY / FL / TX / CA)</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano, Migrante en EE. UU. (Con ITIN), Contratista Internacional / No Residente</Data></Cell>
+        <Cell><Data ss:Type="String">6.75% - 8.40% APR</Data></Cell>
+        <Cell><Data ss:Type="Number">1250000</Data></Cell>
+        <Cell><Data ss:Type="String">600+ (Score Matemático TopBank)</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">Stilt &amp; Nova Credit Migrant FinTech</Data></Cell>
+        <Cell><Data ss:Type="String">Lender Especializado en Migrantes y Visas</Data></Cell>
+        <Cell><Data ss:Type="String">Estados Unidos (42 Estados)</Data></Cell>
+        <Cell><Data ss:Type="String">Migrante en EE. UU. (Con ITIN), Migrante en EE. UU. (En trámite), Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">10.25% - 16.90% APR</Data></Cell>
+        <Cell><Data ss:Type="Number">65000</Data></Cell>
+        <Cell><Data ss:Type="String">420+ (Score Matemático TopBank)</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">SoFi &amp; LendingClub US Prime</Data></Cell>
+        <Cell><Data ss:Type="String">Banca Digital &amp; Préstamos Personales Prime</Data></Cell>
+        <Cell><Data ss:Type="String">Estados Unidos (Nacional)</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">7.49% - 13.20% APR</Data></Cell>
+        <Cell><Data ss:Type="Number">100000</Data></Cell>
+        <Cell><Data ss:Type="String">650+ (Score Matemático TopBank)</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">CrossBorder Capital Miami LLC</Data></Cell>
+        <Cell><Data ss:Type="String">Fondo Privado Inmobiliario &amp; Comercial</Data></Cell>
+        <Cell><Data ss:Type="String">EE. UU. (Florida / Texas) &amp; LATAM</Data></Cell>
+        <Cell><Data ss:Type="String">Contratista Internacional / No Residente, Migrante en EE. UU. (Con ITIN), Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">7.90% - 11.50% APR</Data></Cell>
+        <Cell><Data ss:Type="Number">850000</Data></Cell>
+        <Cell><Data ss:Type="String">540+ (Score Matemático TopBank)</Data></Cell>
+      </Row>
+  </Table>
+ </Worksheet>
+</Workbook>

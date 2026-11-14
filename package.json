@@ -1,0 +1,20 @@
+{
+  "name": "topbank-ontop-fintech-loans",
+  "version": "1.0.0",
+  "description": "Plataforma Local B2B/B2C de Originación, Gestión y Seguimiento de Préstamos Financieros en EE. UU. e Internacionales (ADN Ontop Dark Fintech)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "fintech",
+    "loans",
+    "ontop",
+    "topbank",
+    "local-first",
+    "google-drive-sync"
+  ],
+  "author": "Senior Fintech Architecture & UI/UX",
+  "license": "MIT"
+}

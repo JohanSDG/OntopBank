@@ -1,0 +1,1618 @@
+/**
+ * TopBank v2.5 | Controlador Principal SPA:
+ *  - Asistente por Pasos (Paso 1 -> Paso 2)
+ *  - Score Matemático (350 a 750) y Fecha Automática Bloqueados
+ *  - Temporizador de 6 Minutos en Proceso de Préstamo con Auto-Aprobación
+ *  - Generación de Contrato Oficial de Préstamo (2 Hojas Legales PDF y Word con 8% Anual * 12 Meses)
+ */
+
+(function () {
+  const STAGES = [
+    '1. Captura Inicial',
+    '2. Recolección Documental',
+    '3. En Estudio por Entidad (Underwriting)',
+    '4. Pre-Aprobado',
+    '5. Aprobado y Desembolsado',
+    '6. Rechazado / En Corrección'
+  ];
+
+  const SIX_MINUTES_MS = 6 * 60 * 1000; // 6 minutos exactos (360,000 ms)
+  const storage = new window.TopBankStorageEngine();
+
+  let appState = {
+    clients: [],
+    appointments: [],
+    lenders: []
+  };
+
+  let editingClientId = null;
+  let currentModalAttachments = [];
+  let timerIntervalId = null;
+
+  const usdFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  });
+
+  function formatUSD(amount) {
+    return usdFormatter.format(Number(amount) || 0);
+  }
+
+  function getFormattedTimestamp() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+  }
+
+  function formatCountdown(msRemaining) {
+    const totalSec = Math.max(0, Math.ceil(msRemaining / 1000));
+    const mins = String(Math.floor(totalSec / 60)).padStart(2, '0');
+    const secs = String(totalSec % 60).padStart(2, '0');
+    return `${mins}:${secs}`;
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function getStageClass(stage) {
+    const s = String(stage || '');
+    if (s.startsWith('1.')) return 'status-stage-1';
+    if (s.startsWith('2.')) return 'status-stage-2';
+    if (s.startsWith('3.')) return 'status-stage-3';
+    if (s.startsWith('4.')) return 'status-stage-4';
+    if (s.startsWith('5.')) return 'status-stage-5';
+    if (s.startsWith('6.')) return 'status-stage-6';
+    return 'status-stage-1';
+  }
+
+  function showToast(message, icon = '✅') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const item = document.createElement('div');
+    item.className = 'toast-item';
+    item.innerHTML = `<span>${icon}</span><div>${escapeHtml(message)}</div>`;
+    container.appendChild(item);
+    setTimeout(() => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(8px)';
+      item.style.transition = 'all 0.25s ease';
+      setTimeout(() => item.remove(), 260);
+    }, 4500);
+  }
+
+  async function bootstrap() {
+    appState = await storage.init(window.TOPBANK_SEED_DATA);
+
+    // Asegurar que los clientes en proceso (Etapa 1: 1., 2. o 3.) tengan su temporizador de 6 minutos activo y metadatos de tarjeta
+    const now = Date.now();
+    (appState.clients || []).forEach((c) => {
+      const st = String(c.estadoProceso || '');
+      if (
+        (st.startsWith('1.') || st.startsWith('2.') || st.startsWith('3.')) &&
+        (!c.timerEndsAt || c.timerEndsAt <= now)
+      ) {
+        c.timerStartedAt = now;
+        c.timerEndsAt = now + SIX_MINUTES_MS;
+      }
+      if (!c.cardLast4) {
+        const numericSeed = parseInt(String(c.id).replace(/\D/g, ''), 10) || 101;
+        c.cardLast4 = String(4100 + ((numericSeed * 73) % 5800)).slice(-4);
+      }
+      if (!c.cardExpiry) {
+        c.cardExpiry = '08/29';
+      }
+    });
+
+    bindEvents();
+    renderAll();
+    updateSyncStatusUI();
+    startSixMinuteTimerEngine();
+  }
+
+  // ==========================================================================
+  // MOTOR DE TEMPORIZADOR DE 6 MINUTOS EN PROCESO DE PRÉSTAMO
+  // ==========================================================================
+  function startSixMinuteTimerEngine() {
+    if (timerIntervalId) clearInterval(timerIntervalId);
+    timerIntervalId = setInterval(() => {
+      const now = Date.now();
+      let anyExpired = false;
+
+      (appState.clients || []).forEach((c) => {
+        const st = String(c.estadoProceso || '');
+        const inStage1 = st.startsWith('1.') || st.startsWith('2.') || st.startsWith('3.');
+        if (c.timerEndsAt && inStage1) {
+          const remaining = c.timerEndsAt - now;
+          if (remaining <= 0) {
+            anyExpired = true;
+            completeLoanTimerAndApprove(c.id, true);
+          } else {
+            // Actualizar dígitos y barra de progreso en el DOM en tiempo real (06:00 a 00:00)
+            const totalDuration = (c.timerEndsAt - (c.timerStartedAt || c.timerEndsAt - SIX_MINUTES_MS)) || SIX_MINUTES_MS;
+            const elapsedPct = Math.max(5, Math.min(99, ((totalDuration - remaining) / totalDuration) * 100));
+            const clockStr = formatCountdown(remaining);
+
+            document.querySelectorAll(`[data-timer-clock="${c.id}"]`).forEach((el) => {
+              el.textContent = `⏱️ ${clockStr}`;
+            });
+            document.querySelectorAll(`[data-timer-bar="${c.id}"]`).forEach((el) => {
+              el.style.width = `${elapsedPct}%`;
+            });
+          }
+        }
+      });
+
+      if (anyExpired) {
+        renderAll();
+      }
+    }, 1000);
+  }
+
+  // Finaliza el temporizador de 6 minutos, mueve el cliente a Etapa 2 (4. Pre-Aprobado) y habilita el Contrato Legal de 2 Hojas
+  async function completeLoanTimerAndApprove(clientId, autoTriggered = false) {
+    const client = (appState.clients || []).find((c) => c.id === clientId);
+    if (!client) return;
+
+    const autoNow = getFormattedTimestamp();
+    client.estadoProceso = '4. Pre-Aprobado';
+    client.timerStartedAt = null;
+    client.timerEndsAt = null;
+    client.fechaActualizacion = autoNow;
+    client.contratoAprobado = true;
+
+    renderAll();
+    await storage.syncAll(appState, client);
+    updateSyncStatusUI();
+
+    // Generar en el servidor local el PDF de 2 hojas + Word y subirlo a la carpeta Drive del usuario
+    if (storage.nodeBackendAvailable) {
+      try {
+        await fetch('/api/generate-contract', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ client, uploadToDrive: true })
+        });
+      } catch (e) {
+        console.warn('Error generando PDF en servidor:', e);
+      }
+    }
+
+    const msgPrefix = autoTriggered
+      ? `⏰ ¡Finalizó el temporizador de 6:00 min para ${client.nombres} ${client.apellidos}!`
+      : `⚡ ¡Validación completada para ${client.nombres} ${client.apellidos}!`;
+
+    showToast(
+      `${msgPrefix} Movido a Etapa 2 (Préstamos Pre-Aprobados) con Contrato Legal de 2 Hojas habilitado.`,
+      '✨'
+    );
+
+    // Abrir el documento legal de 2 hojas listo para descargar en PDF y enviar al cliente
+    openLegalContractModal(client);
+  }
+
+  // ==========================================================================
+  // MODAL SPLIT-VIEW: GENERADOR DE TARJETA VIRTUAL Y ACTIVACIÓN DE CUENTA
+  // ==========================================================================
+  function ensureClientCardMetadata(client) {
+    if (!client.cardLast4) {
+      client.cardLast4 = String(Math.floor(1000 + Math.random() * 9000));
+    }
+    if (!client.cardExpiry) {
+      client.cardExpiry = '08/29';
+    }
+  }
+
+  function openVirtualCardModal(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const modal = document.getElementById('virtualCardModalBackdrop');
+    if (!modal) return;
+
+    const isAlreadyActive = String(client.estadoProceso || '').startsWith('5.');
+    const fullNameUpper = `${client.nombres || ''} ${client.apellidos || ''}`.trim().toUpperCase();
+
+    document.getElementById('vcardModalTitle').textContent = `💳 Tarjeta Virtual y Activación de Cuenta · ${client.nombres} ${client.apellidos}`;
+    document.getElementById('vcardHolderName').textContent = fullNameUpper || 'TITULAR VERIFICADO';
+    document.getElementById('vcardMaskedNumber').innerHTML = `•••• &nbsp;•••• &nbsp;•••• &nbsp;${escapeHtml(client.cardLast4)}`;
+    document.getElementById('vcardExpiryDate').textContent = client.cardExpiry;
+
+    const statusBadge = document.getElementById('vcardStatusBadge');
+    if (statusBadge) {
+      if (isAlreadyActive) {
+        statusBadge.textContent = 'RIEL BANCARIO ACTIVO · EN DESEMBOLSO';
+        statusBadge.classList.add('active-card');
+      } else {
+        statusBadge.textContent = 'LISTA PARA ACTIVACIÓN SIN COSTO';
+        statusBadge.classList.remove('active-card');
+      }
+    }
+
+    document.getElementById('vcardSummaryPrincipal').textContent = `${formatUSD(client.montoSolicitado)} USD`;
+    document.getElementById('vcardSummaryTotal').textContent = `${formatUSD(client.montoSolicitado)} USD`;
+    document.getElementById('vcardSummaryAddress').textContent = client.residencia || 'EE. UU. / Internacional';
+
+    const confirmBtn = document.getElementById('btnConfirmActivateVcard');
+    if (confirmBtn) {
+      if (isAlreadyActive) {
+        confirmBtn.innerHTML = `<span>✅</span> Cuenta y Tarjeta Virtual Ya Activadas (En Etapa 3 de Desembolso)`;
+      } else {
+        confirmBtn.innerHTML = `<span>💳</span> Confirmar Tarjeta Virtual y Activar Cuenta para Desembolso`;
+      }
+      confirmBtn.onclick = async () => {
+        await confirmVirtualCardActivation(client.id);
+      };
+    }
+
+    const regenBtn = document.getElementById('btnRegenerateCardDigits');
+    if (regenBtn) {
+      regenBtn.onclick = () => {
+        client.cardLast4 = String(Math.floor(1000 + Math.random() * 9000));
+        document.getElementById('vcardMaskedNumber').innerHTML = `•••• &nbsp;•••• &nbsp;•••• &nbsp;${escapeHtml(client.cardLast4)}`;
+        showToast(`Nueva numeración de tarjeta virtual generada: •••• ${client.cardLast4}`, '💳');
+      };
+    }
+
+    const contractBtn = document.getElementById('btnVcardOpenContract');
+    if (contractBtn) {
+      contractBtn.onclick = () => {
+        openLegalContractModal(client);
+      };
+    }
+
+    modal.classList.add('open');
+  }
+
+  async function confirmVirtualCardActivation(clientId) {
+    const client = (appState.clients || []).find((c) => c.id === clientId);
+    if (!client) return;
+
+    ensureClientCardMetadata(client);
+    const autoNow = getFormattedTimestamp();
+
+    client.estadoProceso = '5. Aprobado y Desembolsado';
+    client.cardActivated = true;
+    client.cardActivatedAt = autoNow;
+    client.timerStartedAt = null;
+    client.timerEndsAt = null;
+    client.fechaActualizacion = autoNow;
+
+    document.getElementById('virtualCardModalBackdrop')?.classList.remove('open');
+    renderAll();
+
+    await storage.syncAll(appState, client);
+    updateSyncStatusUI();
+
+    showToast(
+      `✅ Tarjeta Virtual Ontop Visa Platinum (•••• ${client.cardLast4}) activada sin costo. ${client.nombres} ${client.apellidos} pasó a Etapa 3: Créditos Activados y Listos para Desembolso.`,
+      '🚀'
+    );
+  }
+
+  // ==========================================================================
+  // MODAL DE CONTRATO OFICIAL DE PRÉSTAMO (2 HOJAS LEGALES - PDF Y WORD)
+  // ==========================================================================
+  function openLegalContractModal(client) {
+    if (!client) return;
+    const modal = document.getElementById('contractLegalModalBackdrop');
+    const iframe = document.getElementById('contractPreviewIframe');
+    const titleEl = document.getElementById('contractModalTitle');
+    const subEl = document.getElementById('contractModalSubtitle');
+
+    const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(client.montoSolicitado);
+    titleEl.textContent = `📄 Contrato Oficial Aceptado · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `Capital: ${formatUSD(schedule.principal)} | Cuota Mensual (8% Anual): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *12 Meses: $${schedule.totalPayable12Months.toFixed(2)} USD`;
+
+    const htmlDoc = window.OntopLegalContractGenerator.buildTwoPageContractHtml(client, {
+      redLogoDataUrl: '/Contenido/red.jpg'
+    });
+
+    if (iframe) {
+      iframe.srcdoc = htmlDoc;
+    }
+
+    // Botón Descargar PDF Real de 2 Hojas
+    document.getElementById('btnDownloadContractPdf').onclick = async () => {
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-pdf?id=${encodeURIComponent(client.id)}`;
+      } else {
+        const pdfStr = window.OntopLegalContractGenerator.buildTwoPagePdfBinary(client);
+        const bytes = new Uint8Array(pdfStr.length);
+        for (let i = 0; i < pdfStr.length; i++) {
+          bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Contrato_Prestamo_OntopBank_${client.id}.pdf`;
+        a.click();
+      }
+      showToast(`Descargando Contrato Oficial en PDF Legal (2 Hojas) para ${client.nombres} ${client.apellidos}...`, '📥');
+    };
+
+    // Botón Descargar Word (.doc)
+    document.getElementById('btnDownloadContractWord').onclick = () => {
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-word?id=${encodeURIComponent(client.id)}`;
+      } else {
+        const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Contrato_Prestamo_OntopBank_${client.id}.doc`;
+        a.click();
+      }
+      showToast(`Documento Word (.doc) descargado para ${client.nombres}.`, '📝');
+    };
+
+    // Botón Imprimir
+    document.getElementById('btnPrintContractModal').onclick = () => {
+      iframe?.contentWindow?.focus();
+      iframe?.contentWindow?.print();
+    };
+
+    modal.classList.add('open');
+  }
+
+  function updateSyncStatusUI() {
+    const labelEl = document.getElementById('syncStatusText');
+    const metaEl = document.getElementById('syncMetaInfo');
+    if (!labelEl || !metaEl) return;
+
+    const cfg = storage.config;
+    if (storage.nodeBackendAvailable) {
+      labelEl.textContent = 'Sincronizado en Drive Local & Cloud';
+      const timeStr = cfg.lastSyncAt
+        ? new Date(cfg.lastSyncAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : 'Activo';
+      metaEl.textContent = `XLS + PDF · ${timeStr}`;
+    } else if (cfg.browserFolderName) {
+      labelEl.textContent = `Sincronizado (${cfg.browserFolderName})`;
+      metaEl.textContent = 'File System API';
+    } else {
+      labelEl.textContent = 'Sincronizado Localmente';
+      metaEl.textContent = 'XLS Listo para Drive';
+    }
+  }
+
+  function renderAll() {
+    renderKPIs();
+    populateLenderSelects();
+    renderClientsTable();
+    renderPipelineBoard();
+    renderAppointments();
+    renderLenders();
+    updateTabCounters();
+  }
+
+  function renderKPIs() {
+    const clients = appState.clients || [];
+    const totalSolicitantes = clients.length;
+    const prestamosEnProceso = clients.filter((c) => {
+      const st = String(c.estadoProceso || '');
+      return st.startsWith('1.') || st.startsWith('2.') || st.startsWith('3.') || st.startsWith('4.');
+    }).length;
+    const volumenSolicitado = clients.reduce((sum, c) => sum + (Number(c.montoSolicitado) || 0), 0);
+    const totalAdjuntos = clients.reduce(
+      (sum, c) => sum + (Array.isArray(c.adjuntos) ? c.adjuntos.length : 0),
+      0
+    );
+
+    document.getElementById('kpiTotalSolicitantes').textContent = totalSolicitantes;
+    document.getElementById('kpiPrestamosProceso').textContent = prestamosEnProceso;
+    document.getElementById('kpiVolumenSolicitado').textContent = formatUSD(volumenSolicitado);
+    document.getElementById('kpiTotalAdjuntos').textContent = `${totalAdjuntos} docs / ${totalSolicitantes} exp.`;
+  }
+
+  function updateTabCounters() {
+    document.getElementById('tabCountClients').textContent = (appState.clients || []).length;
+    document.getElementById('tabCountPipeline').textContent = (appState.clients || []).length;
+    document.getElementById('tabCountAppointments').textContent = (appState.appointments || []).length;
+    document.getElementById('tabCountLenders').textContent = (appState.lenders || []).length;
+  }
+
+  function populateLenderSelects() {
+    const lenderSelect = document.getElementById('fieldEntidadFinanciera');
+    const appointmentClientSelect = document.getElementById('citaClienteId');
+
+    if (lenderSelect) {
+      const currentVal = lenderSelect.value;
+      lenderSelect.innerHTML = (appState.lenders || [])
+        .map(
+          (l) =>
+            `<option value="${escapeHtml(l.nombre)}">${escapeHtml(l.nombre)} (${escapeHtml(l.tasaApr)})</option>`
+        )
+        .join('');
+      if (currentVal) lenderSelect.value = currentVal;
+    }
+
+    if (appointmentClientSelect) {
+      appointmentClientSelect.innerHTML = (appState.clients || [])
+        .map(
+          (c) =>
+            `<option value="${escapeHtml(c.id)}">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)} (${escapeHtml(c.id)})</option>`
+        )
+        .join('');
+    }
+  }
+
+  // Renderiza el bloque del temporizador de 6 minutos si el cliente está en Etapa 1 (En Proceso)
+  function buildTimerWidgetHtml(c) {
+    const now = Date.now();
+    const st = String(c.estadoProceso || '');
+    const inStage1 = st.startsWith('1.') || st.startsWith('2.') || st.startsWith('3.');
+    if (c.timerEndsAt && c.timerEndsAt > now && inStage1) {
+      const remaining = c.timerEndsAt - now;
+      const totalDuration = (c.timerEndsAt - (c.timerStartedAt || c.timerEndsAt - SIX_MINUTES_MS)) || SIX_MINUTES_MS;
+      const pct = Math.max(5, Math.min(99, ((totalDuration - remaining) / totalDuration) * 100));
+      return `
+        <div class="stage1-timer-panel" style="margin-top:6px;">
+          <div class="stage1-timer-header">
+            <span class="stage1-clock-pill" data-timer-clock="${escapeHtml(c.id)}">⏱️ ${formatCountdown(remaining)}</span>
+            <button type="button" class="btn-fast-approve" data-fast-approve="${escapeHtml(c.id)}" title="Completar los 6m y pasar a Etapa 2 (Pre-Aprobado)">
+              ⚡ Pasar a Pre-Aprobado
+            </button>
+          </div>
+          <div class="stage1-violet-track">
+            <div class="stage1-violet-fill" data-timer-bar="${escapeHtml(c.id)}" style="width:${pct}%;"></div>
+          </div>
+          <span class="stage1-status-text">Verificando perfil financiero y generando contrato legal...</span>
+        </div>
+      `;
+    }
+    return '';
+  }
+
+  // 2. Tabla Principal de Solicitantes
+  function renderClientsTable() {
+    const tbody = document.getElementById('clientsTableBody');
+    if (!tbody) return;
+
+    const query = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
+    const statusFilter = document.getElementById('filterStatus')?.value || 'ALL';
+    const profileFilter = document.getElementById('filterProfile')?.value || 'ALL';
+
+    const filtered = (appState.clients || []).filter((c) => {
+      const matchesStatus = statusFilter === 'ALL' || c.estadoProceso === statusFilter;
+      const matchesProfile = profileFilter === 'ALL' || c.perfilMigratorio === profileFilter;
+      if (!matchesStatus || !matchesProfile) return false;
+
+      if (!query) return true;
+      const haystack = [
+        c.id,
+        c.nombres,
+        c.apellidos,
+        c.email,
+        c.telefono,
+        c.tipoId,
+        c.numeroId,
+        c.lugarTrabajo,
+        c.funcionesTrabajo,
+        c.fuenteIngresos,
+        c.entidadFinanciera,
+        c.residencia,
+        c.perfilMigratorio
+      ]
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(query);
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align:center; padding: 38px 20px; color: var(--text-muted);">
+            No se encontraron expedientes que coincidan con la búsqueda.
+          </td>
+        </tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered
+      .map((c) => {
+        const badgeClass = getStageClass(c.estadoProceso);
+        const mathScore =
+          Number(c.scoreCredito) || window.calculateMathematicalScore(c.ingresosMensuales, c.montoSolicitado);
+        const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(c.montoSolicitado);
+
+        return `
+        <tr>
+          <td>
+            <div class="client-name-cell">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)}</div>
+            <span class="client-id-sub">${escapeHtml(c.id)} · ${escapeHtml(c.tipoId)}: ${escapeHtml(c.numeroId)}</span>
+            <span class="location-sub">✉️ ${escapeHtml(c.email)}</span>
+          </td>
+          <td>
+            <strong style="color:#EDE9FE; font-size:0.83rem;">🏢 ${escapeHtml(c.lugarTrabajo || 'Por especificar')}</strong>
+            <span class="location-sub">💼 ${escapeHtml(c.funcionesTrabajo || 'Sin especificar')}</span>
+          </td>
+          <td>
+            <span class="profile-pill">${escapeHtml(c.perfilMigratorio)}</span>
+            <span class="location-sub">📍 ${escapeHtml(c.residencia || 'EE. UU.')}</span>
+          </td>
+          <td>
+            <span class="usd-badge">${formatUSD(c.montoSolicitado)}</span>
+            <span class="location-sub">Cuota 8% EA: <strong>$${schedule.monthlyInstallment.toFixed(0)}/m</strong> (*12m: ${formatUSD(schedule.totalPayable12Months)})</span>
+            <span class="location-sub">Fuente: <strong>${escapeHtml(c.fuenteIngresos)}</strong></span>
+          </td>
+          <td>
+            <span class="usd-badge" style="background:rgba(139,92,246,0.2); border-color:rgba(167,139,250,0.45); color:#DDD6FE;">
+              🎯 ${mathScore} / 750
+            </span>
+          </td>
+          <td>
+            <strong style="color:#EDE9FE; font-size:0.82rem;">${escapeHtml(c.entidadFinanciera)}</strong>
+            <span class="location-sub">${escapeHtml(c.propositoPrestamo)}</span>
+          </td>
+          <td>
+            <span class="status-badge ${badgeClass}">${escapeHtml(c.estadoProceso)}</span>
+            ${buildTimerWidgetHtml(c)}
+          </td>
+          <td>
+            <div style="font-weight:600; color:#E2E8F0; font-size:0.78rem;">🔒 ${escapeHtml(c.fechaActualizacion || c.fechaCreacion)}</div>
+          </td>
+          <td>
+            <div class="table-actions">
+              <button class="btn-table-action btn-contract-pdf" data-action="contract" data-id="${escapeHtml(c.id)}" title="Ver y Descargar Contrato Legal de 2 Hojas (PDF / Word)">
+                📄 Contrato PDF
+              </button>
+              <button class="btn-table-action btn-view-dossier" data-action="view" data-id="${escapeHtml(c.id)}" title="Ver Expediente">
+                👁️
+              </button>
+              <button class="btn-table-action btn-edit-row" data-action="edit" data-id="${escapeHtml(c.id)}" title="Editar en Pasos">
+                ✏️
+              </button>
+              <button class="btn-table-action btn-delete-row" data-action="delete" data-id="${escapeHtml(c.id)}" title="Eliminar">
+                🗑️
+              </button>
+            </div>
+          </td>
+        </tr>`;
+      })
+      .join('');
+  }
+
+  // 3. Tablero Ejecutivo "Créditos Aprobados" dividido en 3 Etapas Secuenciales
+  function renderPipelineBoard() {
+    const board = document.getElementById('pipelineBoardContainer');
+    if (!board) return;
+
+    const allClients = appState.clients || [];
+
+    // Etapa 1: ⏳ Préstamos en Proceso (Validación y Emisión de Contrato - Timer 6 Minutos)
+    const stage1Clients = allClients.filter((c) => {
+      const st = String(c.estadoProceso || '');
+      return st.startsWith('1.') || st.startsWith('2.') || st.startsWith('3.');
+    });
+
+    // Etapa 2: ✨ Préstamos Pre-Aprobados (Habilitación de Cuenta y Tarjeta)
+    const stage2Clients = allClients.filter((c) => String(c.estadoProceso || '').startsWith('4.'));
+
+    // Etapa 3: ✅ Créditos Activados y Listos para Desembolso
+    const stage3Clients = allClients.filter((c) => String(c.estadoProceso || '').startsWith('5.'));
+
+    const volStage1 = stage1Clients.reduce((s, c) => s + (Number(c.montoSolicitado) || 0), 0);
+    const volStage2 = stage2Clients.reduce((s, c) => s + (Number(c.montoSolicitado) || 0), 0);
+    const volStage3 = stage3Clients.reduce((s, c) => s + (Number(c.montoSolicitado) || 0), 0);
+
+    // Render Tarjetas Etapa 1
+    const stage1CardsHtml =
+      stage1Clients.length === 0
+        ? `<div style="padding:26px 14px; text-align:center; color:var(--text-muted); font-size:0.8rem; border:1px dashed rgba(167,139,250,0.2); border-radius:12px;">No hay clientes en espera del temporizador de 6 minutos.</div>`
+        : stage1Clients
+            .map((c) => {
+              const now = Date.now();
+              if (!c.timerEndsAt || c.timerEndsAt <= now) {
+                c.timerStartedAt = now;
+                c.timerEndsAt = now + SIX_MINUTES_MS;
+              }
+              const remaining = Math.max(0, c.timerEndsAt - now);
+              const totalDuration = (c.timerEndsAt - (c.timerStartedAt || c.timerEndsAt - SIX_MINUTES_MS)) || SIX_MINUTES_MS;
+              const pct = Math.max(6, Math.min(99, ((totalDuration - remaining) / totalDuration) * 100));
+              const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(c.montoSolicitado);
+
+              return `
+              <div class="credit-card-item">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                  <div>
+                    <div class="pipeline-deal-name" style="font-size:0.95rem;">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)}</div>
+                    <span class="client-id-sub">${escapeHtml(c.id)} · Score: ${escapeHtml(c.scoreCredito)}/750 · ${escapeHtml(c.fuenteIngresos)}</span>
+                  </div>
+                  <span class="usd-badge">${formatUSD(c.montoSolicitado)}</span>
+                </div>
+
+                <div style="font-size:0.75rem; color:var(--text-secondary);">
+                  <div>🏢 <strong>Trabajo:</strong> ${escapeHtml(c.lugarTrabajo || 'N/A')} (${escapeHtml(c.funcionesTrabajo || 'N/A')})</div>
+                  <div>📍 <strong>Residencia:</strong> ${escapeHtml(c.residencia)} · 🏦 ${escapeHtml(c.entidadFinanciera)}</div>
+                </div>
+
+                <!-- Temporizador Regresivo en Tiempo Real de 6 Minutos (06:00 a 00:00) en Gradiente Violeta -->
+                <div class="stage1-timer-panel">
+                  <div class="stage1-timer-header">
+                    <span style="font-size:0.72rem; font-weight:700; color:#C4B5FD;">⏳ TIMER DE VALIDACIÓN (6 MIN)</span>
+                    <span class="stage1-clock-pill" data-timer-clock="${escapeHtml(c.id)}">⏱️ ${formatCountdown(remaining)}</span>
+                  </div>
+                  <div class="stage1-violet-track">
+                    <div class="stage1-violet-fill" data-timer-bar="${escapeHtml(c.id)}" style="width:${pct}%;"></div>
+                  </div>
+                  <div class="stage1-status-text">
+                    "Verificando perfil financiero y generando contrato legal..."
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.71rem; color:#A7F3D0; padding-top:4px;">
+                    <span>Cuota 8% EA: $${schedule.monthlyInstallment.toFixed(2)}/m</span>
+                    <button type="button" class="btn-fast-approve" data-fast-approve="${escapeHtml(c.id)}">
+                      ⚡ Completar 6m y Pre-Aprobar
+                    </button>
+                  </div>
+                </div>
+
+                <div style="display:flex; gap:8px;">
+                  <button type="button" class="btn-table-action btn-view-dossier" style="flex:1; justify-content:center;" data-action="contract" data-id="${escapeHtml(c.id)}">
+                    📄 Vista Previa Contrato
+                  </button>
+                  <button type="button" class="btn-table-action btn-edit-row" data-action="edit" data-id="${escapeHtml(c.id)}" title="Editar">
+                    ✏️
+                  </button>
+                </div>
+              </div>`;
+            })
+            .join('');
+
+    // Render Tarjetas Etapa 2: Préstamos Pre-Aprobados
+    const stage2CardsHtml =
+      stage2Clients.length === 0
+        ? `<div style="padding:26px 14px; text-align:center; color:var(--text-muted); font-size:0.8rem; border:1px dashed rgba(167,139,250,0.2); border-radius:12px;">Los expedientes que completen los 6 minutos aparecerán aquí automáticamente.</div>`
+        : stage2Clients
+            .map((c) => {
+              ensureClientCardMetadata(c);
+              const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(c.montoSolicitado);
+              return `
+              <div class="credit-card-item" style="border-color:rgba(167,139,250,0.48);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                  <span class="preapproved-glow-badge">✨ PRE-APROBADO</span>
+                  <span class="client-id-sub">${escapeHtml(c.id)} · Score ${escapeHtml(c.scoreCredito)}/750</span>
+                </div>
+
+                <div>
+                  <div class="pipeline-deal-name" style="font-size:1rem;">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)}</div>
+                  <span style="font-size:0.75rem; color:var(--text-secondary);">📍 ${escapeHtml(c.residencia)} · 🏦 ${escapeHtml(c.entidadFinanciera)}</span>
+                </div>
+
+                <!-- Monto del Préstamo Aprobado en USD en Grande -->
+                <div class="preapproved-amount-hero">
+                  <div>
+                    <span style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:#A7F3D0; display:block; font-weight:700;">
+                      Monto del Préstamo Aprobado
+                    </span>
+                    <div class="preapproved-amount-value">${formatUSD(c.montoSolicitado)} <span style="font-size:0.8rem; font-weight:700;">USD</span></div>
+                  </div>
+                  <div style="text-align:right; font-size:0.72rem; color:var(--text-secondary);">
+                    <div>8% EA (*12m)</div>
+                    <strong style="color:#EDE9FE;">$${schedule.monthlyInstallment.toFixed(0)}/mes</strong>
+                  </div>
+                </div>
+
+                <!-- Botón Destacado en Gradiente Violeta: Generar Tarjeta Virtual y Activar Cuenta -->
+                <button type="button" class="btn-generate-vcard-stage2" data-open-vcard="${escapeHtml(c.id)}">
+                  <span>💳</span> Generar Tarjeta Virtual y Activar Cuenta
+                </button>
+
+                <div style="display:flex; gap:8px;">
+                  <button type="button" class="btn-table-action btn-contract-pdf" style="flex:1; justify-content:center;" data-action="contract" data-id="${escapeHtml(c.id)}">
+                    📄 Enviar / Descargar Contrato (PDF)
+                  </button>
+                  <button type="button" class="btn-table-action btn-view-dossier" data-action="view" data-id="${escapeHtml(c.id)}" title="Ver Ficha 360°">
+                    👁️
+                  </button>
+                </div>
+              </div>`;
+            })
+            .join('');
+
+    // Render Tarjetas Etapa 3: Créditos Activados y Listos para Desembolso
+    const stage3CardsHtml =
+      stage3Clients.length === 0
+        ? `<div style="padding:26px 14px; text-align:center; color:var(--text-muted); font-size:0.8rem; border:1px dashed rgba(16,185,129,0.25); border-radius:12px;">Sin créditos activados aún. Genera la tarjeta virtual en la Etapa 2 para activar el desembolso.</div>`
+        : stage3Clients
+            .map((c) => {
+              ensureClientCardMetadata(c);
+              return `
+              <div class="credit-card-item" style="border-color:rgba(16,185,129,0.45);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                  <span class="status-badge status-stage-5">✅ CRÉDITO ACTIVADO</span>
+                  <span class="usd-badge">${formatUSD(c.montoSolicitado)} USD</span>
+                </div>
+
+                <div>
+                  <div class="pipeline-deal-name" style="font-size:0.96rem;">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)}</div>
+                  <span class="client-id-sub">${escapeHtml(c.id)} · 📍 ${escapeHtml(c.residencia)}</span>
+                </div>
+
+                <div class="stage3-mini-card-pill">
+                  <span>💳 Ontop Visa Platinum · •••• ${escapeHtml(c.cardLast4)}</span>
+                  <span style="color:#6EE7B7; font-weight:700;">EXP ${escapeHtml(c.cardExpiry)}</span>
+                </div>
+
+                <div class="stage3-active-rail-box">
+                  <strong style="color:#6EE7B7;">🟢 Riel Bancario Activo - En Desembolso + Tarjeta Física en Envío</strong>
+                  <span style="font-size:0.71rem; color:#A7F3D0;">
+                    Total disponible para dispersión: ${formatUSD(c.montoSolicitado)} USD (Sin cargos previos)
+                  </span>
+                </div>
+
+                <div style="display:flex; gap:8px;">
+                  <button type="button" class="btn-table-action btn-view-dossier" style="flex:1; justify-content:center;" data-open-vcard="${escapeHtml(c.id)}">
+                    💳 Ver Tarjeta Virtual
+                  </button>
+                  <button type="button" class="btn-table-action btn-contract-pdf" style="flex:1; justify-content:center;" data-action="contract" data-id="${escapeHtml(c.id)}">
+                    📄 Contrato PDF
+                  </button>
+                </div>
+              </div>`;
+            })
+            .join('');
+
+    board.innerHTML = `
+      <!-- ETAPA 1: PRÉSTAMOS EN PROCESO (TIMER 6 MINUTOS) -->
+      <div class="credit-stage-column stage-col-1">
+        <div class="credit-stage-header">
+          <div class="credit-stage-kicker">
+            <span class="credit-stage-step-tag">ETAPA 1 DE 3 · VALIDACIÓN 6:00 MIN</span>
+            <span class="tab-counter">${stage1Clients.length}</span>
+          </div>
+          <div class="credit-stage-title">⏳ Préstamos en Proceso</div>
+          <div class="credit-stage-sub">Validación de perfil financiero y emisión automática del contrato legal (2 hojas PDF/Word).</div>
+          <div class="credit-stage-volume-bar">
+            <span>Volumen en Validación:</span>
+            <strong style="color:#C4B5FD;">${formatUSD(volStage1)} USD</strong>
+          </div>
+        </div>
+        <div class="credit-stage-cards">${stage1CardsHtml}</div>
+      </div>
+
+      <!-- ETAPA 2: PRÉSTAMOS PRE-APROBADOS (HABILITACIÓN DE CUENTA Y TARJETA) -->
+      <div class="credit-stage-column stage-col-2">
+        <div class="credit-stage-header">
+          <div class="credit-stage-kicker">
+            <span class="credit-stage-step-tag">ETAPA 2 DE 3 · CONTRATO Y TARJETA</span>
+            <span class="tab-counter">${stage2Clients.length}</span>
+          </div>
+          <div class="credit-stage-title">✨ Préstamos Pre-Aprobados</div>
+          <div class="credit-stage-sub">Expedientes con contrato emitido listos para generar su Tarjeta Virtual Ontop Visa Platinum.</div>
+          <div class="credit-stage-volume-bar">
+            <span>Volumen Pre-Aprobado:</span>
+            <strong style="color:#34D399;">${formatUSD(volStage2)} USD</strong>
+          </div>
+        </div>
+        <div class="credit-stage-cards">${stage2CardsHtml}</div>
+      </div>
+
+      <!-- ETAPA 3: CRÉDITOS ACTIVADOS Y LISTOS PARA DESEMBOLSO -->
+      <div class="credit-stage-column stage-col-3">
+        <div class="credit-stage-header">
+          <div class="credit-stage-kicker">
+            <span class="credit-stage-step-tag emerald">ETAPA 3 DE 3 · RIEL ACTIVO</span>
+            <span class="tab-counter">${stage3Clients.length}</span>
+          </div>
+          <div class="credit-stage-title">✅ Créditos Activados y en Desembolso</div>
+          <div class="credit-stage-sub">Tarjeta virtual generada, cuenta titular activada sin costo y tarjeta física en envío.</div>
+          <div class="credit-stage-volume-bar">
+            <span>Volumen Activado:</span>
+            <strong style="color:#10B981;">${formatUSD(volStage3)} USD</strong>
+          </div>
+        </div>
+        <div class="credit-stage-cards">${stage3CardsHtml}</div>
+      </div>
+    `;
+  }
+
+  function renderAppointments() {
+    const grid = document.getElementById('appointmentsGrid');
+    if (!grid) return;
+    const list = appState.appointments || [];
+    if (list.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px; color:var(--text-muted);">No hay citas agendadas.</div>`;
+      return;
+    }
+    grid.innerHTML = list
+      .map(
+        (a) => `
+      <div class="sub-entity-card">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span class="status-badge ${a.estado === 'Confirmada' ? 'status-stage-5' : 'status-stage-3'}">${escapeHtml(a.estado)}</span>
+            <span class="client-id-sub">📅 ${escapeHtml(a.fecha)} · ⏰ ${escapeHtml(a.hora)}</span>
+          </div>
+          <h4 style="font-size:0.98rem; color:#FFF; margin-bottom:4px;">${escapeHtml(a.clienteNombre)}</h4>
+          <p style="font-size:0.82rem; color:#C4B5FD; font-weight:600; margin-bottom:8px;">${escapeHtml(a.tema)}</p>
+          <div style="font-size:0.76rem; color:var(--text-muted);">
+            <div>🎙️ <strong>Canal:</strong> ${escapeHtml(a.canal)}</div>
+            <div>👤 <strong>Consultor:</strong> ${escapeHtml(a.consultor)}</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; padding-top:8px; border-top:1px solid rgba(167,139,250,0.14);">
+          <button class="btn-table-action btn-view-dossier" data-cita-toggle="${escapeHtml(a.id)}">
+            ${a.estado === 'Confirmada' ? 'Completar' : 'Confirmar'}
+          </button>
+          <button class="btn-table-action btn-delete-row" data-cita-delete="${escapeHtml(a.id)}">🗑️</button>
+        </div>
+      </div>`
+      )
+      .join('');
+  }
+
+  function renderLenders() {
+    const grid = document.getElementById('lendersGrid');
+    if (!grid) return;
+    const list = appState.lenders || [];
+    grid.innerHTML = list
+      .map((l) => {
+        const assignedCount = (appState.clients || []).filter((c) => c.entidadFinanciera === l.nombre).length;
+        return `
+        <div class="sub-entity-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px;">
+              <div>
+                <h4 style="font-size:1rem; color:#FFF;">🏦 ${escapeHtml(l.nombre)}</h4>
+                <span style="font-size:0.74rem; color:var(--violet-accent);">${escapeHtml(l.tipo)} · ${escapeHtml(l.pais)}</span>
+              </div>
+              <span class="usd-badge">${escapeHtml(l.tasaApr)}</span>
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-secondary); margin: 10px 0;">
+              <div>💵 <strong>Tope Máximo:</strong> ${formatUSD(l.montoMaximo)}</div>
+              <div>🎯 <strong>Score Requerido:</strong> ${escapeHtml(l.ficoMinimo)}</div>
+              <div>📂 <strong>Solicitudes Asignadas:</strong> ${assignedCount}</div>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-top:10px; border-top:1px solid rgba(167,139,250,0.14);">
+            <span style="font-size:0.72rem; color:var(--text-muted);">✉️ ${escapeHtml(l.contactoEjecutivo || 'deals@lender.us')}</span>
+            <button class="btn-table-action btn-delete-row" data-lender-delete="${escapeHtml(l.id)}">Eliminar</button>
+          </div>
+        </div>`;
+      })
+      .join('');
+  }
+
+  // ==========================================================================
+  // CONTROLADOR DEL ASISTENTE GUIADO POR PASOS (PASO 1 -> PASO 2)
+  // ==========================================================================
+  function showWizardStep(stepNumber) {
+    const step1Pane = document.getElementById('wizardStep1Pane');
+    const step2Pane = document.getElementById('wizardStep2Pane');
+    const topBar = document.getElementById('wizardTopProgressBar');
+    const vStep1 = document.getElementById('vStepIndicator1');
+    const vStep2 = document.getElementById('vStepIndicator2');
+
+    if (stepNumber === 1) {
+      step1Pane.classList.add('active');
+      step2Pane.classList.remove('active');
+      topBar.style.width = '50%';
+      vStep1.className = 'v-step-item active';
+      vStep2.className = 'v-step-item';
+    } else {
+      updateStep1LiveSummary();
+      updateMathematicalScoreUI();
+      step1Pane.classList.remove('active');
+      step2Pane.classList.add('active');
+      topBar.style.width = '100%';
+      vStep1.className = 'v-step-item completed';
+      vStep2.className = 'v-step-item active';
+    }
+  }
+
+  function updateStep1LiveSummary() {
+    const nombres = document.getElementById('fieldNombres').value.trim();
+    const apellidos = document.getElementById('fieldApellidos').value.trim();
+    const perfil = document.getElementById('fieldPerfilMigratorio').value;
+    const tipoId = document.getElementById('fieldTipoId').value;
+    const numeroId = document.getElementById('fieldNumeroId').value.trim();
+    const empresa = document.getElementById('fieldLugarTrabajo').value.trim();
+    const funciones = document.getElementById('fieldFuncionesTrabajo').value.trim();
+
+    const summaryEl = document.getElementById('step1SummaryContent');
+    if (!summaryEl) return;
+
+    if (!nombres && !apellidos) {
+      summaryEl.innerHTML = 'Completa el Paso 1 para ver el resumen validado del solicitante aquí.';
+      return;
+    }
+
+    summaryEl.innerHTML = `
+      <div style="margin-bottom:4px;">👤 <strong>${escapeHtml(nombres)} ${escapeHtml(apellidos)}</strong></div>
+      <div style="margin-bottom:4px;">🛂 ${escapeHtml(perfil)} (${escapeHtml(tipoId)}: ${escapeHtml(numeroId)})</div>
+      <div style="margin-bottom:4px;">🏢 <strong>Trabajo:</strong> ${escapeHtml(empresa)}</div>
+      <div>💼 <strong>Funciones:</strong> ${escapeHtml(funciones)}</div>
+    `;
+  }
+
+  function validateStep1AndAdvance() {
+    const requiredIds = [
+      { id: 'fieldNombres', label: 'Nombres' },
+      { id: 'fieldApellidos', label: 'Apellidos' },
+      { id: 'fieldEmail', label: 'Correo Electrónico' },
+      { id: 'fieldTelefono', label: 'Teléfono / WhatsApp' },
+      { id: 'fieldResidencia', label: 'País / Estado de Residencia' },
+      { id: 'fieldNumeroId', label: 'Número de Identificación' },
+      { id: 'fieldLugarTrabajo', label: 'Lugar de Trabajo / Empresa' },
+      { id: 'fieldFuncionesTrabajo', label: 'Funciones / Cargo que Desempeña' }
+    ];
+
+    for (const item of requiredIds) {
+      const el = document.getElementById(item.id);
+      if (!el || !el.value.trim()) {
+        el?.focus();
+        showToast(`Por favor completa el campo obligatorio del Paso 1: "${item.label}" antes de pasar al Paso 2.`, '⚠️');
+        return false;
+      }
+    }
+
+    showToast('Paso 1 gestionado correctamente. Avanzando al Paso 2: Perfil Financiero.', '✅');
+    showWizardStep(2);
+    return true;
+  }
+
+  function syncVisualCardsSelection(profileVal, incomeVal) {
+    if (profileVal) {
+      document.getElementById('fieldPerfilMigratorio').value = profileVal;
+      document.querySelectorAll('[data-profile-card]').forEach((card) => {
+        card.classList.toggle('selected', card.getAttribute('data-profile-card') === profileVal);
+      });
+    }
+    if (incomeVal) {
+      document.getElementById('fieldFuenteIngresos').value = incomeVal;
+      document.querySelectorAll('[data-income-card]').forEach((card) => {
+        card.classList.toggle('selected', card.getAttribute('data-income-card') === incomeVal);
+      });
+    }
+  }
+
+  function updateMathematicalScoreUI() {
+    const ingresos = Number(document.getElementById('fieldIngresosMensuales')?.value) || 0;
+    const monto = Number(document.getElementById('fieldMontoSolicitado')?.value) || 0;
+
+    const previewIngresos = document.getElementById('previewIngresosUsd');
+    const previewMonto = document.getElementById('previewMontoUsd');
+    if (previewIngresos) previewIngresos.textContent = formatUSD(ingresos) + ' / mes';
+    if (previewMonto) previewMonto.textContent = formatUSD(monto);
+
+    const score = window.calculateMathematicalScore(ingresos, monto);
+    const scoreInput = document.getElementById('fieldScoreCredito');
+    const meterFill = document.getElementById('scoreMeterFill');
+    const formulaLabel = document.getElementById('scoreMathFormulaLabel');
+
+    if (scoreInput) {
+      scoreInput.value = score;
+    }
+
+    const pct = Math.max(0, Math.min(100, ((score - 350) / (750 - 350)) * 100));
+    if (meterFill) {
+      meterFill.style.width = `${pct}%`;
+    }
+
+    if (formulaLabel) {
+      if (ingresos <= 0 || monto <= 0) {
+        formulaLabel.textContent = 'Score Base: 350 pts (Ingresa Monto + Lo que gana)';
+      } else {
+        const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(monto);
+        formulaLabel.textContent = `Score: ${score}/750 | Cuota Mensual (8% EA): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *12m: $${schedule.totalPayable12Months.toFixed(2)} USD`;
+      }
+    }
+  }
+
+  function openClientWizard(clientToEdit = null) {
+    document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
+    document.querySelector('[data-tab="solicitantes"]')?.classList.add('active');
+    document.getElementById('panel-solicitantes')?.classList.add('active');
+
+    populateLenderSelects();
+    const form = document.getElementById('clientBrainForm');
+    form.reset();
+
+    const autoTimestamp = getFormattedTimestamp();
+
+    if (clientToEdit) {
+      editingClientId = clientToEdit.id;
+      document.getElementById('wizardMainTitleStep1').textContent = `Paso 1 de 2: Datos Personales y Laborales (${clientToEdit.id})`;
+      document.getElementById('fieldNombres').value = clientToEdit.nombres || '';
+      document.getElementById('fieldApellidos').value = clientToEdit.apellidos || '';
+      document.getElementById('fieldEmail').value = clientToEdit.email || '';
+      document.getElementById('fieldTelefono').value = clientToEdit.telefono || '';
+      document.getElementById('fieldFechaNacimiento').value = clientToEdit.fechaNacimiento || '';
+      document.getElementById('fieldTipoId').value = clientToEdit.tipoId || 'SSN';
+      document.getElementById('fieldNumeroId').value = clientToEdit.numeroId || '';
+      document.getElementById('fieldResidencia').value = clientToEdit.residencia || '';
+      document.getElementById('fieldLugarTrabajo').value = clientToEdit.lugarTrabajo || '';
+      document.getElementById('fieldFuncionesTrabajo').value = clientToEdit.funcionesTrabajo || '';
+
+      const validSources = ['Cuenta bancaria EEUU', 'Cheque', 'Kash', 'Remesas'];
+      const src = validSources.includes(clientToEdit.fuenteIngresos)
+        ? clientToEdit.fuenteIngresos
+        : 'Cuenta bancaria EEUU';
+
+      syncVisualCardsSelection(
+        clientToEdit.perfilMigratorio || 'Residente EE. UU. / Ciudadano',
+        src
+      );
+
+      document.getElementById('fieldIngresosMensuales').value = clientToEdit.ingresosMensuales || '';
+      document.getElementById('fieldMontoSolicitado').value = clientToEdit.montoSolicitado || '';
+      document.getElementById('fieldPropositoPrestamo').value =
+        clientToEdit.propositoPrestamo || 'Compra de Vivienda / Hipotecario';
+      document.getElementById('fieldEntidadFinanciera').value =
+        clientToEdit.entidadFinanciera || (appState.lenders[0]?.nombre ?? '');
+      document.getElementById('fieldEstadoProceso').value =
+        clientToEdit.estadoProceso || '3. En Estudio por Entidad (Underwriting)';
+      document.getElementById('fieldNotasConsultor').value = clientToEdit.notasConsultor || '';
+      document.getElementById('fieldFechaCreacion').value = autoTimestamp;
+      currentModalAttachments = Array.isArray(clientToEdit.adjuntos) ? [...clientToEdit.adjuntos] : [];
+    } else {
+      editingClientId = null;
+      document.getElementById('wizardMainTitleStep1').textContent = 'Paso 1 de 2: Datos Personales y Migratorios';
+      syncVisualCardsSelection('Residente EE. UU. / Ciudadano', 'Cuenta bancaria EEUU');
+      document.getElementById('fieldEstadoProceso').value = '3. En Estudio por Entidad (Underwriting)';
+      document.getElementById('fieldFechaCreacion').value = autoTimestamp;
+      currentModalAttachments = [];
+    }
+
+    renderModalAttachments();
+    updateMathematicalScoreUI();
+    updateStep1LiveSummary();
+    showWizardStep(1);
+
+    document.getElementById('clientsListCardContainer').style.display = 'none';
+    document.getElementById('wizardViewContainer').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function closeClientWizard() {
+    document.getElementById('wizardViewContainer').classList.remove('active');
+    document.getElementById('clientsListCardContainer').style.display = 'block';
+  }
+
+  function renderModalAttachments() {
+    const container = document.getElementById('modalAttachmentsList');
+    if (!container) return;
+
+    if (currentModalAttachments.length === 0) {
+      container.innerHTML = `<span style="font-size:0.74rem; color:var(--text-muted);">Sin adjuntos aún.</span>`;
+      return;
+    }
+
+    container.innerHTML = currentModalAttachments
+      .map(
+        (att, idx) => `
+      <span class="attachment-chip">
+        📄 ${escapeHtml(att.name)}
+        <button type="button" data-remove-att="${idx}" title="Quitar adjunto">×</button>
+      </span>`
+      )
+      .join('');
+  }
+
+  function readFilesAsAttachments(fileList) {
+    const files = Array.from(fileList || []);
+    return Promise.all(
+      files.map(
+        (file) =>
+          new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              resolve({
+                name: file.name,
+                size: file.size,
+                type: file.type || 'application/octet-stream',
+                category: 'Soporte KYC / Financiero',
+                dataUrl: typeof reader.result === 'string' ? reader.result : undefined
+              });
+            };
+            reader.onerror = () => {
+              resolve({
+                name: file.name,
+                size: file.size,
+                type: file.type || 'application/octet-stream',
+                category: 'Soporte KYC / Financiero'
+              });
+            };
+            reader.readAsDataURL(file);
+          })
+      )
+    );
+  }
+
+  // Al guardar el cliente desde el Paso 2: inicia el temporizador de 6 minutos en proceso de préstamo
+  async function handleSaveClientForm(e) {
+    e.preventDefault();
+
+    const ingresos = Number(document.getElementById('fieldIngresosMensuales').value) || 0;
+    const monto = Number(document.getElementById('fieldMontoSolicitado').value) || 0;
+
+    if (ingresos <= 0 || monto <= 0) {
+      showToast('Ingresa un Monto Solicitado y un Ingreso Mensual mayores a $0 USD para calcular el Score.', '⚠️');
+      return;
+    }
+
+    const autoNow = getFormattedTimestamp();
+    const existing = editingClientId
+      ? (appState.clients || []).find((c) => c.id === editingClientId)
+      : null;
+
+    const newId =
+      editingClientId ||
+      `EXP-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+
+    const mathScore = window.calculateMathematicalScore(ingresos, monto);
+    const nowMs = Date.now();
+    const selectedStage = document.getElementById('fieldEstadoProceso').value;
+
+    const record = {
+      id: newId,
+      nombres: document.getElementById('fieldNombres').value.trim(),
+      apellidos: document.getElementById('fieldApellidos').value.trim(),
+      email: document.getElementById('fieldEmail').value.trim(),
+      telefono: document.getElementById('fieldTelefono').value.trim(),
+      fechaNacimiento: document.getElementById('fieldFechaNacimiento').value,
+      perfilMigratorio: document.getElementById('fieldPerfilMigratorio').value,
+      tipoId: document.getElementById('fieldTipoId').value,
+      numeroId: document.getElementById('fieldNumeroId').value.trim(),
+      residencia: document.getElementById('fieldResidencia').value.trim(),
+      lugarTrabajo: document.getElementById('fieldLugarTrabajo').value.trim(),
+      funcionesTrabajo: document.getElementById('fieldFuncionesTrabajo').value.trim(),
+      ingresosMensuales: ingresos,
+      fuenteIngresos: document.getElementById('fieldFuenteIngresos').value,
+      scoreCredito: mathScore,
+      montoSolicitado: monto,
+      propositoPrestamo: document.getElementById('fieldPropositoPrestamo').value,
+      entidadFinanciera: document.getElementById('fieldEntidadFinanciera').value,
+      estadoProceso: editingClientId ? selectedStage : '3. En Estudio por Entidad (Underwriting)',
+      timerStartedAt: nowMs,
+      timerEndsAt: nowMs + SIX_MINUTES_MS,
+      adjuntos: [...currentModalAttachments],
+      notasConsultor: document.getElementById('fieldNotasConsultor').value.trim(),
+      fechaCreacion: existing ? existing.fechaCreacion : autoNow,
+      fechaActualizacion: autoNow
+    };
+
+    if (editingClientId) {
+      appState.clients = appState.clients.map((c) => (c.id === editingClientId ? record : c));
+    } else {
+      appState.clients.unshift(record);
+    }
+
+    closeClientWizard();
+    renderAll();
+
+    await storage.syncAll(appState, record);
+    updateSyncStatusUI();
+
+    // Pre-generar desde ya el borrador Word/PDF en la carpeta del cliente
+    if (storage.nodeBackendAvailable) {
+      fetch('/api/generate-contract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ client: record, uploadToDrive: false })
+      }).catch(() => {});
+    }
+
+    showToast(
+      `⏱️ Solicitud ${record.id} registrada con Temporizador de 6:00 minutos en Proceso de Préstamo. Al finalizar se aprobará y abrirá el Contrato PDF Oficial de 2 Hojas.`,
+      '🚀'
+    );
+  }
+
+  function openDossierModal(clientId) {
+    const client = (appState.clients || []).find((c) => c.id === clientId);
+    if (!client) return;
+
+    const modal = document.getElementById('dossierModalBackdrop');
+    const content = document.getElementById('dossierModalBody');
+    const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(client.montoSolicitado);
+
+    content.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(167,139,250,0.2);">
+        <div>
+          <span class="client-id-sub" style="font-size:0.8rem;">EXPEDIENTE OFICIAL #${escapeHtml(client.id)}</span>
+          <h2 class="gradient-title" style="font-size:1.55rem; font-weight:800;">${escapeHtml(client.nombres)} ${escapeHtml(client.apellidos)}</h2>
+          <p style="color:var(--text-secondary); font-size:0.85rem;">${escapeHtml(client.email)} · ${escapeHtml(client.telefono)} · 📍 ${escapeHtml(client.residencia)}</p>
+        </div>
+        <div style="text-align:right;">
+          <span class="status-badge ${getStageClass(client.estadoProceso)}" style="font-size:0.82rem;">${escapeHtml(client.estadoProceso)}</span>
+          <div style="margin-top:8px;">
+            <span class="usd-badge" style="font-size:1rem; padding:6px 14px;">Monto: ${formatUSD(client.montoSolicitado)}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="brain-grid-2col">
+        <div class="form-column-box">
+          <div class="column-section-title">🛂 Paso 1: Datos Personales, Migratorios y Laborales</div>
+          <p style="margin-bottom:7px;"><strong>Estatus / Perfil:</strong> ${escapeHtml(client.perfilMigratorio)}</p>
+          <p style="margin-bottom:7px;"><strong>Identificación:</strong> ${escapeHtml(client.tipoId)} — <code>${escapeHtml(client.numeroId)}</code></p>
+          <p style="margin-bottom:7px;"><strong>Lugar de Trabajo / Empresa:</strong> <span style="color:#DDD6FE; font-weight:700;">${escapeHtml(client.lugarTrabajo || 'No especificado')}</span></p>
+          <p style="margin-bottom:7px;"><strong>Funciones / Cargo:</strong> ${escapeHtml(client.funcionesTrabajo || 'No especificado')}</p>
+          <p><strong>Fecha Automática:</strong> 🔒 ${escapeHtml(client.fechaActualizacion || client.fechaCreacion)}</p>
+        </div>
+
+        <div class="form-column-box">
+          <div class="column-section-title">💎 Paso 2: Liquidación al 8% Anual (*12 Meses)</div>
+          <p style="margin-bottom:7px;"><strong>Ingresos Mensuales:</strong> <span style="color:var(--usd-emerald); font-weight:700;">${formatUSD(client.ingresosMensuales)}/mes</span> (${escapeHtml(client.fuenteIngresos)})</p>
+          <p style="margin-bottom:7px;"><strong>Score Matemático (350-750):</strong> <span class="usd-badge">🎯 ${escapeHtml(client.scoreCredito)} / 750</span></p>
+          <p style="margin-bottom:7px;"><strong>Interés 8% Anual sobre Valor Prestado:</strong> $${schedule.totalInterest12Months.toFixed(2)} USD</p>
+          <p style="margin-bottom:7px;"><strong>Cuota Mensual a Pagar:</strong> <strong style="color:#6EE7B7;">$${schedule.monthlyInstallment.toFixed(2)} USD / mes</strong></p>
+          <p style="margin-bottom:7px;"><strong>Total a Pagar *12 Meses:</strong> <strong style="color:#C4B5FD;">$${schedule.totalPayable12Months.toFixed(2)} USD</strong> (Abono a capital habilitado)</p>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('dossierEditBtn').onclick = () => {
+      modal.classList.remove('open');
+      openClientWizard(client);
+    };
+
+    modal.classList.add('open');
+  }
+
+  function openDriveConfigModal() {
+    const modal = document.getElementById('driveConfigModalBackdrop');
+    document.getElementById('cfgSyncFolderPath').value = storage.config.syncFolderPath || './GoogleDrive_Local_Sync';
+    document.getElementById('cfgAppsScriptUrl').value = storage.config.appsScriptUrl || '';
+    document.getElementById('cfgAutoSyncCloud').checked = Boolean(storage.config.autoSyncCloud);
+    document.getElementById('appsScriptCodePreview').textContent = window.TOPBANK_SEED_DATA.appsScriptTemplate;
+    modal.classList.add('open');
+  }
+
+  function bindEvents() {
+    document.querySelectorAll('.tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-tab');
+        document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`panel-${target}`)?.classList.add('active');
+      });
+    });
+
+    const menuTrigger = document.getElementById('headerMenuTrigger');
+    const dropdown = document.getElementById('headerDropdownMenu');
+    menuTrigger?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown?.classList.toggle('open');
+    });
+    document.addEventListener('click', () => dropdown?.classList.remove('open'));
+
+    document.getElementById('btnNewClientMain')?.addEventListener('click', () => openClientWizard(null));
+    document.getElementById('btnNewClientHeader')?.addEventListener('click', () => openClientWizard(null));
+    document.getElementById('btnNewClientFromCredits')?.addEventListener('click', () => openClientWizard(null));
+
+    document.getElementById('btnGoToStep2')?.addEventListener('click', validateStep1AndAdvance);
+    document.getElementById('btnBackToStep1Top')?.addEventListener('click', () => showWizardStep(1));
+    document.getElementById('btnBackToStep1Bottom')?.addEventListener('click', () => showWizardStep(1));
+    document.getElementById('btnBackToTableFromStep1')?.addEventListener('click', closeClientWizard);
+    document.getElementById('btnCancelWizardStep1')?.addEventListener('click', closeClientWizard);
+    document.getElementById('btnCancelWizardStep2')?.addEventListener('click', closeClientWizard);
+
+    document.querySelectorAll('[data-profile-card]').forEach((card) => {
+      card.addEventListener('click', () => {
+        const val = card.getAttribute('data-profile-card');
+        syncVisualCardsSelection(val, null);
+        updateStep1LiveSummary();
+      });
+    });
+
+    document.querySelectorAll('[data-income-card]').forEach((card) => {
+      card.addEventListener('click', () => {
+        const val = card.getAttribute('data-income-card');
+        syncVisualCardsSelection(null, val);
+      });
+    });
+
+    document.getElementById('fieldFuenteIngresos')?.addEventListener('change', (e) => {
+      syncVisualCardsSelection(null, e.target.value);
+    });
+
+    ['fieldNombres', 'fieldApellidos', 'fieldTipoId', 'fieldNumeroId', 'fieldLugarTrabajo', 'fieldFuncionesTrabajo'].forEach(
+      (id) => {
+        document.getElementById(id)?.addEventListener('input', updateStep1LiveSummary);
+      }
+    );
+
+    document.getElementById('fieldIngresosMensuales')?.addEventListener('input', updateMathematicalScoreUI);
+    document.getElementById('fieldMontoSolicitado')?.addEventListener('input', updateMathematicalScoreUI);
+
+    document.getElementById('searchInput')?.addEventListener('input', renderClientsTable);
+    document.getElementById('filterStatus')?.addEventListener('change', renderClientsTable);
+    document.getElementById('filterProfile')?.addEventListener('change', renderClientsTable);
+    document.getElementById('btnResetFilters')?.addEventListener('click', () => {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('filterStatus').value = 'ALL';
+      document.getElementById('filterProfile').value = 'ALL';
+      renderClientsTable();
+    });
+
+    // Delegación de eventos en tabla y tarjetas
+    document.addEventListener('click', async (e) => {
+      // Botón para finalizar el temporizador de 6 minutos inmediatamente y pasar a Etapa 2 (Pre-Aprobado)
+      const fastApproveBtn = e.target.closest('[data-fast-approve]');
+      if (fastApproveBtn) {
+        const id = fastApproveBtn.getAttribute('data-fast-approve');
+        await completeLoanTimerAndApprove(id, false);
+        return;
+      }
+
+      // Botón para abrir el Generador de Tarjeta Virtual 3D y Activación de Cuenta
+      const openVcardBtn = e.target.closest('[data-open-vcard]');
+      if (openVcardBtn) {
+        const id = openVcardBtn.getAttribute('data-open-vcard');
+        const client = (appState.clients || []).find((c) => c.id === id);
+        if (client) openVirtualCardModal(client);
+        return;
+      }
+
+      const actionBtn = e.target.closest('[data-action]');
+      if (actionBtn) {
+        const action = actionBtn.getAttribute('data-action');
+        const id = actionBtn.getAttribute('data-id');
+        const client = (appState.clients || []).find((c) => c.id === id);
+        if (!client) return;
+
+        if (action === 'contract') {
+          openLegalContractModal(client);
+        } else if (action === 'view') {
+          openDossierModal(id);
+        } else if (action === 'edit') {
+          openClientWizard(client);
+        } else if (action === 'delete') {
+          if (confirm(`¿Confirmas eliminar el expediente de ${client.nombres} ${client.apellidos} (${client.id})?`)) {
+            appState.clients = appState.clients.filter((c) => c.id !== id);
+            renderAll();
+            await storage.syncAll(appState);
+            updateSyncStatusUI();
+            showToast(`Expediente ${id} eliminado y archivo XLS actualizado.`, '🗑️');
+          }
+        }
+      }
+
+      const removeAttBtn = e.target.closest('[data-remove-att]');
+      if (removeAttBtn) {
+        const idx = Number(removeAttBtn.getAttribute('data-remove-att'));
+        currentModalAttachments.splice(idx, 1);
+        renderModalAttachments();
+      }
+
+      const citaToggle = e.target.closest('[data-cita-toggle]');
+      if (citaToggle) {
+        const citaId = citaToggle.getAttribute('data-cita-toggle');
+        appState.appointments = appState.appointments.map((a) =>
+          a.id === citaId
+            ? { ...a, estado: a.estado === 'Confirmada' ? 'Completada' : 'Confirmada' }
+            : a
+        );
+        renderAll();
+        await storage.syncAll(appState);
+        showToast('Estado de cita actualizado.');
+      }
+
+      const citaDel = e.target.closest('[data-cita-delete]');
+      if (citaDel) {
+        const citaId = citaDel.getAttribute('data-cita-delete');
+        appState.appointments = appState.appointments.filter((a) => a.id !== citaId);
+        renderAll();
+        await storage.syncAll(appState);
+        showToast('Cita eliminada.', '🗑️');
+      }
+
+      const lenderDel = e.target.closest('[data-lender-delete]');
+      if (lenderDel) {
+        const lenderId = lenderDel.getAttribute('data-lender-delete');
+        appState.lenders = appState.lenders.filter((l) => l.id !== lenderId);
+        renderAll();
+        await storage.syncAll(appState);
+        showToast('Entidad financiera eliminada.', '🗑️');
+      }
+    });
+
+    // Mover etapa en Pipeline Kanban (si se mueve a 3. En Estudio, activa temporizador de 6 min)
+    document.addEventListener('change', async (e) => {
+      const mover = e.target.closest('[data-move-id]');
+      if (mover) {
+        const id = mover.getAttribute('data-move-id');
+        const newStage = mover.value;
+        const autoNow = getFormattedTimestamp();
+        const nowMs = Date.now();
+        let updatedClient = null;
+        appState.clients = appState.clients.map((c) => {
+          if (c.id === id) {
+            const activateTimer = newStage.startsWith('3.');
+            updatedClient = {
+              ...c,
+              estadoProceso: newStage,
+              fechaActualizacion: autoNow,
+              timerStartedAt: activateTimer ? nowMs : null,
+              timerEndsAt: activateTimer ? nowMs + SIX_MINUTES_MS : null
+            };
+            return updatedClient;
+          }
+          return c;
+        });
+        renderAll();
+        await storage.syncAll(appState, updatedClient);
+        updateSyncStatusUI();
+        if (newStage.startsWith('5.') && updatedClient) {
+          openLegalContractModal(updatedClient);
+        } else {
+          showToast(`Expediente ${id} movido a "${newStage}".`);
+        }
+      }
+    });
+
+    document.getElementById('clientBrainForm')?.addEventListener('submit', handleSaveClientForm);
+
+    document.getElementById('fieldAdjuntosInput')?.addEventListener('change', async (e) => {
+      const newAtts = await readFilesAsAttachments(e.target.files);
+      currentModalAttachments.push(...newAtts);
+      renderModalAttachments();
+      e.target.value = '';
+    });
+
+    document.getElementById('btnCloseDossierModal')?.addEventListener('click', () => {
+      document.getElementById('dossierModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('btnCloseContractModal')?.addEventListener('click', () => {
+      document.getElementById('contractLegalModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('btnCloseVirtualCardModal')?.addEventListener('click', () => {
+      document.getElementById('virtualCardModalBackdrop')?.classList.remove('open');
+    });
+    document.getElementById('btnCancelVirtualCardModal')?.addEventListener('click', () => {
+      document.getElementById('virtualCardModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('newAppointmentForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const clientId = document.getElementById('citaClienteId').value;
+      const clientObj = (appState.clients || []).find((c) => c.id === clientId);
+      const newCita = {
+        id: `CIT-${Math.floor(100 + Math.random() * 900)}`,
+        clienteId: clientId,
+        clienteNombre: clientObj ? `${clientObj.nombres} ${clientObj.apellidos}` : 'Cliente General',
+        fecha: document.getElementById('citaFecha').value,
+        hora: document.getElementById('citaHora').value,
+        canal: document.getElementById('citaCanal').value,
+        consultor: document.getElementById('citaConsultor').value.trim(),
+        tema: document.getElementById('citaTema').value.trim(),
+        estado: 'Confirmada',
+        notas: document.getElementById('citaNotas').value.trim()
+      };
+      appState.appointments.unshift(newCita);
+      e.target.reset();
+      renderAll();
+      await storage.syncAll(appState);
+      showToast(`Cita agendada para ${newCita.clienteNombre}.`);
+    });
+
+    document.getElementById('newLenderForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const perfilesRaw = document.getElementById('lenderPerfiles').value;
+      const newLender = {
+        id: `LND-${Math.floor(10 + Math.random() * 89)}`,
+        nombre: document.getElementById('lenderNombre').value.trim(),
+        tipo: document.getElementById('lenderTipo').value.trim(),
+        pais: document.getElementById('lenderPais').value.trim(),
+        tasaApr: document.getElementById('lenderTasa').value.trim(),
+        montoMaximo: Number(document.getElementById('lenderMontoMax').value) || 100000,
+        ficoMinimo: document.getElementById('lenderFico').value,
+        perfilesAceptados: perfilesRaw.split(',').map((s) => s.trim()).filter(Boolean),
+        contactoEjecutivo: document.getElementById('lenderContacto').value.trim()
+      };
+      appState.lenders.push(newLender);
+      e.target.reset();
+      renderAll();
+      await storage.syncAll(appState);
+      showToast(`Entidad Financiera "${newLender.nombre}" registrada.`);
+    });
+
+    document.getElementById('btnQuickDriveXls')?.addEventListener('click', () => {
+      storage.exportExcelFile(appState);
+      showToast('Descargando clientes_prestamos.xls actualizado y abriendo tu carpeta de Google Drive...', '📂');
+    });
+
+    document.getElementById('btnDownloadAndOpenDrive')?.addEventListener('click', () => {
+      storage.exportExcelFile(appState);
+      window.open(window.USER_DRIVE_FOLDER_URL, '_blank');
+      showToast('Archivo clientes_prestamos.xls descargado y carpeta Drive abierta.', '📊');
+    });
+
+    document.getElementById('driveSyncStatusPill')?.addEventListener('click', openDriveConfigModal);
+    document.getElementById('menuOpenDriveConfig')?.addEventListener('click', openDriveConfigModal);
+    document.getElementById('btnCloseDriveConfig')?.addEventListener('click', () => {
+      document.getElementById('driveConfigModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('btnPickBrowserDirectory')?.addEventListener('click', async () => {
+      try {
+        const folderName = await storage.pickDirectoryWithBrowserApi(appState);
+        updateSyncStatusUI();
+        showToast(`Carpeta "${folderName}" vinculada y archivo clientes_prestamos.xls sincronizado.`);
+      } catch (err) {
+        if (err.name !== 'AbortError') showToast(err.message, '⚠️');
+      }
+    });
+
+    document.getElementById('btnOpenExplorerFolder')?.addEventListener('click', async () => {
+      try {
+        const res = await storage.openLocalSyncFolder();
+        showToast(`Carpeta local abierta: ${res.openedPath}`, '📁');
+      } catch (err) {
+        showToast(err.message, '⚠️');
+      }
+    });
+
+    document.getElementById('driveConfigForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await storage.updateDriveConfig(
+          {
+            syncFolderPath: document.getElementById('cfgSyncFolderPath').value.trim(),
+            appsScriptUrl: document.getElementById('cfgAppsScriptUrl').value.trim(),
+            autoSyncCloud: document.getElementById('cfgAutoSyncCloud').checked
+          },
+          appState
+        );
+        updateSyncStatusUI();
+        document.getElementById('driveConfigModalBackdrop')?.classList.remove('open');
+        showToast('Configuración de Google Drive guardada.');
+      } catch (err) {
+        showToast(err.message, '⚠️');
+      }
+    });
+
+    document.getElementById('btnTestCloudWebhook')?.addEventListener('click', async () => {
+      const url = document.getElementById('cfgAppsScriptUrl').value.trim();
+      if (!url) {
+        showToast('Pega primero la URL de tu Google Apps Script Web App.', '⚠️');
+        return;
+      }
+      storage.config.appsScriptUrl = url;
+      try {
+        await storage.postToAppsScriptWebhook(appState.clients[0], appState);
+        showToast('Archivo clientes_prestamos.xls y registros enviados a tu carpeta Drive (1q7tTJCz...).', '☁️');
+      } catch (err) {
+        showToast(`Error al contactar Webhook: ${err.message}`, '⚠️');
+      }
+    });
+
+    document.getElementById('btnCopyAppsScript')?.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.TOPBANK_SEED_DATA.appsScriptTemplate);
+      showToast('Código Apps Script copiado al portapapeles.', '📋');
+    });
+
+    document.getElementById('menuExportJson')?.addEventListener('click', () => {
+      storage.exportJsonFile(appState);
+      showToast('Archivo database_prestamos.json descargado.');
+    });
+    document.getElementById('menuExportCsv')?.addEventListener('click', () => {
+      storage.exportCsvFile(appState);
+      showToast('Archivo clientes_prestamos.csv descargado.');
+    });
+    document.getElementById('menuExportExcel')?.addEventListener('click', () => {
+      storage.exportExcelFile(appState);
+      showToast('Archivo clientes_prestamos.xls descargado.');
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', bootstrap);
+})();

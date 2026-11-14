@@ -1,0 +1,377 @@
+{
+  "meta": {
+    "platform": "TopBank Global Loan Origination & Consulting (Ontop Dark Edition)",
+    "version": "2.0.0",
+    "driveFolderId": "1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39",
+    "driveFolderUrl": "https://drive.google.com/drive/u/0/folders/1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39",
+    "updatedAt": "2026-11-14T07:06:14.210Z",
+    "syncFolderPath": "C:\\STELARIX (Software IA)\\TopBank\\GoogleDrive_Local_Sync",
+    "totalClients": 6
+  },
+  "clients": [
+    {
+      "id": "EXP-2026-101",
+      "nombres": "Mateo Alejandro",
+      "apellidos": "Vargas Restrepo",
+      "email": "mateo.vargas@techglobal.io",
+      "telefono": "+1 (305) 842-9910",
+      "fechaNacimiento": "1991-04-18",
+      "perfilMigratorio": "Contratista Internacional / No Residente",
+      "tipoId": "Pasaporte",
+      "numeroId": "PE8849201",
+      "residencia": "Miami, FL (Brickell)",
+      "lugarTrabajo": "TechGlobal Cloud Solutions LLC",
+      "funcionesTrabajo": "Arquitecto de Software Cloud y Líder Técnico de Infraestructura",
+      "ingresosMensuales": 11800,
+      "fuenteIngresos": "Cuenta bancaria EEUU",
+      "scoreCredito": 652,
+      "montoSolicitado": 85000,
+      "propositoPrestamo": "Capital de Trabajo / Negocio",
+      "entidadFinanciera": "Ontop Global Credit Bridge",
+      "estadoProceso": "5. Aprobado y Desembolsado",
+      "adjuntos": [
+        {
+          "name": "KYC_Pasaporte_MateoVargas.pdf",
+          "size": 428100,
+          "type": "application/pdf",
+          "category": "KYC"
+        },
+        {
+          "name": "Extractos_Cuenta_EEUU_6Meses.pdf",
+          "size": 912400,
+          "type": "application/pdf",
+          "category": "Extractos"
+        }
+      ],
+      "notasConsultor": "Ingresos recurrentes en Cuenta bancaria EEUU por $11,800 USD/mes. Score matemático validado automáticamente.",
+      "fechaCreacion": "2026-11-02 09:30",
+      "fechaActualizacion": "2026-11-14 02:01",
+      "timerStartedAt": null,
+      "timerEndsAt": null,
+      "cardLast4": "1795",
+      "cardExpiry": "08/29",
+      "cardActivated": true,
+      "cardActivatedAt": "2026-11-14 02:01"
+    },
+    {
+      "id": "EXP-2026-102",
+      "nombres": "Valeria Sofía",
+      "apellidos": "Mendoza Castellanos",
+      "email": "valeria.mendoza@uslogistics.com",
+      "telefono": "+1 (786) 519-3304",
+      "fechaNacimiento": "1988-09-12",
+      "perfilMigratorio": "Migrante en EE. UU. (Con ITIN)",
+      "tipoId": "ITIN",
+      "numeroId": "942-88-1904",
+      "residencia": "Orlando, Florida, EE. UU.",
+      "lugarTrabajo": "US Sunbelt Logistics Corp",
+      "funcionesTrabajo": "Coordinadora de Operaciones de Transporte y Despacho Internacional",
+      "ingresosMensuales": 9400,
+      "fuenteIngresos": "Cuenta bancaria EEUU",
+      "scoreCredito": 551,
+      "montoSolicitado": 310000,
+      "propositoPrestamo": "Compra de Vivienda / Hipotecario",
+      "entidadFinanciera": "Quontic Bank (CDFI ITIN Mortgage)",
+      "estadoProceso": "5. Aprobado y Desembolsado",
+      "adjuntos": [
+        {
+          "name": "Carta_Asignacion_ITIN_IRS.pdf",
+          "size": 320000,
+          "type": "application/pdf",
+          "category": "KYC"
+        },
+        {
+          "name": "Bank_of_America_12M_Statements.pdf",
+          "size": 1580000,
+          "type": "application/pdf",
+          "category": "Extractos Banco"
+        }
+      ],
+      "notasConsultor": "Expediente hipotecario ITIN con Down Payment del 20% disponible en cuenta bancaria EE. UU.",
+      "fechaCreacion": "2026-11-04 11:15",
+      "fechaActualizacion": "2026-11-14 01:39",
+      "timerStartedAt": null,
+      "timerEndsAt": null,
+      "contratoAprobado": true,
+      "cardLast4": "9546",
+      "cardExpiry": "08/29"
+    },
+    {
+      "id": "EXP-2026-103",
+      "nombres": "Sebastián Andrés",
+      "apellidos": "Herrera Duarte",
+      "email": "sherrera@fintechstudio.co",
+      "telefono": "+1 (512) 904-7721",
+      "fechaNacimiento": "1994-12-03",
+      "perfilMigratorio": "Residente EE. UU. / Ciudadano",
+      "tipoId": "SSN",
+      "numeroId": "459-71-8820",
+      "residencia": "Austin, Texas, EE. UU.",
+      "lugarTrabajo": "Austin FinTech Studio Inc.",
+      "funcionesTrabajo": "Director de Producto Financiero y Estrategia B2B",
+      "ingresosMensuales": 14500,
+      "fuenteIngresos": "Cuenta bancaria EEUU",
+      "scoreCredito": 682,
+      "montoSolicitado": 62000,
+      "propositoPrestamo": "Consolidación de Deuda",
+      "entidadFinanciera": "SoFi & LendingClub US Prime",
+      "estadoProceso": "5. Aprobado y Desembolsado",
+      "adjuntos": [
+        {
+          "name": "Driver_License_Texas_SH.pdf",
+          "size": 280000,
+          "type": "application/pdf",
+          "category": "KYC"
+        },
+        {
+          "name": "Pagare_Desembolso_Firmado.pdf",
+          "size": 490000,
+          "type": "application/pdf",
+          "category": "Contrato"
+        }
+      ],
+      "notasConsultor": "Desembolso ACH completado exitosamente tras validación de ingresos y score matemático.",
+      "fechaCreacion": "2026-10-28 14:20",
+      "fechaActualizacion": "2026-11-14 00:45",
+      "cardLast4": "7118",
+      "cardExpiry": "08/29"
+    },
+    {
+      "id": "EXP-2026-104",
+      "nombres": "Camila Fernanda",
+      "apellidos": "Rojas Pineda",
+      "email": "camila.rojas@designremote.net",
+      "telefono": "+1 (646) 338-1129",
+      "fechaNacimiento": "1996-06-25",
+      "perfilMigratorio": "Migrante en EE. UU. (En trámite)",
+      "tipoId": "Licencia EE. UU.",
+      "numeroId": "NY-774829104",
+      "residencia": "Queens, New York, EE. UU.",
+      "lugarTrabajo": "Manhattan Hospitality & Catering Group",
+      "funcionesTrabajo": "Supervisora de Eventos Corporativos y Atención al Cliente",
+      "ingresosMensuales": 6200,
+      "fuenteIngresos": "Kash",
+      "scoreCredito": 625,
+      "montoSolicitado": 28500,
+      "propositoPrestamo": "Vehículo / Auto",
+      "entidadFinanciera": "Stilt & Nova Credit Migrant FinTech",
+      "estadoProceso": "4. Pre-Aprobado",
+      "adjuntos": [
+        {
+          "name": "EAD_Permiso_Trabajo_USCIS.pdf",
+          "size": 390000,
+          "type": "application/pdf",
+          "category": "KYC"
+        }
+      ],
+      "notasConsultor": "Recibe pagos verificables vía Kash. En recolección de cotización del vehículo.",
+      "fechaCreacion": "2026-11-08 16:00",
+      "fechaActualizacion": "2026-11-14 02:03",
+      "timerStartedAt": null,
+      "timerEndsAt": null,
+      "cardLast4": "9692",
+      "cardExpiry": "08/29",
+      "contratoAprobado": true
+    },
+    {
+      "id": "EXP-2026-105",
+      "nombres": "Diego Fernando",
+      "apellidos": "Salazar Monroy",
+      "email": "diego.salazar@cloudarchitects.dev",
+      "telefono": "+1 (786) 402-1933",
+      "fechaNacimiento": "1989-02-14",
+      "perfilMigratorio": "Contratista Internacional / No Residente",
+      "tipoId": "Pasaporte",
+      "numeroId": "MX99381726",
+      "residencia": "Doral, Florida / CDMX",
+      "lugarTrabajo": "Salazar Remodeling & Construction LLC",
+      "funcionesTrabajo": "Contratista General de Obra Civil y Remodelación Residencial",
+      "ingresosMensuales": 9800,
+      "fuenteIngresos": "Cheque",
+      "scoreCredito": 604,
+      "montoSolicitado": 145000,
+      "propositoPrestamo": "Compra de Vivienda / Hipotecario",
+      "entidadFinanciera": "CrossBorder Capital Miami LLC",
+      "estadoProceso": "4. Pre-Aprobado",
+      "adjuntos": [
+        {
+          "name": "Pasaporte_Vigente_DiegoSalazar.pdf",
+          "size": 350000,
+          "type": "application/pdf",
+          "category": "KYC"
+        }
+      ],
+      "notasConsultor": "Pagos recibidos mediante Cheque empresarial en Florida. Cita inicial agendada.",
+      "fechaCreacion": "2026-11-11 10:10",
+      "fechaActualizacion": "2026-11-14 02:06",
+      "timerStartedAt": null,
+      "timerEndsAt": null,
+      "cardLast4": "9765",
+      "cardExpiry": "08/29",
+      "contratoAprobado": true
+    },
+    {
+      "id": "EXP-2026-106",
+      "nombres": "Javier Eduardo",
+      "apellidos": "Paredes Silva",
+      "email": "jparedes.builds@gmail.com",
+      "telefono": "+1 (832) 771-4092",
+      "fechaNacimiento": "1985-11-29",
+      "perfilMigratorio": "Migrante en EE. UU. (Con ITIN)",
+      "tipoId": "ITIN",
+      "numeroId": "918-45-3029",
+      "residencia": "Houston, Texas, EE. UU.",
+      "lugarTrabajo": "Texas Gulf Roofing & Services",
+      "funcionesTrabajo": "Maestro de Obra e Instalación de Techos Industriales",
+      "ingresosMensuales": 5100,
+      "fuenteIngresos": "Remesas",
+      "scoreCredito": 571,
+      "montoSolicitado": 45000,
+      "propositoPrestamo": "Capital de Trabajo / Negocio",
+      "entidadFinanciera": "Stilt & Nova Credit Migrant FinTech",
+      "estadoProceso": "6. Rechazado / En Corrección",
+      "adjuntos": [
+        {
+          "name": "ITIN_Letter_JavierParedes.pdf",
+          "size": 295000,
+          "type": "application/pdf",
+          "category": "KYC"
+        }
+      ],
+      "notasConsultor": "Flujos respaldados en comprobantes de Remesas. En plan de bancarización de 60 días.",
+      "fechaCreacion": "2026-11-01 08:45",
+      "fechaActualizacion": "2026-11-14 00:45",
+      "cardLast4": "9838",
+      "cardExpiry": "08/29"
+    }
+  ],
+  "appointments": [
+    {
+      "id": "CIT-301",
+      "clienteId": "EXP-2026-101",
+      "clienteNombre": "Mateo Alejandro Vargas Restrepo",
+      "fecha": "2026-11-15",
+      "hora": "10:30",
+      "canal": "Google Meet / Ontop Concierge",
+      "consultor": "Dra. Elena Vance (Senior Underwriter)",
+      "tema": "Firma de Condiciones de Pre-Aprobación ($85,000 USD)",
+      "estado": "Confirmada",
+      "notas": "Revisar cronograma de pagos y cuenta bancaria EE. UU."
+    },
+    {
+      "id": "CIT-302",
+      "clienteId": "EXP-2026-102",
+      "clienteNombre": "Valeria Sofía Mendoza Castellanos",
+      "fecha": "2026-11-16",
+      "hora": "14:00",
+      "canal": "Zoom Ejecutivo",
+      "consultor": "Carlos Andrés Rueda (Director Hipotecario)",
+      "tema": "Revisión de Appraisal & Cierre Hipotecario ITIN Quontic",
+      "estado": "Confirmada",
+      "notas": "Validar seguro de propiedad en Orlando y fondos de cierre."
+    }
+  ],
+  "lenders": [
+    {
+      "id": "LND-01",
+      "nombre": "Ontop Global Credit Bridge",
+      "tipo": "Fintech B2B/B2C & Contratistas Globales",
+      "pais": "EE. UU. / Global (Delaware LLC)",
+      "perfilesAceptados": [
+        "Contratista Internacional / No Residente",
+        "Residente EE. UU. / Ciudadano",
+        "Migrante en EE. UU. (Con ITIN)"
+      ],
+      "tasaApr": "8.90% - 14.50% APR",
+      "montoMinimo": 5000,
+      "montoMaximo": 150000,
+      "ficoMinimo": "550+ (Score Matemático TopBank)",
+      "productos": [
+        "Capital de Trabajo / Negocio",
+        "Vehículo / Auto",
+        "Educación / Salud / Libre Inversión"
+      ],
+      "contactoEjecutivo": "partners@ontopcredit.io"
+    },
+    {
+      "id": "LND-02",
+      "nombre": "Quontic Bank (CDFI ITIN Mortgage)",
+      "tipo": "Banco Federal CDFI EE. UU.",
+      "pais": "Estados Unidos (NY / FL / TX / CA)",
+      "perfilesAceptados": [
+        "Residente EE. UU. / Ciudadano",
+        "Migrante en EE. UU. (Con ITIN)",
+        "Contratista Internacional / No Residente"
+      ],
+      "tasaApr": "6.75% - 8.40% APR",
+      "montoMinimo": 100000,
+      "montoMaximo": 1250000,
+      "ficoMinimo": "600+ (Score Matemático TopBank)",
+      "productos": [
+        "Compra de Vivienda / Hipotecario",
+        "Capital de Trabajo / Negocio"
+      ],
+      "contactoEjecutivo": "underwriting@quonticloans.us"
+    },
+    {
+      "id": "LND-03",
+      "nombre": "Stilt & Nova Credit Migrant FinTech",
+      "tipo": "Lender Especializado en Migrantes y Visas",
+      "pais": "Estados Unidos (42 Estados)",
+      "perfilesAceptados": [
+        "Migrante en EE. UU. (Con ITIN)",
+        "Migrante en EE. UU. (En trámite)",
+        "Residente EE. UU. / Ciudadano"
+      ],
+      "tasaApr": "10.25% - 16.90% APR",
+      "montoMinimo": 3000,
+      "montoMaximo": 65000,
+      "ficoMinimo": "420+ (Score Matemático TopBank)",
+      "productos": [
+        "Vehículo / Auto",
+        "Consolidación de Deuda",
+        "Educación / Salud / Libre Inversión"
+      ],
+      "contactoEjecutivo": "originations@stiltcredit.com"
+    },
+    {
+      "id": "LND-04",
+      "nombre": "SoFi & LendingClub US Prime",
+      "tipo": "Banca Digital & Préstamos Personales Prime",
+      "pais": "Estados Unidos (Nacional)",
+      "perfilesAceptados": [
+        "Residente EE. UU. / Ciudadano"
+      ],
+      "tasaApr": "7.49% - 13.20% APR",
+      "montoMinimo": 10000,
+      "montoMaximo": 100000,
+      "ficoMinimo": "650+ (Score Matemático TopBank)",
+      "productos": [
+        "Consolidación de Deuda",
+        "Compra de Vivienda / Hipotecario",
+        "Vehículo / Auto"
+      ],
+      "contactoEjecutivo": "prime@sofilending.com"
+    },
+    {
+      "id": "LND-05",
+      "nombre": "CrossBorder Capital Miami LLC",
+      "tipo": "Fondo Privado Inmobiliario & Comercial",
+      "pais": "EE. UU. (Florida / Texas) & LATAM",
+      "perfilesAceptados": [
+        "Contratista Internacional / No Residente",
+        "Migrante en EE. UU. (Con ITIN)",
+        "Residente EE. UU. / Ciudadano"
+      ],
+      "tasaApr": "7.90% - 11.50% APR",
+      "montoMinimo": 50000,
+      "montoMaximo": 850000,
+      "ficoMinimo": "540+ (Score Matemático TopBank)",
+      "productos": [
+        "Compra de Vivienda / Hipotecario",
+        "Capital de Trabajo / Negocio"
+      ],
+      "contactoEjecutivo": "deals@crossbordermiami.com"
+    }
+  ]
+}
