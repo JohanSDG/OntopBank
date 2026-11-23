@@ -1,0 +1,37 @@
+{
+  "id": "EXP-2026-173",
+  "nombres": "Rosa Yomary",
+  "apellidos": "Santana Gil",
+  "email": "Santanayommy@gmail.com",
+  "telefono": "19293914536",
+  "fechaNacimiento": "1967-11-30",
+  "perfilMigratorio": "Residente EE. UU. / Ciudadano",
+  "tipoId": "ID Nacional",
+  "numeroId": "215298751",
+  "residencia": "T181 walton ave 7J BRONX, NY 10452",
+  "lugarTrabajo": "cleaner costurera * 2 trabajos: 4.000 usd / Pago semanal.",
+  "funcionesTrabajo": "cleaner costurera",
+  "ingresosMensuales": 4000,
+  "fuenteIngresos": "Kash",
+  "scoreCredito": 641,
+  "montoSolicitado": 5000,
+  "propositoPrestamo": "Capital de Trabajo / Negocio",
+  "entidadFinanciera": "Ontop Global Credit Bridge",
+  "estadoProceso": "4. Pre-Aprobado",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
+  "adjuntos": [
+    {
+      "name": "WhatsApp Image 2026-11-23 at 1.14.28 PM.jpeg",
+      "size": 42198,
+      "type": "image/jpeg",
+      "category": "Soporte KYC / Financiero"
+    }
+  ],
+  "notasConsultor": "Rosa, prestamos personal con reembolso de 100 dolares por parte de la entidad.",
+  "fechaCreacion": "2026-11-23 13:22",
+  "fechaActualizacion": "2026-11-23 13:29",
+  "contratoAprobado": true,
+  "cardLast4": "7855",
+  "cardExpiry": "08/29"
+}

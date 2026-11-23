@@ -1,0 +1,37 @@
+{
+  "id": "EXP-2026-497",
+  "nombres": "Ruth  Leticia",
+  "apellidos": "Vasquez",
+  "email": "leticiaruth1961@gmail.com",
+  "telefono": "9563565669",
+  "fechaNacimiento": "1961-04-06",
+  "perfilMigratorio": "Residente EE. UU. / Ciudadano",
+  "tipoId": "SSN",
+  "numeroId": "35749232",
+  "residencia": "6951 Falcon, DR BROWNSVILLE, TX, 78528",
+  "lugarTrabajo": "caregivers 1400 *15 - 2.800 mes / Numeros de Zelle 560",
+  "funcionesTrabajo": "Cuidadora de persona mayor",
+  "ingresosMensuales": 3000,
+  "fuenteIngresos": "Cuenta bancaria EEUU",
+  "scoreCredito": 632,
+  "montoSolicitado": 3000,
+  "propositoPrestamo": "Vehículo / Auto",
+  "entidadFinanciera": "Ontop Global Credit Bridge",
+  "estadoProceso": "4. Pre-Aprobado",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
+  "adjuntos": [
+    {
+      "name": "WhatsApp Image 2026-11-23 at 3.27.02 PM.jpeg",
+      "size": 198225,
+      "type": "image/jpeg",
+      "category": "Soporte KYC / Financiero"
+    }
+  ],
+  "notasConsultor": "Hijos: No.\nCiudadana : Soltera",
+  "fechaCreacion": "2026-11-23 15:33",
+  "fechaActualizacion": "2026-11-23 15:39",
+  "contratoAprobado": true,
+  "cardLast4": "2453",
+  "cardExpiry": "08/29"
+}

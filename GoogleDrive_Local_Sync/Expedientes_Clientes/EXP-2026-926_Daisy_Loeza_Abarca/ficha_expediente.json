@@ -1,0 +1,36 @@
+{
+  "id": "EXP-2026-926",
+  "nombres": "Daisy  Loeza",
+  "apellidos": "Abarca",
+  "email": "daisyloeza97223@gmail.com",
+  "telefono": "9719320815",
+  "fechaNacimiento": "1981-04-12",
+  "perfilMigratorio": "Migrante en EE. UU. (En trámite)",
+  "tipoId": "Licencia EE. UU.",
+  "numeroId": "7482578",
+  "residencia": "18460 sw boones ferry rd apt k 107 Tigar or 97224",
+  "lugarTrabajo": "1.100 *15 dias - descuentan 500 dolares cada mes por 20.000 dolares",
+  "funcionesTrabajo": "Cocinera",
+  "ingresosMensuales": 2000,
+  "fuenteIngresos": "Cheque",
+  "scoreCredito": 476,
+  "montoSolicitado": 40000,
+  "propositoPrestamo": "Consolidación de Deuda",
+  "entidadFinanciera": "Ontop Global Credit Bridge",
+  "estadoProceso": "4. Pre-Aprobado",
+  "timerStartedAt": 1795469420840,
+  "timerEndsAt": 1795469780840,
+  "adjuntos": [
+    {
+      "name": "Oregon.jpeg",
+      "size": 120584,
+      "type": "image/jpeg",
+      "category": "Soporte KYC / Financiero"
+    }
+  ],
+  "notasConsultor": "3 Hijos, Sin deudas adicionales, No beneficio de estado norteamericano, Mexicana (Acapulco)",
+  "fechaCreacion": "2026-11-23 15:20",
+  "fechaActualizacion": "2026-11-23 16:30",
+  "cardLast4": "2954",
+  "cardExpiry": "08/29"
+}

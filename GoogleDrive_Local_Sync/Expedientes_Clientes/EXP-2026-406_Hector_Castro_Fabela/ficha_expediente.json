@@ -17,13 +17,15 @@
   "montoSolicitado": 10000,
   "propositoPrestamo": "Educación / Salud / Libre Inversión",
   "entidadFinanciera": "Ontop Global Credit Bridge",
-  "estadoProceso": "4. Pre-Aprobado",
-  "timerStartedAt": 1794704974083,
-  "timerEndsAt": 1794705334083,
+  "estadoProceso": "5. Aprobado y Desembolsado",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
   "adjuntos": [],
   "notasConsultor": "",
   "fechaCreacion": "2026-11-14 18:45",
-  "fechaActualizacion": "2026-11-14 20:09",
+  "fechaActualizacion": "2026-11-23 17:24",
   "cardLast4": "6448",
-  "cardExpiry": "08/29"
+  "cardExpiry": "08/29",
+  "cardActivated": true,
+  "cardActivatedAt": "2026-11-23 17:24"
 }

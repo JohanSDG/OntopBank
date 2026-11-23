@@ -1,0 +1,37 @@
+{
+  "id": "EXP-2026-217",
+  "nombres": "Domingo",
+  "apellidos": "Hernandez Santiago",
+  "email": "domingoerbandes152@gmail.com",
+  "telefono": "818 200-6026",
+  "fechaNacimiento": "1959-12-20",
+  "perfilMigratorio": "Residente EE. UU. / Ciudadano",
+  "tipoId": "Licencia EE. UU.",
+  "numeroId": "Y4426911",
+  "residencia": "5545 KLUMP AVE APT 15 N HOLLYWOOD, CA 91601",
+  "lugarTrabajo": "Resturante *15 - 1.400 - 2.800.",
+  "funcionesTrabajo": "Cocinero",
+  "ingresosMensuales": 2400,
+  "fuenteIngresos": "Cuenta bancaria EEUU",
+  "scoreCredito": 619,
+  "montoSolicitado": 3000,
+  "propositoPrestamo": "Compra de Vivienda / Hipotecario",
+  "entidadFinanciera": "Ontop Global Credit Bridge",
+  "estadoProceso": "4. Pre-Aprobado",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
+  "adjuntos": [
+    {
+      "name": "Domingo.jpeg",
+      "size": 262038,
+      "type": "image/jpeg",
+      "category": "Soporte KYC / Financiero"
+    }
+  ],
+  "notasConsultor": "Recibe via cheque el dinero del pago, No tiene ninguna obligaciones. // 800 dolares en gasto.",
+  "fechaCreacion": "2026-11-23 16:46",
+  "fechaActualizacion": "2026-11-23 16:53",
+  "contratoAprobado": true,
+  "cardLast4": "9572",
+  "cardExpiry": "08/29"
+}
