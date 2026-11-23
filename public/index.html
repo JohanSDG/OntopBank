@@ -841,9 +841,9 @@
     <div class="modal-window" style="max-width: 1020px;">
       <div class="modal-header">
         <div>
-          <h3 class="gradient-title" id="contractModalTitle">📄 Contrato Oficial de Aprobación de Préstamo · OntopBank Legal (2 Hojas)</h3>
+          <h3 class="gradient-title" id="contractModalTitle">📄 Contrato Oficial de Aprobación de Préstamo a 24 Meses · OntopBank Legal (2 Hojas)</h3>
           <span style="font-size:0.76rem; color:#A7F3D0;" id="contractModalSubtitle">
-            Interés 8.00% Anual · Plan a 12 Meses (*12 Meses) · Abono a Capital Permitido · Políticas de Privacidad OntopBank
+            Interés 8.00% Anual · Plan Estructurado a 24 Meses (*24 Meses) · Abono a Capital Permitido · Políticas de Privacidad OntopBank
           </span>
         </div>
         <button type="button" class="modal-close-btn" id="btnCloseContractModal">✕</button>
@@ -938,7 +938,7 @@
               </div>
               <div class="vcard-summary-row">
                 <span>Costo de Emisión y Activación de Tarjeta:</span>
-                <strong style="color:#6EE7B7;">$0.00 USD (Sin depósitos previos)</strong>
+                <strong style="color:#6EE7B7;" id="vcardSummaryActivationCost">$99.00 USD</strong>
               </div>
               <div class="vcard-summary-row total-row">
                 <span>Total Disponible tras Desembolso:</span>
@@ -967,7 +967,7 @@
                   <strong>1. Habilitación de Riel Financiero Sin Costo:</strong> Toda cuenta vinculada a un crédito pre-aprobado cuenta con generación de tarjeta virtual inmediata y asignación de riel bancario sin requerir depósitos, pagos ni movimientos monetarios anticipados por parte del titular.
                 </p>
                 <p>
-                  <strong>2. Titularidad y Seguridad KYC:</strong> La tarjeta virtual <strong>Ontop Visa Platinum</strong> se emite exclusivamente a nombre del solicitante verificado en el expediente y queda vinculada al contrato oficial al <strong>8.00% de interés anual (*12 meses)</strong> con opción de abono a capital.
+                  <strong>2. Titularidad y Seguridad KYC:</strong> La tarjeta virtual <strong>Ontop Visa Platinum</strong> se emite exclusivamente a nombre del solicitante verificado en el expediente y queda vinculada al contrato oficial al <strong>8.00% de interés anual estructurado a 24 meses (*24 meses)</strong> con opción de abono a capital.
                 </p>
                 <p>
                   <strong>3. Despacho de Tarjeta Física y Desembolso:</strong> Al confirmar la activación en este panel, se programa el envío de la tarjeta física con chip EMV al lugar de residencia registrado y el expediente pasa de inmediato a la <strong>Etapa 3 (Créditos Activados y Listos para Desembolso)</strong>.
@@ -986,6 +986,9 @@
               <button type="button" class="btn-activate-vcard-cta" id="btnConfirmActivateVcard">
                 <span>💳</span> Confirmar Tarjeta Virtual y Activar Cuenta para Desembolso
               </button>
+              <button type="button" class="btn-download-vcard-cta" id="btnDownloadVcardBox">
+                <span>📥</span> Descargar Recuadro con Información de Tarjeta (.PNG)
+              </button>
               <button type="button" class="btn-pill-ghost" id="btnRegenerateCardDigits" style="width:100%; justify-content:center;">
                 🔄 Generar Nueva Numeración de Tarjeta Virtual
               </button>
@@ -999,7 +1002,10 @@
         <div style="font-size:0.75rem; color:var(--usd-emerald);">
           ✔ Emisión protegida bajo Políticas de Privacidad OntopBank · Sincronizado con Google Drive
         </div>
-        <div class="modal-footer-right">
+        <div class="modal-footer-right" style="display:flex; gap:10px; align-items:center;">
+          <button type="button" class="btn-pill-primary" id="btnDownloadVcardBoxFooter" style="padding:8px 16px; font-size:0.78rem;">
+            <span>📥</span> Descargar Recuadro (.PNG)
+          </button>
           <button type="button" class="btn-pill-ghost" id="btnCancelVirtualCardModal">Cerrar Panel</button>
         </div>
       </div>

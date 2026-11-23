@@ -240,6 +240,10 @@
     }
 
     document.getElementById('vcardSummaryPrincipal').textContent = `${formatUSD(client.montoSolicitado)} USD`;
+    const actCostEl = document.getElementById('vcardSummaryActivationCost');
+    if (actCostEl) {
+      actCostEl.textContent = '$99.00 USD';
+    }
     document.getElementById('vcardSummaryTotal').textContent = `${formatUSD(client.montoSolicitado)} USD`;
     document.getElementById('vcardSummaryAddress').textContent = client.residencia || 'EE. UU. / Internacional';
 
@@ -252,6 +256,20 @@
       }
       confirmBtn.onclick = async () => {
         await confirmVirtualCardActivation(client.id);
+      };
+    }
+
+    const downloadBoxBtn = document.getElementById('btnDownloadVcardBox');
+    if (downloadBoxBtn) {
+      downloadBoxBtn.onclick = () => {
+        downloadVirtualCardBoxPng(client);
+      };
+    }
+
+    const downloadBoxFooterBtn = document.getElementById('btnDownloadVcardBoxFooter');
+    if (downloadBoxFooterBtn) {
+      downloadBoxFooterBtn.onclick = () => {
+        downloadVirtualCardBoxPng(client);
       };
     }
 
@@ -272,6 +290,402 @@
     }
 
     modal.classList.add('open');
+  }
+
+  // Genera y descarga en alta resolución (.PNG) el recuadro completo de Tarjeta Virtual y Activación de Cuenta
+  function downloadVirtualCardBoxPng(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const canvas = document.createElement('canvas');
+    const W = 2120;
+    const H = 1220;
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    function roundRect(x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawWrappedText(text, x, y, maxWidth, lineHeight, font, color) {
+      ctx.font = font;
+      ctx.fillStyle = color;
+      const words = String(text).split(' ');
+      let line = '';
+      let curY = y;
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && i > 0) {
+          ctx.fillText(line.trim(), x, curY);
+          line = words[i] + ' ';
+          curY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      if (line.trim()) {
+        ctx.fillText(line.trim(), x, curY);
+        curY += lineHeight;
+      }
+      return curY;
+    }
+
+    // 1. Fondo principal oscuro Ontop Fintech
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0, '#0D0722');
+    bgGrad.addColorStop(0.5, '#080417');
+    bgGrad.addColorStop(1, '#12092E');
+    roundRect(0, 0, W, H, 36);
+    ctx.fillStyle = bgGrad;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(139, 92, 246, 0.55)';
+    ctx.stroke();
+
+    // 2. Franja Superior (Header)
+    const headerGrad = ctx.createLinearGradient(0, 0, W, 145);
+    headerGrad.addColorStop(0, 'rgba(46, 16, 101, 0.85)');
+    headerGrad.addColorStop(1, 'rgba(20, 10, 48, 0.9)');
+    roundRect(3, 3, W - 6, 142, 34);
+    ctx.fillStyle = headerGrad;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(0, 145);
+    ctx.lineTo(W, 145);
+    ctx.strokeStyle = 'rgba(167, 139, 250, 0.28)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    const fullName = `${client.nombres || ''} ${client.apellidos || ''}`.trim();
+    ctx.font = '800 36px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#F5F3FF';
+    ctx.fillText(`💳 Tarjeta Virtual y Activación de Cuenta · ${fullName}`, 56, 74);
+
+    ctx.font = '500 22px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#C4B5FD';
+    ctx.fillText(
+      'Emisión digital Ontop Visa Platinum y vinculación de cuenta para desembolso sin cargos ni depósitos previos',
+      56,
+      115
+    );
+
+    // 3. COLUMNA IZQUIERDA: TARJETA VIRTUAL 3D ONTOP VISA PLATINUM
+    const cardX = 56;
+    const cardY = 190;
+    const cardW = 940;
+    const cardH = 510;
+
+    const cardGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
+    cardGrad.addColorStop(0, '#120D2B');
+    cardGrad.addColorStop(0.52, '#23134C');
+    cardGrad.addColorStop(0.82, '#6D1B4B');
+    cardGrad.addColorStop(1, '#311042');
+    roundRect(cardX, cardY, cardW, cardH, 34);
+    ctx.fillStyle = cardGrad;
+    ctx.fill();
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = 'rgba(196, 181, 253, 0.42)';
+    ctx.stroke();
+
+    // Brillo radial rojo/violeta en esquina derecha de la tarjeta
+    const glowGrad = ctx.createRadialGradient(
+      cardX + cardW - 150,
+      cardY + 190,
+      30,
+      cardX + cardW - 150,
+      cardY + 190,
+      360
+    );
+    glowGrad.addColorStop(0, 'rgba(244, 63, 94, 0.38)');
+    glowGrad.addColorStop(1, 'rgba(244, 63, 94, 0)');
+    ctx.save();
+    roundRect(cardX, cardY, cardW, cardH, 34);
+    ctx.clip();
+    ctx.fillStyle = glowGrad;
+    ctx.fillRect(cardX, cardY, cardW, cardH);
+    ctx.restore();
+
+    // Logo ^ ontop en tarjeta
+    ctx.font = '800 36px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText('▲ ontop', cardX + 54, cardY + 82);
+
+    // Badge de estado en tarjeta
+    const isAlreadyActive = String(client.estadoProceso || '').startsWith('5.');
+    const badgeText = isAlreadyActive ? 'RIEL BANCARIO ACTIVO · EN DESEMBOLSO' : 'LISTA PARA ACTIVACIÓN SIN COSTO';
+    ctx.font = '800 18px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    const badgeW = ctx.measureText(badgeText).width + 44;
+    const badgeX = cardX + cardW - badgeW - 48;
+    const badgeY = cardY + 46;
+    roundRect(badgeX, badgeY, badgeW, 48, 24);
+    ctx.fillStyle = isAlreadyActive ? 'rgba(16, 185, 129, 0.25)' : 'rgba(245, 158, 11, 0.22)';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = isAlreadyActive ? '#34D399' : '#FBBF24';
+    ctx.stroke();
+    ctx.fillStyle = isAlreadyActive ? '#6EE7B7' : '#FDE68A';
+    ctx.fillText(badgeText, badgeX + 22, badgeY + 31);
+
+    // Chip EMV metálico
+    const chipX = cardX + 54;
+    const chipY = cardY + 135;
+    const chipGrad = ctx.createLinearGradient(chipX, chipY, chipX + 96, chipY + 72);
+    chipGrad.addColorStop(0, '#E2E8F0');
+    chipGrad.addColorStop(0.5, '#94A3B8');
+    chipGrad.addColorStop(1, '#CBD5E1');
+    roundRect(chipX, chipY, 96, 72, 14);
+    ctx.fillStyle = chipGrad;
+    ctx.fill();
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(chipX, chipY + 36);
+    ctx.lineTo(chipX + 96, chipY + 36);
+    ctx.moveTo(chipX + 48, chipY);
+    ctx.lineTo(chipX + 48, chipY + 72);
+    ctx.strokeStyle = 'rgba(51, 65, 85, 0.55)';
+    ctx.stroke();
+
+    // Contactless )))
+    ctx.font = '800 32px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
+    ctx.fillText(')))', chipX + 120, chipY + 48);
+
+    // Numeración enmascarada
+    ctx.font = '700 44px "Consolas", "Courier New", monospace';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(`••••   ••••   ••••   ${client.cardLast4}`, cardX + 54, cardY + 315);
+
+    // Titular y Expiración
+    ctx.font = '700 17px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#CBD5E1';
+    ctx.fillText('TITULAR DE LA CUENTA', cardX + 54, cardY + 408);
+    ctx.fillText('EXPIRA', cardX + 540, cardY + 408);
+
+    ctx.font = '800 26px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(fullName.toUpperCase() || 'TITULAR VERIFICADO', cardX + 54, cardY + 448);
+    ctx.fillText(client.cardExpiry || '08/29', cardX + 540, cardY + 448);
+
+    // Logo VISA Platinum
+    ctx.font = 'italic 900 44px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText('VISA', cardX + cardW - 165, cardY + 428);
+    ctx.font = '600 20px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#E2E8F0';
+    ctx.fillText('Platinum', cardX + cardW - 150, cardY + 458);
+
+    // 4. COLUMNA IZQUIERDA INFERIOR: RESUMEN DE FONDOS Y ENVÍO DE TARJETA
+    const sumX = 56;
+    const sumY = 735;
+    const sumW = 940;
+    const sumH = 355;
+
+    roundRect(sumX, sumY, sumW, sumH, 26);
+    ctx.fillStyle = 'rgba(18, 12, 38, 0.92)';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(167, 139, 250, 0.34)';
+    ctx.stroke();
+
+    ctx.font = '800 23px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#C4B5FD';
+    ctx.fillText('💰 RESUMEN DE FONDOS Y ENVÍO DE TARJETA', sumX + 36, sumY + 52);
+
+    ctx.beginPath();
+    ctx.moveTo(sumX + 36, sumY + 72);
+    ctx.lineTo(sumX + sumW - 36, sumY + 72);
+    ctx.strokeStyle = 'rgba(167, 139, 250, 0.22)';
+    ctx.stroke();
+
+    const principalStr = `${formatUSD(client.montoSolicitado)} USD`;
+    const addressStr = client.residencia || 'EE. UU. / Internacional';
+
+    // Fila 1: Capital del Crédito Pre-Aprobado
+    ctx.font = '600 23px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#CBD5E1';
+    ctx.fillText('Capital del Crédito Pre-Aprobado:', sumX + 36, sumY + 122);
+
+    ctx.font = '800 23px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    const capW = ctx.measureText(principalStr).width + 36;
+    roundRect(sumX + sumW - capW - 36, sumY + 90, capW, 44, 22);
+    ctx.fillStyle = 'rgba(16, 185, 129, 0.18)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(52, 211, 153, 0.5)';
+    ctx.stroke();
+    ctx.fillStyle = '#34D399';
+    ctx.fillText(principalStr, sumX + sumW - capW - 18, sumY + 120);
+
+    // Fila 2: Costo de Emisión y Activación de Tarjeta ($99.00 USD)
+    ctx.font = '600 23px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#CBD5E1';
+    ctx.fillText('Costo de Emisión y Activación de Tarjeta:', sumX + 36, sumY + 180);
+
+    const actCostText = '$99.00 USD';
+    ctx.font = '800 25px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#6EE7B7';
+    const actW = ctx.measureText(actCostText).width;
+    ctx.fillText(actCostText, sumX + sumW - actW - 36, sumY + 180);
+
+    // Línea divisoria Total
+    ctx.beginPath();
+    ctx.moveTo(sumX + 36, sumY + 206);
+    ctx.lineTo(sumX + sumW - 36, sumY + 206);
+    ctx.strokeStyle = 'rgba(167, 139, 250, 0.26)';
+    ctx.stroke();
+
+    // Fila 3: Total Disponible tras Desembolso
+    ctx.font = '800 25px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText('Total Disponible tras Desembolso:', sumX + 36, sumY + 252);
+
+    ctx.font = '800 34px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#34D399';
+    const totW = ctx.measureText(principalStr).width;
+    ctx.fillText(principalStr, sumX + sumW - totW - 36, sumY + 254);
+
+    // Línea divisoria Dirección
+    ctx.beginPath();
+    ctx.moveTo(sumX + 36, sumY + 280);
+    ctx.lineTo(sumX + sumW - 36, sumY + 280);
+    ctx.strokeStyle = 'rgba(167, 139, 250, 0.2)';
+    ctx.stroke();
+
+    // Fila 4: Dirección de Envío Tarjeta Física
+    ctx.font = '600 22px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#CBD5E1';
+    ctx.fillText('📍 Dirección de Envío Tarjeta Física:', sumX + 36, sumY + 324);
+
+    ctx.font = '800 23px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#DDD6FE';
+    const addrW = ctx.measureText(addressStr).width;
+    ctx.fillText(addressStr, sumX + sumW - addrW - 36, sumY + 324);
+
+    // 5. COLUMNA DERECHA: POLÍTICA DE HABILITACIÓN DE CUENTA Y ENVÍO DE TARJETA TITULAR
+    const rightX = 1040;
+    const rightY = 190;
+    const rightW = 1024;
+    const rightH = 900;
+
+    roundRect(rightX, rightY, rightW, rightH, 28);
+    ctx.fillStyle = 'rgba(20, 14, 42, 0.88)';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(139, 92, 246, 0.42)';
+    ctx.stroke();
+
+    // Ícono de escudo
+    roundRect(rightX + 42, rightY + 40, 82, 82, 20);
+    ctx.fillStyle = 'rgba(109, 40, 217, 0.45)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(196, 181, 253, 0.5)';
+    ctx.stroke();
+    ctx.font = '40px "Segoe UI Emoji", sans-serif';
+    ctx.fillText('🛡️', rightX + 58, rightY + 95);
+
+    ctx.font = '800 18px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#A78BFA';
+    ctx.fillText('NORMATIVA DE SEGURIDAD Y DESEMBOLSO', rightX + 146, rightY + 66);
+
+    ctx.font = '800 26px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText('POLÍTICA DE HABILITACIÓN DE CUENTA Y ENVÍO DE', rightX + 146, rightY + 100);
+    ctx.fillText('TARJETA TITULAR', rightX + 146, rightY + 132);
+
+    ctx.beginPath();
+    ctx.moveTo(rightX + 42, rightY + 162);
+    ctx.lineTo(rightX + rightW - 42, rightY + 162);
+    ctx.strokeStyle = 'rgba(167, 139, 250, 0.24)';
+    ctx.stroke();
+
+    let py = rightY + 212;
+    const textMaxW = rightW - 84;
+    py = drawWrappedText(
+      '1. Habilitación de Riel Financiero Sin Costo: Toda cuenta vinculada a un crédito pre-aprobado cuenta con generación de tarjeta virtual inmediata y asignación de riel bancario sin requerir depósitos, pagos ni movimientos monetarios anticipados por parte del titular.',
+      rightX + 42,
+      py,
+      textMaxW,
+      36,
+      '500 22px "Plus Jakarta Sans", "Segoe UI", sans-serif',
+      '#E2E8F0'
+    );
+
+    py += 24;
+    py = drawWrappedText(
+      '2. Titularidad y Seguridad KYC: La tarjeta virtual Ontop Visa Platinum se emite exclusivamente a nombre del solicitante verificado en el expediente y queda vinculada al contrato oficial al 8.00% de interés anual estructurado a 24 meses (*24 meses) con opción de abono a capital.',
+      rightX + 42,
+      py,
+      textMaxW,
+      36,
+      '500 22px "Plus Jakarta Sans", "Segoe UI", sans-serif',
+      '#E2E8F0'
+    );
+
+    py += 24;
+    py = drawWrappedText(
+      '3. Despacho de Tarjeta Física y Desembolso: Al confirmar la activación en este panel, se programa el envío de la tarjeta física con chip EMV al lugar de residencia registrado y el expediente pasa de inmediato a la Etapa 3 (Créditos Activados y Listos para Desembolso).',
+      rightX + 42,
+      py,
+      textMaxW,
+      36,
+      '500 22px "Plus Jakarta Sans", "Segoe UI", sans-serif',
+      '#E2E8F0'
+    );
+
+    // Recuadro inferior dentro de la columna derecha
+    const ctaY = rightY + rightH - 135;
+    const ctaGrad = ctx.createLinearGradient(rightX + 42, ctaY, rightX + rightW - 42, ctaY + 90);
+    ctaGrad.addColorStop(0, '#10B981');
+    ctaGrad.addColorStop(1, '#059669');
+    roundRect(rightX + 42, ctaY, rightW - 84, 90, 22);
+    ctx.fillStyle = ctaGrad;
+    ctx.fill();
+
+    ctx.font = '800 25px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    const ctaLabel = `✔ Tarjeta Virtual Ontop Visa Platinum Verificada · Expediente ${client.id}`;
+    const ctaW = ctx.measureText(ctaLabel).width;
+    ctx.fillText(ctaLabel, rightX + (rightW - ctaW) / 2, ctaY + 55);
+
+    // 6. Pie del recuadro
+    ctx.beginPath();
+    ctx.moveTo(0, H - 86);
+    ctx.lineTo(W, H - 86);
+    ctx.strokeStyle = 'rgba(167, 139, 250, 0.24)';
+    ctx.stroke();
+
+    ctx.font = '700 21px "Plus Jakarta Sans", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#10B981';
+    ctx.fillText(
+      '✔ Emisión protegida bajo Políticas de Privacidad OntopBank · Sincronizado con Google Drive',
+      56,
+      H - 36
+    );
+
+    // Descargar PNG
+    const dataUrl = canvas.toDataURL('image/png');
+    const safeName = fullName.replace(/[^a-zA-Z0-9_-]/g, '_') || client.id;
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `Tarjeta_Virtual_OntopBank_${client.id}_${safeName}.png`;
+    a.click();
+
+    showToast(`📥 Recuadro de Tarjeta Virtual e Información descargado (${a.download}).`, '💳');
   }
 
   async function confirmVirtualCardActivation(clientId) {
@@ -310,9 +724,12 @@
     const titleEl = document.getElementById('contractModalTitle');
     const subEl = document.getElementById('contractModalSubtitle');
 
-    const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(client.montoSolicitado);
-    titleEl.textContent = `📄 Contrato Oficial Aceptado · ${client.nombres} ${client.apellidos} (${client.id})`;
-    subEl.textContent = `Capital: ${formatUSD(schedule.principal)} | Cuota Mensual (8% Anual): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *12 Meses: $${schedule.totalPayable12Months.toFixed(2)} USD`;
+    const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(
+      client.montoSolicitado,
+      client.fechaActualizacion || client.fechaCreacion
+    );
+    titleEl.textContent = `📄 Contrato Oficial Aceptado (24 Meses) · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `Capital: ${formatUSD(schedule.principal)} | Cuota Mensual (24 Meses · 8% Anual): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *24 Meses: $${schedule.totalPayable24Months.toFixed(2)} USD`;
 
     const htmlDoc = window.OntopLegalContractGenerator.buildTwoPageContractHtml(client, {
       redLogoDataUrl: '/Contenido/red.jpg'
@@ -544,7 +961,7 @@
           </td>
           <td>
             <span class="usd-badge">${formatUSD(c.montoSolicitado)}</span>
-            <span class="location-sub">Cuota 8% EA: <strong>$${schedule.monthlyInstallment.toFixed(0)}/m</strong> (*12m: ${formatUSD(schedule.totalPayable12Months)})</span>
+            <span class="location-sub">Cuota 24m (8% EA): <strong>$${schedule.monthlyInstallment.toFixed(0)}/m</strong> (*24m: ${formatUSD(schedule.totalPayable24Months)})</span>
             <span class="location-sub">Fuente: <strong>${escapeHtml(c.fuenteIngresos)}</strong></span>
           </td>
           <td>
@@ -699,7 +1116,7 @@
                     <div class="preapproved-amount-value">${formatUSD(c.montoSolicitado)} <span style="font-size:0.8rem; font-weight:700;">USD</span></div>
                   </div>
                   <div style="text-align:right; font-size:0.72rem; color:var(--text-secondary);">
-                    <div>8% EA (*12m)</div>
+                    <div>8% EA (*24m)</div>
                     <strong style="color:#EDE9FE;">$${schedule.monthlyInstallment.toFixed(0)}/mes</strong>
                   </div>
                 </div>
@@ -1006,7 +1423,7 @@
         formulaLabel.textContent = 'Score Base: 350 pts (Ingresa Monto + Lo que gana)';
       } else {
         const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(monto);
-        formulaLabel.textContent = `Score: ${score}/750 | Cuota Mensual (8% EA): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *12m: $${schedule.totalPayable12Months.toFixed(2)} USD`;
+        formulaLabel.textContent = `Score: ${score}/750 | Cuota 24 Meses (8% EA): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *24m: $${schedule.totalPayable24Months.toFixed(2)} USD`;
       }
     }
   }
@@ -1246,12 +1663,12 @@
         </div>
 
         <div class="form-column-box">
-          <div class="column-section-title">💎 Paso 2: Liquidación al 8% Anual (*12 Meses)</div>
+          <div class="column-section-title">💎 Paso 2: Liquidación Estructurada a 24 Meses (8% Anual)</div>
           <p style="margin-bottom:7px;"><strong>Ingresos Mensuales:</strong> <span style="color:var(--usd-emerald); font-weight:700;">${formatUSD(client.ingresosMensuales)}/mes</span> (${escapeHtml(client.fuenteIngresos)})</p>
           <p style="margin-bottom:7px;"><strong>Score Matemático (350-750):</strong> <span class="usd-badge">🎯 ${escapeHtml(client.scoreCredito)} / 750</span></p>
-          <p style="margin-bottom:7px;"><strong>Interés 8% Anual sobre Valor Prestado:</strong> $${schedule.totalInterest12Months.toFixed(2)} USD</p>
-          <p style="margin-bottom:7px;"><strong>Cuota Mensual a Pagar:</strong> <strong style="color:#6EE7B7;">$${schedule.monthlyInstallment.toFixed(2)} USD / mes</strong></p>
-          <p style="margin-bottom:7px;"><strong>Total a Pagar *12 Meses:</strong> <strong style="color:#C4B5FD;">$${schedule.totalPayable12Months.toFixed(2)} USD</strong> (Abono a capital habilitado)</p>
+          <p style="margin-bottom:7px;"><strong>Interés Total a 24 Meses (8% Anual × 2 Años):</strong> $${schedule.totalInterest24Months.toFixed(2)} USD</p>
+          <p style="margin-bottom:7px;"><strong>Cuota Mensual a Pagar (*24 Meses):</strong> <strong style="color:#6EE7B7;">$${schedule.monthlyInstallment.toFixed(2)} USD / mes</strong></p>
+          <p style="margin-bottom:7px;"><strong>Total a Pagar *24 Meses:</strong> <strong style="color:#C4B5FD;">$${schedule.totalPayable24Months.toFixed(2)} USD</strong> (Abono a capital habilitado)</p>
         </div>
       </div>
     `;

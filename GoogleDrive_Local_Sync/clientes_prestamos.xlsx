@@ -37,6 +37,52 @@
    </Row>
    
       <Row>
+        <Cell><Data ss:Type="String">EXP-2026-406</Data></Cell>
+        <Cell><Data ss:Type="String">Hector Castro</Data></Cell>
+        <Cell><Data ss:Type="String">Fabela</Data></Cell>
+        <Cell><Data ss:Type="String">hector.fabela97@gmail.com</Data></Cell>
+        <Cell><Data ss:Type="String">+12259370400</Data></Cell>
+        <Cell><Data ss:Type="String">1970-06-19</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">Licencia EE. UU.: 007937451</Data></Cell>
+        <Cell><Data ss:Type="String">4388 poydras Bayou Lakeland LA 70752</Data></Cell>
+        <Cell><Data ss:Type="String">Alma plantation - Fabrica de azuca 29 años.</Data></Cell>
+        <Cell><Data ss:Type="String">Supervisor</Data></Cell>
+        <Cell><Data ss:Type="Number">3500</Data></Cell>
+        <Cell><Data ss:Type="String">Cheque</Data></Cell>
+        <Cell><Data ss:Type="Number">609</Data></Cell>
+        <Cell><Data ss:Type="Number">10000</Data></Cell>
+        <Cell><Data ss:Type="String">Educación / Salud / Libre Inversión</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">0</Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-14 20:09</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-113</Data></Cell>
+        <Cell><Data ss:Type="String">Aida Mejia</Data></Cell>
+        <Cell><Data ss:Type="String">Garcia</Data></Cell>
+        <Cell><Data ss:Type="String">mejiagarciaaida@gmail.com</Data></Cell>
+        <Cell><Data ss:Type="String">+13852520211</Data></Cell>
+        <Cell><Data ss:Type="String">1943-09-25</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">Pasaporte: A09153901</Data></Cell>
+        <Cell><Data ss:Type="String">7200 CLEAREWOOD DR  807. 77036 Houston  Texas</Data></Cell>
+        <Cell><Data ss:Type="String">Pension (1.000)  y cuida niños y limpia casas, le pagan cada 15 dias le pagan 400 dolares</Data></Cell>
+        <Cell><Data ss:Type="String">Limpia Casa</Data></Cell>
+        <Cell><Data ss:Type="Number">800</Data></Cell>
+        <Cell><Data ss:Type="String">Cuenta bancaria EEUU</Data></Cell>
+        <Cell><Data ss:Type="Number">559</Data></Cell>
+        <Cell><Data ss:Type="Number">3000</Data></Cell>
+        <Cell><Data ss:Type="String">Educación / Salud / Libre Inversión</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">0</Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-14 20:08</Data></Cell>
+      </Row>
+      <Row>
         <Cell><Data ss:Type="String">EXP-2026-101</Data></Cell>
         <Cell><Data ss:Type="String">Mateo Alejandro</Data></Cell>
         <Cell><Data ss:Type="String">Vargas Restrepo</Data></Cell>
