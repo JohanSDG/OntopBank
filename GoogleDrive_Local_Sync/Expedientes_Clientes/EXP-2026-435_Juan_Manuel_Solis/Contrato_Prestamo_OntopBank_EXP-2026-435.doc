@@ -1,0 +1,602 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contrato Oficial de Préstamo OntopBank - JUAN MANUEL SOLIS</title>
+  <style>
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: #E2E8F0;
+      color: #1E293B;
+      line-height: 1.36;
+      font-size: 10.5px;
+    }
+    .legal-sheet {
+      position: relative;
+      width: 8.5in;
+      height: 11in;
+      background: #FFFFFF;
+      margin: 0 auto 24px auto;
+      padding: 0.38in 0.55in 0.38in 0.76in;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+      break-after: page;
+    }
+    .legal-sheet:last-child {
+      page-break-after: auto;
+      break-after: auto;
+      margin-bottom: 0;
+    }
+    /* Franja lateral izquierda vertical idéntica al modelo Word de Ontop */
+    .ontop-left-ribbon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 0.28in;
+      background: linear-gradient(180deg, #FF9482 0%, #FF5E7E 52%, #FF1E62 100%);
+    }
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid #F1F5F9;
+      margin-bottom: 8px;
+    }
+    .doc-main-title {
+      font-size: 13.5px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: #0F172A;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .approval-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ECFDF5;
+      border: 1px solid #6EE7B7;
+      border-left: 4px solid #10B981;
+      border-radius: 6px;
+      padding: 6px 12px;
+      margin-bottom: 7px;
+    }
+    .approval-banner strong {
+      color: #065F46;
+      font-size: 11px;
+    }
+    .parties-paragraph {
+      font-size: 9.8px;
+      color: #334155;
+      text-align: justify;
+      margin-bottom: 7px;
+    }
+    .summary-grid-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 7px;
+    }
+    .summary-col h4 {
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6D28D9;
+      margin-bottom: 4px;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 2px;
+    }
+    .summary-line {
+      font-size: 9.4px;
+      margin-bottom: 2px;
+      color: #1E293B;
+    }
+    .amortization-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5px;
+      margin-bottom: 7px;
+    }
+    .amortization-table thead th {
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 4px 8px;
+      text-transform: uppercase;
+      font-size: 8px;
+      letter-spacing: 0.04em;
+    }
+    .amortization-table tfoot td {
+      background: #F1F5F9;
+      font-weight: 900;
+      padding: 4px 8px;
+      border-top: 2px solid #0F172A;
+      color: #0F172A;
+    }
+    .prepayment-callout {
+      background: #F5F3FF;
+      border: 1px solid #C4B5FD;
+      border-left: 4px solid #7C3AED;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 9.2px;
+      color: #2E1065;
+      text-align: justify;
+    }
+    .legal-clause-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-top: 8px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+    .legal-clause-text {
+      font-size: 9.9px;
+      color: #334155;
+      text-align: justify;
+      margin-bottom: 6px;
+      line-height: 1.44;
+    }
+    .signatures-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1.5px solid #CBD5E1;
+    }
+    .sig-box {
+      font-size: 10px;
+      color: #1E293B;
+    }
+    .sig-line {
+      height: 44px;
+      border-bottom: 1.5px solid #0F172A;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 4px;
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: #4C1D95;
+    }
+    .sheet-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8.8px;
+      color: #64748B;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 5px;
+    }
+    @media print {
+      body {
+        background: #FFFFFF;
+      }
+      .legal-sheet {
+        margin: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================================
+       HOJA 1 DE 2: RESOLUCIÓN DE APROBACIÓN, RESUMEN DEL CLIENTE Y PLAN DE PAGOS *24 MESES (8% ANUAL)
+       ====================================================================== -->
+  <section class="legal-sheet">
+    <div class="ontop-left-ribbon"></div>
+
+    <div>
+      <header class="sheet-header">
+        
+      <div style="display:inline-flex; align-items:center;">
+        <img src="data:image/jpeg;base64,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" alt="Ontop" style="width:32px; height:32px; object-fit:contain; margin-right:6px;" />
+        <span style="font-family:'Plus Jakarta Sans', 'Inter', Arial, sans-serif; font-weight:800; font-size:28px; letter-spacing:-0.03em; color:#F85A6A;">ontop</span>
+        <span style="font-family:'Plus Jakarta Sans', Arial, sans-serif; font-weight:700; font-size:11px; color:#6D28D9; background:#F3E8FF; border:1px solid #D8B4FE; border-radius:999px; padding:2px 8px; margin-left:8px; text-transform:uppercase;">Bank Credit</span>
+      </div>
+    
+        <div style="text-align:center;">
+          <div style="font-size:9px; font-weight:700; color:#64748B; letter-spacing:0.08em;">DOCUMENTO LEGAL VINCULANTE</div>
+          <div style="font-size:11px; font-weight:800; color:#0F172A;">EXPEDIENTE N° EXP-2026-435</div>
+          <div style="font-size:9px; color:#475569;">Fecha Efectiva: 2026-11-23 20:51</div>
+        </div>
+        
+      <svg width="96" height="96" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(-14deg); filter: drop-shadow(0 2px 4px rgba(244,63,94,0.18));">
+        <!-- Borde exterior dentado tipo sello legal -->
+        <circle cx="70" cy="70" r="62" fill="none" stroke="#F44E63" stroke-width="4" stroke-dasharray="6 4" />
+        <circle cx="70" cy="70" r="55" fill="rgba(244, 78, 99, 0.05)" stroke="#F44E63" stroke-width="2.5" />
+        <circle cx="70" cy="70" r="50" fill="none" stroke="#F44E63" stroke-width="1" stroke-dasharray="3 2" />
+        <!-- Isotipo Chevron Ontop superior -->
+        <path d="M70 22 L54 47 L63 47 L70 35 L77 47 L86 47 Z" fill="#F44E63" />
+        <!-- Texto central LEGAL -->
+        <text x="70" y="76" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Arial Black', sans-serif" font-weight="900" font-size="25" letter-spacing="1" fill="#F44E63">LEGAL</text>
+        <!-- Texto inferior ontop -->
+        <text x="70" y="99" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="700" font-size="16" fill="#F44E63">ontop</text>
+      </svg>
+    
+      </header>
+
+      <div class="doc-main-title">
+        LOAN APPROVAL &amp; CREDIT FACILITY AGREEMENT (ACUERDO OFICIAL DE PRÉSTAMO)
+      </div>
+
+      <div class="approval-banner">
+        <div>
+          <strong>✔ DICTAMEN OFICIAL: SOLICITUD DE PRÉSTAMO ACEPTADA Y APROBADA</strong>
+          <div style="font-size:9.5px; color:#047857;">
+            Aprobado por el Comité de Crédito de OntopBank tras completar satisfactoriamente la validación financiera.
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:9px; color:#065F46; display:block;">CAPITAL APROBADO</span>
+          <strong style="font-size:14px; color:#047857;">$5,000.00 USD</strong>
+        </div>
+      </div>
+
+      <p class="parties-paragraph">
+        <strong>ONTOPBANK IC OPERATIONS LLC.</strong>, sociedad de responsabilidad limitada constituida y existente bajo las leyes del Estado de Delaware, Estados Unidos de América (<strong>"OntopBank"</strong>), en alianza con la entidad financiera asignada <strong>Ontop Global Credit Bridge</strong>; y por la otra parte, <strong>JUAN MANUEL SOLIS</strong>, con residencia actual en <strong>colorado</strong>, identificado(a) con <strong>Licencia EE. UU.: 7482578888</strong> y correo electrónico <strong>juan06solis@gmail.com</strong> (<strong>"El Solicitante / Prestatario"</strong>), celebran el presente Acuerdo Oficial de Préstamo Financiero sujeto a las siguientes condiciones económicas verificadas:
+      </p>
+
+      <!-- Resumen Corto de la Información del Cliente y Liquidación al 8% Anual -->
+      <div class="summary-grid-box">
+        <div class="summary-col">
+          <h4>1. Resumen Verificado del Solicitante</h4>
+          <div class="summary-line"><strong>Nombre del Solicitante:</strong> JUAN MANUEL SOLIS</div>
+          <div class="summary-line"><strong>Identificación Oficial:</strong> Licencia EE. UU.: 7482578888 (Residente EE. UU. / Ciudadano)</div>
+          <div class="summary-line"><strong>Lugar de Residencia:</strong> colorado</div>
+          <div class="summary-line"><strong>Lugar de Trabajo / Empresa:</strong> Pensionado - cheque social segurity: 1.050 dolares mes (03 ) deposito directo  //</div>
+          <div class="summary-line"><strong>Funciones / Cargo:</strong> Pensionado</div>
+          <div class="summary-line"><strong>Fuente de Ingresos:</strong> Cuenta bancaria EEUU ($1,050.00 USD/mes)</div>
+          <div class="summary-line"><strong>Score Matemático Validado:</strong> 551 / 750 pts</div>
+        </div>
+
+        <div class="summary-col">
+          <h4>2. Estructura del Préstamo y Liquidación (8% Anual)</h4>
+          <div class="summary-line"><strong>Monto Solicitado y Aprobado:</strong> <strong style="color:#0F172A;">$5,000.00 USD</strong></div>
+          <div class="summary-line"><strong>Propósito del Crédito:</strong> Compra de Vivienda / Hipotecario</div>
+          <div class="summary-line"><strong>Tasa de Interés Fija:</strong> <strong>8.00% Anual (8% E.A.)</strong> sobre el valor prestado</div>
+          <div class="summary-line"><strong>Interés Total (24 Meses):</strong> $800.00 USD</div>
+          <div class="summary-line"><strong>Cuota Fija Mensual a Pagar:</strong> <strong style="color:#047857;">$241.67 USD / mes</strong></div>
+          <div class="summary-line"><strong>Plazo de Amortización:</strong> 24 Meses Consecutivos</div>
+          <div class="summary-line" style="margin-top:3px; padding-top:3px; border-top:1px dashed #CBD5E1;">
+            <strong>TOTAL A PAGAR EN 24 MESES (*24 MESES):</strong>
+            <strong style="color:#6D28D9; font-size:10.5px;">$5,800.00 USD</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Pagos Mensuales (*24 Meses) con el 8% de Interés Anual -->
+      <div style="font-size:9.5px; font-weight:800; color:#0F172A; margin-bottom:3px; text-transform:uppercase;">
+        Cronograma Oficial de Pagos Mensuales (*24 Meses — Capital + 8.00% de Interés Anual sobre el Valor Prestado)
+      </div>
+      <table class="amortization-table">
+        <thead>
+          <tr>
+            <th style="text-align:center;">Período</th>
+            <th style="text-align:right;">Abono Mensual a Capital</th>
+            <th style="text-align:right;">Interés Mensual (8% Anual)</th>
+            <th style="text-align:right;">Monto a Pagar Mensualmente</th>
+            <th style="text-align:right;">Saldo Capital Restante</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 1</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$4,791.67 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 2</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$4,583.33 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 3</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$4,375.00 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 4</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$4,166.67 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 5</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$3,958.33 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 6</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$3,750.00 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 7</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$3,541.67 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 8</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$3,333.33 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 9</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$3,125.00 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 10</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$2,916.67 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 11</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$2,708.33 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 12</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$2,500.00 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 13</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$2,291.67 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 14</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$2,083.33 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 15</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$1,875.00 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 16</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$1,666.67 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 17</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$1,458.33 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 18</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$1,250.00 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 19</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$1,041.67 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 20</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$833.33 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 21</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$625.00 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 22</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$416.67 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 23</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$208.33 USD</td>
+        </tr>
+        <tr>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 24</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$208.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$33.33 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$241.67 USD</td>
+          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$0.00 USD</td>
+        </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td style="text-align:center;">TOTAL * 24 MESES</td>
+            <td style="text-align:right;">$5,000.00 USD</td>
+            <td style="text-align:right; color:#047857;">$800.00 USD (8% Anual)</td>
+            <td style="text-align:right; color:#6D28D9; font-size:9.5px;">$5,800.00 USD</td>
+            <td style="text-align:right;">$0.00 USD</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <!-- Cláusula de Abono a Capital Anticipado -->
+      <div class="prepayment-callout">
+        <strong>CLÁUSULA DE ABONO A CAPITAL ANTICIPADO (SÍ ES POSIBLE ABONAR A CAPITAL SIN PENALIDAD):</strong>
+        OntopBank certifica expresamente que <strong>EL SOLICITANTE SÍ PUEDE REALIZAR ABONOS EXTRAORDINARIOS A CAPITAL</strong> o pagar la totalidad del préstamo de forma anticipada en cualquier momento durante la vigencia de los veinticuatro (24) meses, <strong>sin ningún tipo de multa, comisión o penalidad por prepago</strong>. Todo abono adicional a la cuota mensual de <strong>$241.67 USD</strong> se imputará directamente a reducir el saldo de capital principal, disminuyendo proporcionalmente el plazo o las cuotas restantes.
+      </div>
+    </div>
+
+    <footer class="sheet-footer">
+      <span>ONTOPBANK IC OPERATIONS LLC. · Delaware, United States of America · Legal Credit Division</span>
+      <span>Hoja 1 de 2 · Expediente EXP-2026-435</span>
+    </footer>
+  </section>
+
+  <!-- ======================================================================
+       HOJA 2 DE 2: CONDICIONES LEGALES, POLÍTICAS DE PRIVACIDAD DE ONTOPBANK Y FIRMAS
+       ====================================================================== -->
+  <section class="legal-sheet">
+    <div class="ontop-left-ribbon"></div>
+
+    <div>
+      <header class="sheet-header">
+        
+      <div style="display:inline-flex; align-items:center;">
+        <img src="data:image/jpeg;base64,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" alt="Ontop" style="width:32px; height:32px; object-fit:contain; margin-right:6px;" />
+        <span style="font-family:'Plus Jakarta Sans', 'Inter', Arial, sans-serif; font-weight:800; font-size:28px; letter-spacing:-0.03em; color:#F85A6A;">ontop</span>
+        <span style="font-family:'Plus Jakarta Sans', Arial, sans-serif; font-weight:700; font-size:11px; color:#6D28D9; background:#F3E8FF; border:1px solid #D8B4FE; border-radius:999px; padding:2px 8px; margin-left:8px; text-transform:uppercase;">Bank Credit</span>
+      </div>
+    
+        <div style="text-align:center;">
+          <div style="font-size:9px; font-weight:700; color:#64748B; letter-spacing:0.08em;">TÉRMINOS LEGALES Y PRIVACIDAD</div>
+          <div style="font-size:11px; font-weight:800; color:#0F172A;">TITULAR: JUAN MANUEL SOLIS</div>
+          <div style="font-size:9px; color:#475569;">Residencia: colorado</div>
+        </div>
+        
+      <svg width="96" height="96" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(-14deg); filter: drop-shadow(0 2px 4px rgba(244,63,94,0.18));">
+        <!-- Borde exterior dentado tipo sello legal -->
+        <circle cx="70" cy="70" r="62" fill="none" stroke="#F44E63" stroke-width="4" stroke-dasharray="6 4" />
+        <circle cx="70" cy="70" r="55" fill="rgba(244, 78, 99, 0.05)" stroke="#F44E63" stroke-width="2.5" />
+        <circle cx="70" cy="70" r="50" fill="none" stroke="#F44E63" stroke-width="1" stroke-dasharray="3 2" />
+        <!-- Isotipo Chevron Ontop superior -->
+        <path d="M70 22 L54 47 L63 47 L70 35 L77 47 L86 47 Z" fill="#F44E63" />
+        <!-- Texto central LEGAL -->
+        <text x="70" y="76" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Arial Black', sans-serif" font-weight="900" font-size="25" letter-spacing="1" fill="#F44E63">LEGAL</text>
+        <!-- Texto inferior ontop -->
+        <text x="70" y="99" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="700" font-size="16" fill="#F44E63">ontop</text>
+      </svg>
+    
+      </header>
+
+      <div class="legal-clause-title">1. Reconocimiento de las Partes, Desembolso y Modalidad de Pago (OntopBank Platform)</div>
+      <p class="legal-clause-text">
+        El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 del presente contrato por un monto principal de <strong>$5,000.00 USD</strong>, con una tasa preferencial fija del <strong>8.00% anual</strong> sobre el valor prestado, pagadero en veinticuatro (24) cuotas mensuales iguales de <strong>$241.67 USD</strong> para un total acumulado a los veinticuatro (24) meses de <strong>$5,800.00 USD</strong>. Todos los desembolsos y recaudos mensuales se ejecutarán a través de los canales bancarios autorizados en la plataforma OntopBank conforme a los Términos de Servicio disponibles en <em>https://www.getontop.com/legal/terms-of-service</em>.
+      </p>
+
+      <div class="legal-clause-title">2. Políticas de Privacidad y Protección de Datos Personales de OntopBank (Personal Data Protection &amp; Privacy Policy)</div>
+      <p class="legal-clause-text">
+        En cumplimiento de las Leyes de Protección de Datos Financieros de los Estados Unidos (incluyendo la <em>Gramm-Leach-Bliley Act - GLBA</em>, <em>California Consumer Privacy Act - CCPA</em> y normativas del Estado de Delaware) y tratados internacionales de privacidad, <strong>ONTOPBANK IC OPERATIONS LLC.</strong> establece su Política Oficial de Privacidad aplicable al Solicitante:
+      </p>
+      <p class="legal-clause-text">
+        <strong>(a) Definiciones Legales:</strong> <em>"Información Personal" (Personal Information)</em> significa cualquier dato financiero, migratorio, laboral, de identificación (SSN, ITIN, Pasaporte, Licencia) o bancario suministrado por <strong>JUAN MANUEL SOLIS</strong> (el <em>"Titular de los Datos / Data Subject"</em>) en relación con su solicitud de préstamo. <em>"Tratamiento" (Processing)</em> comprende la recolección, validación algorítmica de Score, almacenamiento cifrado, custodia y verificación ante entidades financieras aliadas (Lenders).
+      </p>
+      <p class="legal-clause-text">
+        <strong>(b) Compromiso de Confidencialidad y No Divulgación:</strong> OntopBank garantiza que la Información Personal del Solicitante será tratada bajo protocolos de cifrado de grado bancario (AES-256 / TLS 1.3) y <strong>jamás será vendida, alquilada ni comercializada a terceros</strong>. Únicamente se compartirá información estrictamente necesaria con la entidad fondeadora asignada (<strong>Ontop Global Credit Bridge</strong>) bajo acuerdos escritos de confidencialidad y reserva bancaria igualmente estrictos.
+      </p>
+      <p class="legal-clause-text">
+        <strong>(c) Derechos del Titular (Acceso, Rectificación y Eliminación):</strong> El Solicitante conserva en todo momento el derecho de solicitar acceso a su expediente crediticio, actualizar sus datos de residencia o empleo, y requerir la eliminación o bloqueo de sus archivos una vez extinguida la obligación crediticia, sin que su estatus migratorio o nacionalidad pueda ser utilizado para fines distintos a la evaluación técnica del presente crédito.
+      </p>
+
+      <div class="legal-clause-title">3. Confidencialidad de la Operación y Cumplimiento Normativo (FCPA, AML &amp; KYC)</div>
+      <p class="legal-clause-text">
+        Ambas Partes acuerdan mantener estricta reserva sobre los términos particulares de esta aprobación crediticia. El Solicitante declara bajo gravedad de juramento que los ingresos mensuales reportados (<strong>$1,050.00 USD/mes</strong> a través de <strong>Cuenta bancaria EEUU</strong> derivados de sus funciones como <strong>Pensionado</strong> en <strong>Pensionado - cheque social segurity: 1.050 dolares mes (03 ) deposito directo  //</strong>) provienen de actividades lícitas y que los fondos del préstamo se destinarán exclusivamente a <strong>Compra de Vivienda / Hipotecario</strong>, en pleno cumplimiento de la Ley de Prácticas Corruptas en el Extranjero de EE. UU. (<em>U.S. Foreign Corrupt Practices Act - FCPA</em>) y normativas de prevención de lavado de activos (AML/KYC).
+      </p>
+
+      <div class="legal-clause-title">4. Derecho de Prepago, Abono a Capital e Integridad Contractual</div>
+      <p class="legal-clause-text">
+        De conformidad con la regulación federal de protección al consumidor financiero, ninguna disposición de este Acuerdo restringe el derecho del Solicitante a efectuar pagos anticipados. El Solicitante podrá abonar a capital cualquier suma adicional en cualquier fecha anterior al vencimiento de las 24 cuotas sin recargo alguno. Si alguna disposición del presente Acuerdo fuese declarada inválida, las disposiciones restantes continuarán en pleno vigor y efecto.
+      </p>
+
+      <div class="legal-clause-title">5. Firma Electrónica, Ley Aplicable y Jurisdicción (Electronic Signature &amp; Governing Law)</div>
+      <p class="legal-clause-text">
+        Las Partes acuerdan que el presente Contrato Oficial de Préstamo se ejecuta mediante tecnología de firma electrónica conforme a la ley federal <em>U.S. ESIGN Act</em> y leyes aplicables, teniendo la misma validez y fuerza vinculante que una firma manuscrita. Este Acuerdo se rige e interpreta de conformidad con las leyes del <strong>Estado de Delaware, Estados Unidos de América</strong>, sometiéndose cualquier controversia a la jurisdicción exclusiva de los tribunales ubicados en <strong>Miami-Dade County, Florida</strong>.
+      </p>
+
+      <p class="legal-clause-text" style="font-weight:700; color:#0F172A; margin-top:8px;">
+        IN WITNESS WHEREOF / EN CONSTANCIA DE LO CUAL, las Partes suscriben y aceptan el presente Acuerdo Oficial de Aprobación de Préstamo en la Fecha Efectiva indicada.
+      </p>
+
+      <!-- Bloque Oficial de Firmas -->
+      <div class="signatures-grid">
+        <div class="sig-box">
+          <div style="font-weight:800; color:#0F172A; margin-bottom:2px;">ONTOPBANK IC OPERATIONS LLC.:</div>
+          <div class="sig-line">Elena Vance, Chief Credit Officer</div>
+          <div><strong>Nombre:</strong> Dra. Elena Vance · Comité de Underwriting</div>
+          <div><strong>Cargo:</strong> Directora de Originación y Crédito Global</div>
+          <div><strong>Estado:</strong> <span style="color:#047857; font-weight:800;">APROBADO Y FIRMADO DIGITALMENTE</span></div>
+        </div>
+
+        <div class="sig-box">
+          <div style="font-weight:800; color:#0F172A; margin-bottom:2px;">EL SOLICITANTE / PRESTATARIO:</div>
+          <div class="sig-line">JUAN MANUEL SOLIS</div>
+          <div><strong>Nombre:</strong> JUAN MANUEL SOLIS</div>
+          <div><strong>Identificación:</strong> Licencia EE. UU.: 7482578888</div>
+          <div><strong>Residencia:</strong> colorado</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="sheet-footer">
+      <span>Política de Privacidad Oficial: https://www.getontop.com/legal/terms-of-service · Documento Protegido OntopBank</span>
+      <span>Hoja 2 de 2 · Expediente EXP-2026-435</span>
+    </footer>
+  </section>
+
+</body>
+</html>

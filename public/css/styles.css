@@ -44,7 +44,8 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   min-height: 100vh;
   background-color: var(--bg-deep);
   background-image:
@@ -219,8 +220,17 @@ body::before {
 }
 
 @keyframes pulseEmerald {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.28); opacity: 0.65; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.28);
+    opacity: 0.65;
+  }
 }
 
 .sync-meta-tag {
@@ -309,8 +319,15 @@ body::before {
 }
 
 @keyframes fadeSlideDown {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .dropdown-header-info {
@@ -524,8 +541,15 @@ body::before {
 }
 
 @keyframes fadeInPanel {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==========================================================================
@@ -641,15 +665,52 @@ body::before {
 }
 
 /* Distribución proporcional de las 9 columnas para aprovechar el 100% de la pantalla */
-.fintech-table thead th:nth-child(1) { width: 15%; } /* Solicitante / ID */
-.fintech-table thead th:nth-child(2) { width: 15%; } /* Lugar de Trabajo y Funciones */
-.fintech-table thead th:nth-child(3) { width: 13%; } /* Perfil / Residencia */
-.fintech-table thead th:nth-child(4) { width: 14%; } /* Monto y Fuente Ingresos */
-.fintech-table thead th:nth-child(5) { width: 7.5%; } /* Score (350-750) */
-.fintech-table thead th:nth-child(6) { width: 10.5%; } /* Lender Asignado */
-.fintech-table thead th:nth-child(7) { width: 10%; } /* Estado del Préstamo */
-.fintech-table thead th:nth-child(8) { width: 7%; } /* Fecha Automática */
-.fintech-table thead th:nth-child(9) { width: 8%; text-align: center; } /* Acciones */
+.fintech-table thead th:nth-child(1) {
+  width: 15%;
+}
+
+/* Solicitante / ID */
+.fintech-table thead th:nth-child(2) {
+  width: 15%;
+}
+
+/* Lugar de Trabajo y Funciones */
+.fintech-table thead th:nth-child(3) {
+  width: 13%;
+}
+
+/* Perfil / Residencia */
+.fintech-table thead th:nth-child(4) {
+  width: 14%;
+}
+
+/* Monto y Fuente Ingresos */
+.fintech-table thead th:nth-child(5) {
+  width: 7.5%;
+}
+
+/* Score (350-750) */
+.fintech-table thead th:nth-child(6) {
+  width: 10.5%;
+}
+
+/* Lender Asignado */
+.fintech-table thead th:nth-child(7) {
+  width: 10%;
+}
+
+/* Estado del Préstamo */
+.fintech-table thead th:nth-child(8) {
+  width: 7%;
+}
+
+/* Fecha Automática */
+.fintech-table thead th:nth-child(9) {
+  width: 8%;
+  text-align: center;
+}
+
+/* Acciones */
 
 .fintech-table tbody tr {
   border-bottom: 1px solid rgba(167, 139, 250, 0.1);
@@ -980,8 +1041,15 @@ body::before {
 }
 
 @keyframes fadeInModal {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .modal-window {
@@ -1213,8 +1281,15 @@ body::before {
 }
 
 @keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .code-snippet-box {
@@ -2153,19 +2228,23 @@ body::before {
   .kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
   .credits-3stage-board,
   .vcard-split-layout,
   .brain-grid-2col,
   .wizard-layout-split {
     grid-template-columns: 1fr;
   }
+
   .wizard-sidebar-progress {
     border-left: none;
     border-top: 1px solid rgba(167, 139, 250, 0.22);
   }
+
   .option-cards-grid-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
   .toolbar-filters {
     grid-template-columns: 1fr 1fr;
   }
@@ -2177,16 +2256,20 @@ body::before {
     flex-direction: column;
     align-items: stretch;
   }
+
   .kpi-grid,
   .option-cards-grid-4 {
     grid-template-columns: 1fr;
   }
+
   .toolbar-filters {
     grid-template-columns: 1fr;
   }
+
   .fields-grid {
     grid-template-columns: 1fr;
   }
+
   .wizard-main-stage {
     padding: 22px 18px;
   }

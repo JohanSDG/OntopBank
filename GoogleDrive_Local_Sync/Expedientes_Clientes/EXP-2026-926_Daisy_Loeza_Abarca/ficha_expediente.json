@@ -17,9 +17,9 @@
   "montoSolicitado": 40000,
   "propositoPrestamo": "Consolidación de Deuda",
   "entidadFinanciera": "Ontop Global Credit Bridge",
-  "estadoProceso": "4. Pre-Aprobado",
-  "timerStartedAt": 1795469420840,
-  "timerEndsAt": 1795469780840,
+  "estadoProceso": "5. Aprobado y Desembolsado",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
   "adjuntos": [
     {
       "name": "Oregon.jpeg",
@@ -30,7 +30,9 @@
   ],
   "notasConsultor": "3 Hijos, Sin deudas adicionales, No beneficio de estado norteamericano, Mexicana (Acapulco)",
   "fechaCreacion": "2026-11-23 15:20",
-  "fechaActualizacion": "2026-11-23 16:30",
+  "fechaActualizacion": "2026-11-23 19:31",
   "cardLast4": "2954",
-  "cardExpiry": "08/29"
+  "cardExpiry": "08/29",
+  "cardActivated": true,
+  "cardActivatedAt": "2026-11-23 19:31"
 }
