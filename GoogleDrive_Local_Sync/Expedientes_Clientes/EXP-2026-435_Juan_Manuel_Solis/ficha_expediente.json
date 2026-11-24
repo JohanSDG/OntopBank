@@ -7,8 +7,8 @@
   "fechaNacimiento": "1945-06-15",
   "perfilMigratorio": "Residente EE. UU. / Ciudadano",
   "tipoId": "Licencia EE. UU.",
-  "numeroId": "7482578888",
-  "residencia": "colorado",
+  "numeroId": "08742453",
+  "residencia": "Direccion 2405 isabella st apt 1 Houston Texas 77004",
   "lugarTrabajo": "Pensionado - cheque social segurity: 1.050 dolares mes (03 ) deposito directo  //",
   "funcionesTrabajo": "Pensionado",
   "ingresosMensuales": 1050,
@@ -18,10 +18,17 @@
   "propositoPrestamo": "Compra de Vivienda / Hipotecario",
   "entidadFinanciera": "Ontop Global Credit Bridge",
   "estadoProceso": "3. En Estudio por Entidad (Underwriting)",
-  "timerStartedAt": 1795485091680,
-  "timerEndsAt": 1795485451680,
-  "adjuntos": [],
+  "timerStartedAt": 1795485539596,
+  "timerEndsAt": 1795485899596,
+  "adjuntos": [
+    {
+      "name": "WhatsApp Image 2026-11-23 at 8.57.13 PM.jpeg",
+      "size": 94052,
+      "type": "image/jpeg",
+      "category": "Soporte KYC / Financiero"
+    }
+  ],
   "notasConsultor": "Pensionado.",
   "fechaCreacion": "2026-11-23 20:51",
-  "fechaActualizacion": "2026-11-23 20:51"
+  "fechaActualizacion": "2026-11-23 20:58"
 }

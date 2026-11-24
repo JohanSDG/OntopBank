@@ -44,8 +44,8 @@
         <Cell><Data ss:Type="String">713 298-9199</Data></Cell>
         <Cell><Data ss:Type="String">1945-06-15</Data></Cell>
         <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
-        <Cell><Data ss:Type="String">Licencia EE. UU.: 7482578888</Data></Cell>
-        <Cell><Data ss:Type="String">colorado</Data></Cell>
+        <Cell><Data ss:Type="String">Licencia EE. UU.: 08742453</Data></Cell>
+        <Cell><Data ss:Type="String">Direccion 2405 isabella st apt 1 Houston Texas 77004</Data></Cell>
         <Cell><Data ss:Type="String">Pensionado - cheque social segurity: 1.050 dolares mes (03 ) deposito directo  //</Data></Cell>
         <Cell><Data ss:Type="String">Pensionado</Data></Cell>
         <Cell><Data ss:Type="Number">1050</Data></Cell>
@@ -55,9 +55,9 @@
         <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
         <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
         <Cell><Data ss:Type="String">3. En Estudio por Entidad (Underwriting)</Data></Cell>
-        <Cell><Data ss:Type="Number">0</Data></Cell>
+        <Cell><Data ss:Type="Number">1</Data></Cell>
         <Cell><Data ss:Type="String">Pensionado.</Data></Cell>
-        <Cell><Data ss:Type="String">2026-11-23 20:51</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-23 20:58</Data></Cell>
       </Row>
       <Row>
         <Cell><Data ss:Type="String">EXP-2026-217</Data></Cell>
