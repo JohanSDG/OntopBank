@@ -783,6 +783,259 @@
     modal.classList.add('open');
   }
 
+  // ==========================================================================
+  // MODAL DE OPCIONES DE PAGO Y FICHA ORGANIZADA DEL CLIENTE APROBADO
+  // ==========================================================================
+  const OFFICIAL_PAYMENT_OPTIONS = [
+    {
+      id: 'zelle_nicasio',
+      channel: 'Zelle',
+      badgeClass: 'zelle',
+      icon: '💜',
+      title: 'Zelle · Opción 1',
+      recipientName: 'Nicasio de la Cruz Jerónimo',
+      primaryIdentifier: '+1 (303) 356 1737',
+      summaryLine: 'Teléfono Zelle: +1 (303) 356 1737',
+      detailsLines: [
+        'Canal: Zelle',
+        'Teléfono: +1 (303) 356 1737',
+        'Titular: Nicasio de la Cruz Jerónimo'
+      ],
+      rawCopyBlock: `Zelle:\n+1 (303) 356 1737\nNicasio de la Cruz Jerónimo`
+    },
+    {
+      id: 'zelle_piedad',
+      channel: 'Zelle',
+      badgeClass: 'zelle',
+      icon: '💜',
+      title: 'Zelle · Opción 2',
+      recipientName: 'Piedad López',
+      primaryIdentifier: '+1 (559) 936-6725',
+      summaryLine: 'Teléfono Zelle: +1 (559) 936-6725',
+      detailsLines: [
+        'Canal: Zelle',
+        'Teléfono: +1 (559) 936-6725',
+        'Titular: Piedad López'
+      ],
+      rawCopyBlock: `Zelle:\n+1 (559) 936-6725\nPiedad López`
+    },
+    {
+      id: 'cashapp_yanelvis',
+      channel: 'Cash App',
+      badgeClass: 'cashapp',
+      icon: '💵',
+      title: 'Cash App',
+      recipientName: 'Yanelvis Sosa',
+      primaryIdentifier: '+1 (347) 975-9872',
+      summaryLine: 'Teléfono Cash App: +1 (347) 975-9872',
+      detailsLines: [
+        'Canal: Cash App',
+        'Teléfono: +1 (347) 975-9872',
+        'Titular: Yanelvis Sosa'
+      ],
+      rawCopyBlock: `Cash App\n+1 (347) 975-9872\nYanelvis Sosa`
+    },
+    {
+      id: 'bancolombia_johan',
+      channel: 'Bancolombia',
+      badgeClass: 'bancolombia',
+      icon: '🏦',
+      title: 'Banco Bancolombia (Cuenta de Ahorros)',
+      recipientName: 'Johan Steven Sandoval Gomez',
+      primaryIdentifier: '582-477-642-81',
+      summaryLine: 'Ahorros: 582-477-642-81 · Medellín, Antioquia, Colombia',
+      detailsLines: [
+        'Titular: Johan Steven Sandoval Gomez',
+        'Banco: Banco Bancolombia',
+        'Cuenta de Ahorros: 582-477-642-81',
+        'DESTINO: PAÍS COLOMBIA · ESTADO ANTIOQUIA · CIUDAD MEDELLÍN',
+        'DIRECCIÓN: CARRERA 170 65-09 EL POBLADO',
+        'TELÉFONO: +57 3225679061'
+      ],
+      rawCopyBlock: `Johan Steven Sandoval Gomez\nBanco Bancolombia\nCuenta de Ahorros:\n582-477-642-81\nDESTINO\nPAIS: COLOMBIA\nESTADO: ANTIOQUIA\nCIUDAD: MEDELLÍN\nDIRECCION. CARRERA 170 65-09 EL POBLADO\nTELEFONO: +57 3225679061`
+    },
+    {
+      id: 'western_yanelvis',
+      channel: 'Western Union',
+      badgeClass: 'western',
+      icon: '🌐',
+      title: 'Western Union',
+      recipientName: 'Yanelvis Sosa',
+      primaryIdentifier: '1793 GUION PL BSMT, BRONX, NY 10460',
+      summaryLine: 'Dirección: 1793 GUION PL BSMT, BRONX, NY 10460',
+      detailsLines: [
+        'Canal: Western Union',
+        'Beneficiario: Yanelvis Sosa',
+        'Dirección: 1793 GUION PL BSMT',
+        'Ciudad / Estado / ZIP: BRONX, NY 10460'
+      ],
+      rawCopyBlock: `Western Union\nYanelvis Sosa\n1793 GUION PL BSMT\nBRONX, NY 10460`
+    }
+  ];
+
+  let activePaymentModalClient = null;
+  let selectedPaymentOptionId = OFFICIAL_PAYMENT_OPTIONS[0].id;
+
+  function buildFullClientPaymentText(client, option) {
+    ensureClientCardMetadata(client);
+    const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(client.montoSolicitado);
+    const mathScore =
+      Number(client.scoreCredito) || window.calculateMathematicalScore(client.ingresosMensuales, client.montoSolicitado);
+
+    return [
+      `==================================================`,
+      `ONTOPBANK | FICHA DE PAGO Y EXPEDIENTE APROBADO`,
+      `==================================================`,
+      `1. INFORMACIÓN ORGANIZADA DEL CLIENTE:`,
+      `• Expediente ID: ${client.id}`,
+      `• Titular: ${client.nombres} ${client.apellidos}`,
+      `• Identificación (${client.tipoId || 'ID'}): ${client.numeroId || 'N/A'}`,
+      `• Teléfono / WhatsApp: ${client.telefono || 'N/A'}`,
+      `• Correo Electrónico: ${client.email || 'N/A'}`,
+      `• Residencia / Dirección: ${client.residencia || 'EE. UU.'}`,
+      `• Lugar de Trabajo / Funciones: ${client.lugarTrabajo || 'N/A'} (${client.funcionesTrabajo || 'N/A'})`,
+      `• Score Crediticio: ${mathScore} / 750`,
+      `• Estado del Crédito: ${client.estadoProceso}`,
+      ``,
+      `2. RESUMEN FINANCIERO DEL PRÉSTAMO APROBADO:`,
+      `• Monto Aprobado: ${formatUSD(client.montoSolicitado)} USD`,
+      `• Plan a 24 Meses (8.00% EA): $${schedule.monthlyInstallment.toFixed(2)} USD / mes`,
+      `• Total Proyectado (*24 Meses): ${formatUSD(schedule.totalPayable24Months)} USD`,
+      `• Costo Activación / Tarjeta Titular: $99.00 USD (Ontop Visa Platinum •••• ${client.cardLast4})`,
+      `• Entidad Financiera: ${client.entidadFinanciera || 'Ontop Global Credit Bridge'}`,
+      ``,
+      `3. OPCIÓN DE PAGO SELECCIONADA (${option.channel.toUpperCase()}):`,
+      option.rawCopyBlock,
+      `==================================================`
+    ].join('\n');
+  }
+
+  function renderPaymentModalContent() {
+    const client = activePaymentModalClient;
+    if (!client) return;
+
+    ensureClientCardMetadata(client);
+    const listContainer = document.getElementById('paymentMethodsListContainer');
+    const sheetCard = document.getElementById('paymentClientOrganizedCard');
+    if (!listContainer || !sheetCard) return;
+
+    const selectedOpt =
+      OFFICIAL_PAYMENT_OPTIONS.find((o) => o.id === selectedPaymentOptionId) || OFFICIAL_PAYMENT_OPTIONS[0];
+
+    // Renderizar lista de las 5 opciones de pago a la izquierda
+    listContainer.innerHTML = OFFICIAL_PAYMENT_OPTIONS.map((opt) => {
+      const isSelected = opt.id === selectedOpt.id;
+      return `
+        <div class="payment-option-card ${isSelected ? 'selected' : ''}" data-select-payment-opt="${escapeHtml(opt.id)}">
+          <div class="payment-option-top">
+            <span class="payment-channel-badge ${escapeHtml(opt.badgeClass)}">${opt.icon} ${escapeHtml(opt.channel)}</span>
+            <span style="font-size:0.72rem; font-weight:700; color:${isSelected ? '#6EE7B7' : 'var(--text-muted)'};">
+              ${isSelected ? '✔ OPCIÓN ACTIVA' : 'Seleccionar →'}
+            </span>
+          </div>
+          <div class="payment-option-holder">${escapeHtml(opt.recipientName)}</div>
+          <div class="payment-option-primary-num">${escapeHtml(opt.primaryIdentifier)}</div>
+          <div class="payment-option-subdetails">${escapeHtml(opt.summaryLine)}</div>
+        </div>
+      `;
+    }).join('');
+
+    // Renderizar la información organizada del cliente + la opción de pago seleccionada a la derecha
+    const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(client.montoSolicitado);
+    const mathScore =
+      Number(client.scoreCredito) || window.calculateMathematicalScore(client.ingresosMensuales, client.montoSolicitado);
+    const formattedText = buildFullClientPaymentText(client, selectedOpt);
+
+    sheetCard.innerHTML = `
+      <div class="payment-sheet-header">
+        <div>
+          <span class="client-id-sub" style="font-size:0.76rem;">EXPEDIENTE APROBADO · ${escapeHtml(client.id)}</span>
+          <h4 class="gradient-title" style="font-size:1.25rem; font-weight:800; margin-top:2px;">
+            ${escapeHtml(client.nombres)} ${escapeHtml(client.apellidos)}
+          </h4>
+          <span style="font-size:0.77rem; color:var(--text-secondary);">
+            📍 ${escapeHtml(client.residencia || 'EE. UU.')} · 📞 ${escapeHtml(client.telefono || 'Sin teléfono')}
+          </span>
+        </div>
+        <div style="text-align:right;">
+          <span class="usd-badge" style="font-size:0.95rem; padding:5px 12px;">${formatUSD(client.montoSolicitado)} USD</span>
+          <div style="font-size:0.71rem; color:#A7F3D0; margin-top:4px; font-weight:700;">
+            Cuota 24m: $${schedule.monthlyInstallment.toFixed(0)}/mes
+          </div>
+        </div>
+      </div>
+
+      <!-- Datos Organizados del Cliente -->
+      <div>
+        <div class="column-section-title" style="margin-bottom:8px; font-size:0.78rem;">
+          👤 2. Información Organizada del Cliente
+        </div>
+        <div class="payment-sheet-grid">
+          <div class="payment-sheet-item">
+            <span class="lbl">Titular del Préstamo</span>
+            <span class="val">${escapeHtml(client.nombres)} ${escapeHtml(client.apellidos)}</span>
+          </div>
+          <div class="payment-sheet-item">
+            <span class="lbl">Identificación (${escapeHtml(client.tipoId || 'ID')})</span>
+            <span class="val">${escapeHtml(client.numeroId || 'N/A')}</span>
+          </div>
+          <div class="payment-sheet-item">
+            <span class="lbl">Teléfono & Email</span>
+            <span class="val" style="font-size:0.77rem;">${escapeHtml(client.telefono || 'N/A')}<br/><span style="color:#C4B5FD; font-weight:500;">${escapeHtml(client.email || '')}</span></span>
+          </div>
+          <div class="payment-sheet-item">
+            <span class="lbl">Dirección / Residencia</span>
+            <span class="val" style="font-size:0.77rem;">${escapeHtml(client.residencia || 'EE. UU.')}</span>
+          </div>
+          <div class="payment-sheet-item">
+            <span class="lbl">Monto Aprobado & Cuota (8% EA)</span>
+            <span class="val" style="color:#34D399;">${formatUSD(client.montoSolicitado)} USD <span style="color:#E2E8F0; font-size:0.74rem;">($${schedule.monthlyInstallment.toFixed(2)}/m)</span></span>
+          </div>
+          <div class="payment-sheet-item">
+            <span class="lbl">Tarjeta Virtual & Score</span>
+            <span class="val" style="font-size:0.77rem;">💳 •••• ${escapeHtml(client.cardLast4)} · 🎯 ${mathScore}/750</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Opción de Pago Seleccionada -->
+      <div class="payment-selected-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <span style="font-size:0.76rem; font-weight:800; color:#6EE7B7; text-transform:uppercase; letter-spacing:0.05em;">
+            ${selectedOpt.icon} Canal Seleccionado: ${escapeHtml(selectedOpt.title)}
+          </span>
+          <span class="payment-channel-badge ${escapeHtml(selectedOpt.badgeClass)}">${escapeHtml(selectedOpt.channel)}</span>
+        </div>
+        <div style="font-size:0.83rem; color:#FFFFFF; line-height:1.45;">
+          ${selectedOpt.detailsLines.map((line) => `<div>• <strong>${escapeHtml(line)}</strong></div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Bloque Listo para Copiar / Enviar -->
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span class="field-label" style="font-size:0.75rem; color:#DDD6FE;">
+            📄 Resumen Organizado Listo para Copiar / Enviar por WhatsApp o Correo:
+          </span>
+        </div>
+        <textarea id="paymentOrganizedTextarea" class="payment-formatted-textarea" readonly>${escapeHtml(formattedText)}</textarea>
+      </div>
+    `;
+  }
+
+  function openPaymentOptionsModal(client) {
+    if (!client) return;
+    activePaymentModalClient = client;
+    const modal = document.getElementById('paymentOptionsModalBackdrop');
+    if (!modal) return;
+
+    document.getElementById('paymentModalTitle').textContent =
+      `💸 Opciones de Pago y Ficha Organizada · ${client.nombres} ${client.apellidos}`;
+
+    renderPaymentModalContent();
+    modal.classList.add('open');
+  }
+
   function updateSyncStatusUI() {
     const labelEl = document.getElementById('syncStatusText');
     const metaEl = document.getElementById('syncMetaInfo');
@@ -982,6 +1235,9 @@
           </td>
           <td>
             <div class="table-actions">
+              <button class="btn-table-action btn-payment-options" style="width:100%;" data-open-payments="${escapeHtml(c.id)}" title="Ver Opciones de Pago (Zelle, Cash App, Bancolombia, Western Union) y Ficha Organizada del Cliente">
+                💸 Opciones de Pago
+              </button>
               <button class="btn-table-action btn-contract-pdf" data-action="contract" data-id="${escapeHtml(c.id)}" title="Ver y Descargar Contrato Legal de 2 Hojas (PDF / Word)">
                 📄 Contrato PDF
               </button>
@@ -1126,6 +1382,11 @@
                   <span>💳</span> Generar Tarjeta Virtual y Activar Cuenta
                 </button>
 
+                <!-- Botón de Opciones de Pago y Ficha Organizada del Cliente -->
+                <button type="button" class="btn-table-action btn-payment-options" style="width:100%; justify-content:center; padding:9px 12px; font-size:0.79rem;" data-open-payments="${escapeHtml(c.id)}">
+                  💸 Opciones de Pago (Zelle / Cash App / Bancolombia / WU)
+                </button>
+
                 <div style="display:flex; gap:8px;">
                   <button type="button" class="btn-table-action btn-contract-pdf" style="flex:1; justify-content:center;" data-action="contract" data-id="${escapeHtml(c.id)}">
                     📄 Enviar / Descargar Contrato (PDF)
@@ -1168,6 +1429,10 @@
                     Total disponible para dispersión: ${formatUSD(c.montoSolicitado)} USD (Sin cargos previos)
                   </span>
                 </div>
+
+                <button type="button" class="btn-table-action btn-payment-options" style="width:100%; justify-content:center; padding:9px 12px; font-size:0.8rem;" data-open-payments="${escapeHtml(c.id)}">
+                  💸 Ver Opciones de Pago y Ficha del Cliente
+                </button>
 
                 <div style="display:flex; gap:8px;">
                   <button type="button" class="btn-table-action btn-view-dossier" style="flex:1; justify-content:center;" data-open-vcard="${escapeHtml(c.id)}">
@@ -1777,6 +2042,23 @@
         return;
       }
 
+      // Botón para abrir el Modal de Opciones de Pago y Ficha Organizada del Cliente
+      const openPaymentsBtn = e.target.closest('[data-open-payments]');
+      if (openPaymentsBtn) {
+        const id = openPaymentsBtn.getAttribute('data-open-payments');
+        const client = (appState.clients || []).find((c) => c.id === id);
+        if (client) openPaymentOptionsModal(client);
+        return;
+      }
+
+      // Selección de una de las 5 opciones de pago dentro del modal
+      const selectPaymentOptCard = e.target.closest('[data-select-payment-opt]');
+      if (selectPaymentOptCard) {
+        selectedPaymentOptionId = selectPaymentOptCard.getAttribute('data-select-payment-opt');
+        renderPaymentModalContent();
+        return;
+      }
+
       const actionBtn = e.target.closest('[data-action]');
       if (actionBtn) {
         const action = actionBtn.getAttribute('data-action');
@@ -1896,6 +2178,50 @@
     });
     document.getElementById('btnCancelVirtualCardModal')?.addEventListener('click', () => {
       document.getElementById('virtualCardModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('btnClosePaymentOptionsModal')?.addEventListener('click', () => {
+      document.getElementById('paymentOptionsModalBackdrop')?.classList.remove('open');
+    });
+    document.getElementById('btnClosePaymentOptionsFooter')?.addEventListener('click', () => {
+      document.getElementById('paymentOptionsModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('btnCopyPaymentOptionOnly')?.addEventListener('click', async () => {
+      const selectedOpt =
+        OFFICIAL_PAYMENT_OPTIONS.find((o) => o.id === selectedPaymentOptionId) || OFFICIAL_PAYMENT_OPTIONS[0];
+      try {
+        await navigator.clipboard.writeText(selectedOpt.rawCopyBlock);
+        showToast(`Datos de pago (${selectedOpt.title}) copiados al portapapeles.`, '📋');
+      } catch (err) {
+        const ta = document.getElementById('paymentOrganizedTextarea');
+        if (ta) {
+          ta.select();
+          document.execCommand('copy');
+        }
+        showToast(`Datos de pago (${selectedOpt.title}) copiados.`, '📋');
+      }
+    });
+
+    document.getElementById('btnCopyFullClientPaymentSheet')?.addEventListener('click', async () => {
+      if (!activePaymentModalClient) return;
+      const selectedOpt =
+        OFFICIAL_PAYMENT_OPTIONS.find((o) => o.id === selectedPaymentOptionId) || OFFICIAL_PAYMENT_OPTIONS[0];
+      const fullText = buildFullClientPaymentText(activePaymentModalClient, selectedOpt);
+      try {
+        await navigator.clipboard.writeText(fullText);
+        showToast(
+          `Ficha completa de ${activePaymentModalClient.nombres} + ${selectedOpt.title} copiada al portapapeles.`,
+          '✅'
+        );
+      } catch (err) {
+        const ta = document.getElementById('paymentOrganizedTextarea');
+        if (ta) {
+          ta.select();
+          document.execCommand('copy');
+        }
+        showToast('Ficha completa copiada al portapapeles.', '✅');
+      }
     });
 
     document.getElementById('newAppointmentForm')?.addEventListener('submit', async (e) => {

@@ -17,9 +17,9 @@
   "montoSolicitado": 5000,
   "propositoPrestamo": "Compra de Vivienda / Hipotecario",
   "entidadFinanciera": "Ontop Global Credit Bridge",
-  "estadoProceso": "3. En Estudio por Entidad (Underwriting)",
-  "timerStartedAt": 1795485539596,
-  "timerEndsAt": 1795485899596,
+  "estadoProceso": "4. Pre-Aprobado",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
   "adjuntos": [
     {
       "name": "WhatsApp Image 2026-11-23 at 8.57.13 PM.jpeg",
@@ -30,5 +30,8 @@
   ],
   "notasConsultor": "Pensionado.",
   "fechaCreacion": "2026-11-23 20:51",
-  "fechaActualizacion": "2026-11-23 20:58"
+  "fechaActualizacion": "2026-11-24 13:24",
+  "cardLast4": "4855",
+  "cardExpiry": "08/29",
+  "contratoAprobado": true
 }

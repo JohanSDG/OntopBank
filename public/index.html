@@ -1012,6 +1012,55 @@
     </div>
   </div>
 
+  <!-- ======================================================================
+       MODAL DE OPCIONES DE PAGO Y FICHA ORGANIZADA DEL CLIENTE APROBADO
+       ====================================================================== -->
+  <div class="modal-backdrop" id="paymentOptionsModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window" style="max-width: 1120px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="gradient-title" id="paymentModalTitle">💸 Opciones Oficiales de Pago y Ficha Organizada del Cliente</h3>
+          <span style="font-size:0.77rem; color:#A7F3D0;" id="paymentModalSubtitle">
+            Selecciona un canal de pago autorizado (Zelle, Cash App, Bancolombia o Western Union) para generar y copiar la información organizada del cliente.
+          </span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnClosePaymentOptionsModal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="payment-options-split">
+          <!-- COLUMNA IZQUIERDA: 5 OPCIONES DE PAGO ORGANIZADAS -->
+          <div class="payment-methods-col">
+            <div class="column-section-title" style="margin-bottom:4px;">
+              🏦 1. Selecciona la Opción / Canal de Pago
+            </div>
+            <div class="payment-methods-list" id="paymentMethodsListContainer"></div>
+          </div>
+
+          <!-- COLUMNA DERECHA: INFORMACIÓN ORGANIZADA DEL CLIENTE + CANAL SELECCIONADO -->
+          <div class="payment-client-sheet-col">
+            <div class="payment-client-sheet-card" id="paymentClientOrganizedCard"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div style="font-size:0.75rem; color:var(--usd-emerald);">
+          ✔ Información organizada del expediente lista para copiar o descargar
+        </div>
+        <div class="modal-footer-right" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-pill-ghost" id="btnCopyPaymentOptionOnly">
+            📋 Copiar Solo Datos de Pago
+          </button>
+          <button type="button" class="btn-pill-primary" id="btnCopyFullClientPaymentSheet">
+            📋 Copiar Ficha Completa (Cliente + Pago)
+          </button>
+          <button type="button" class="btn-pill-ghost" id="btnClosePaymentOptionsFooter">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Contenedor de Notificaciones Toast -->
   <div class="toast-container" id="toastContainer"></div>
 
