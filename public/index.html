@@ -149,7 +149,7 @@
         <span class="tab-counter" id="tabCountPipeline">0</span>
       </button>
       <button type="button" class="tab-btn" data-tab="citas">
-        <span>📅 Agendar Citas de Consultoría</span>
+        <span>🏦 Envío de Dinero y Convenios Bancarios (Depósito Directo)</span>
         <span class="tab-counter" id="tabCountAppointments">0</span>
       </button>
       <button type="button" class="tab-btn" data-tab="lenders">
@@ -610,58 +610,132 @@
       </section>
 
       <!-- ==================================================================
-           PESTAÑA 3: AGENDAR CITAS DE CONSULTORÍA
+           PESTAÑA 3: ENVÍO DE DINERO Y CONVENIOS BANCARIOS PARA DEPÓSITO DIRECTO (ACH / WIRE & LEY IMPUESTOS)
            ================================================================== -->
       <section class="glass-card main-module-card tab-panel" id="panel-citas">
         <div class="section-banner-header">
           <div class="section-title-group">
-            <h2 class="gradient-title">Agenda de Sesiones de Consultoría Financiera</h2>
-            <p>Coordina sesiones 1-a-1 con solicitantes para revisión de ingresos y cierre de préstamos.</p>
+            <h2 class="gradient-title">🏦 Envío de Dinero y Convenios Bancarios para Depósito Directo (ACH / Wire)</h2>
+            <p>
+              Vinculación de cuenta receptora (Titular, Número de Ruta ABA y Número de Cuenta) para clientes con <strong>Crédito Activado y en Desembolso</strong>, con liquidación del <strong>Fee / Impuesto Federal de Transferencia Bancaria (IRS IRC § 1441 / FATCA &amp; Federal Excise Tax Act)</strong> según el monto aprobado.
+            </p>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="usd-badge" id="ddTotalActiveBadge" style="font-size:0.88rem; padding:6px 14px;">0 Clientes en Desembolso</span>
           </div>
         </div>
 
-        <form id="newAppointmentForm" style="padding: 20px 26px; border-bottom: 1px solid rgba(167,139,250,0.16); background: rgba(12,8,28,0.45);">
-          <div class="fields-grid" style="grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));">
-            <div class="field-group">
-              <label class="field-label">Solicitante / Cliente <span class="req">*</span></label>
-              <select id="citaClienteId" class="select-control" required></select>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Fecha de Cita <span class="req">*</span></label>
-              <input type="date" id="citaFecha" class="input-control" required />
-            </div>
-            <div class="field-group">
-              <label class="field-label">Hora (EST) <span class="req">*</span></label>
-              <input type="time" id="citaHora" class="input-control" required />
-            </div>
-            <div class="field-group">
-              <label class="field-label">Canal de Reunión</label>
-              <select id="citaCanal" class="select-control">
-                <option value="Google Meet / Ontop Concierge">Google Meet / Ontop Concierge</option>
-                <option value="Zoom Ejecutivo">Zoom Ejecutivo</option>
-                <option value="WhatsApp Business Call">WhatsApp Business Call</option>
-                <option value="Presencial Brickell Miami">Presencial Brickell Miami</option>
-              </select>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Consultor Senior Asignado <span class="req">*</span></label>
-              <input type="text" id="citaConsultor" class="input-control" placeholder="Ej. Dra. Elena Vance" required />
-            </div>
-            <div class="field-group">
-              <label class="field-label">Objetivo de la Consultoría <span class="req">*</span></label>
-              <input type="text" id="citaTema" class="input-control" placeholder="Ej. Pre-calificación Hipotecaria ITIN" required />
-            </div>
-            <div class="field-group full-span" style="display:flex; flex-direction:row; gap:12px; align-items:flex-end;">
-              <div style="flex:1;">
-                <label class="field-label">Notas Previas para la Sesión</label>
-                <input type="text" id="citaNotas" class="input-control" placeholder="Documentos requeridos durante la llamada..." />
+        <!-- Formulario Superior de Vinculación de Depósito Directo + Cálculo Automático de Ley de Impuestos -->
+        <form id="directDepositAgreementForm" class="dd-master-form">
+          <div class="dd-form-split">
+            <!-- LADO IZQUIERDO: DATOS BANCARIOS DE DEPÓSITO DIRECTO -->
+            <div class="dd-form-left">
+              <div class="column-section-title" style="margin-bottom:12px;">
+                🔗 1. Vincular Cuenta Bancaria para Depósito Directo del Préstamo
               </div>
-              <button type="submit" class="btn-modal-save">+ Agendar Cita</button>
+              <div class="fields-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr)); gap:14px;">
+                <div class="field-group">
+                  <label class="field-label" for="ddClientId">Cliente en Desembolso (Etapa 3) <span class="req">*</span></label>
+                  <select id="ddClientId" class="select-control" required></select>
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label" for="ddBankName">Entidad Bancaria Receptora (Convenio EE. UU. / Global) <span class="req">*</span></label>
+                  <select id="ddBankName" class="select-control" required>
+                    <option value="Bank of America (Convenio Directo ACH/Wire)">Bank of America (Convenio Directo ACH/Wire)</option>
+                    <option value="JPMorgan Chase Bank N.A.">JPMorgan Chase Bank N.A.</option>
+                    <option value="Wells Fargo Bank N.A.">Wells Fargo Bank N.A.</option>
+                    <option value="Citibank N.A. / Citi Global">Citibank N.A. / Citi Global</option>
+                    <option value="TD Bank / Truist / PNC Bank">TD Bank / Truist / PNC Bank</option>
+                    <option value="Capital One / U.S. Bank">Capital One / U.S. Bank</option>
+                    <option value="Mercury / Relay / Ontop USD Checking">Mercury / Relay / Ontop USD Checking</option>
+                    <option value="Otro Banco Comercial (Convenio Federal ABA)">Otro Banco Comercial (Convenio Federal ABA)</option>
+                  </select>
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label" for="ddAccountHolder">Nombre del Titular de la Cuenta <span class="req">*</span></label>
+                  <input type="text" id="ddAccountHolder" class="input-control" placeholder="Nombre exacto del titular bancario..." required />
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label" for="ddAccountType">Tipo de Cuenta para Depósito Directo <span class="req">*</span></label>
+                  <select id="ddAccountType" class="select-control">
+                    <option value="Checking Account (Cuenta Corriente)">Checking Account (Cuenta Corriente)</option>
+                    <option value="Savings Account (Cuenta de Ahorros)">Savings Account (Cuenta de Ahorros)</option>
+                  </select>
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label" for="ddRoutingNumber">Número de Ruta Bancaria (ABA Routing Number - 9 Dígitos) <span class="req">*</span></label>
+                  <input type="text" id="ddRoutingNumber" class="input-control" placeholder="Ej. 026009593 / 121000358" maxlength="18" required />
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label" for="ddAccountNumber">Número de Cuenta para Depósito Directo <span class="req">*</span></label>
+                  <input type="text" id="ddAccountNumber" class="input-control" placeholder="Ej. 000482910492" maxlength="24" required />
+                </div>
+
+                <div class="field-group full-span">
+                  <label class="field-label" for="ddWireNotes">Referencia / Código de Convenio o Instrucción Especial</label>
+                  <input type="text" id="ddWireNotes" class="input-control" placeholder="Ej. Depósito Directo Prioritario ACH Same-Day / Liberación tras pago de Impuesto Federal..." />
+                </div>
+              </div>
+            </div>
+
+            <!-- LADO DERECHO: CÁLCULO AUTOMÁTICO DE LEY DE IMPUESTOS Y FIT POR ENVÍO DEL PRÉSTAMO -->
+            <div class="dd-tax-law-panel" id="ddLiveTaxLawPreviewBox">
+              <div class="dd-tax-header">
+                <span class="dd-tax-kicker">⚖️ NORMATIVA TRIBUTARIA FEDERAL DE DESEMBOLSO</span>
+                <h4 class="dd-tax-title">Ley de Impuestos y Fee (Fit) por Envío de Préstamo a Cuenta Bancaria</h4>
+              </div>
+              <div id="ddLiveTaxCalculationBody" class="dd-tax-body">
+                Selecciona un cliente activo para calcular el impuesto federal aplicable según el monto a recibir.
+              </div>
+              <div style="margin-top:auto; padding-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" class="btn-modal-save" style="width:100%; justify-content:center; padding:13px 18px; font-size:0.92rem;">
+                  💾 Vincular Depósito Directo y Generar Orden Tributaria de Envío
+                </button>
+              </div>
             </div>
           </div>
         </form>
 
-        <div class="cards-grid-3" id="appointmentsGrid"></div>
+        <!-- Barra Informativa de Escala Legal de Impuestos según el Monto a Recibir -->
+        <div class="dd-tax-brackets-bar">
+          <div class="dd-bracket-pill">
+            <strong>Tramo I ($500 – $5,000 USD):</strong>
+            <span>IRC § 1441 &amp; Stamp Tax (4.50% · Mín. $135 USD)</span>
+          </div>
+          <div class="dd-bracket-pill">
+            <strong>Tramo II ($5,001 – $15,000 USD):</strong>
+            <span>Federal Credit Wire Excise Act (3.80%)</span>
+          </div>
+          <div class="dd-bracket-pill">
+            <strong>Tramo III ($15,001 – $35,000 USD):</strong>
+            <span>FATCA &amp; Cross-Border Remittance Tax (3.25%)</span>
+          </div>
+          <div class="dd-bracket-pill">
+            <strong>Tramo IV (Más de $35,000 USD):</strong>
+            <span>Federal High-Value Liquidity Settlement Tax (2.75%)</span>
+          </div>
+        </div>
+
+        <!-- Listado de Clientes en Desembolso con su Convenio de Depósito Directo y Liquidación de Impuestos -->
+        <div style="padding: 22px 26px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+            <div>
+              <h3 class="gradient-title" style="font-size:1.2rem; font-weight:800;">
+                📋 Clientes en Créditos Activados y en Desembolso · Convenios de Depósito Directo
+              </h3>
+              <p style="font-size:0.86rem; color:var(--text-secondary);">
+                Haz clic en <strong>🔗 Cargar / Editar Cuenta</strong> en cualquier cliente para vincular o modificar su Número de Ruta y Cuenta, o en <strong>🏛️ Certificado Depósito Directo &amp; Impuestos (PDF)</strong> para emitir su orden bancaria.
+              </p>
+            </div>
+          </div>
+
+          <div class="dd-clients-grid" id="appointmentsGrid"></div>
+        </div>
       </section>
 
       <!-- ==================================================================
@@ -1094,6 +1168,41 @@
             📥 Descargar Documento de Despacho en PDF (.pdf)
           </button>
           <button type="button" class="btn-pill-ghost" id="btnCloseDispatchModalFooter">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL DE ORDEN OFICIAL DE DEPÓSITO DIRECTO, CONVENIO BANCARIO Y LIQUIDACIÓN DE IMPUESTOS (IRS / FIT)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="directDepositTaxModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window" style="max-width: 1050px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="gradient-title" id="ddTaxModalTitle">🏛️ Orden Oficial de Depósito Directo, Convenio Bancario y Liquidación de Impuestos</h3>
+          <span style="font-size:0.78rem; color:#FDE68A;" id="ddTaxModalSubtitle">
+            Cumplimiento Tributario Federal (IRS IRC § 1441 / FATCA Withholding &amp; Federal Wire Excise Tax Act) para Liberación de Fondos en Cuenta Bancaria
+          </span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseDdTaxModal">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px 20px; background: rgba(8, 5, 18, 0.94);">
+        <iframe id="ddTaxPreviewIframe" class="contract-preview-iframe" title="Certificado de Depósito Directo y Liquidación de Impuestos"></iframe>
+      </div>
+
+      <div class="modal-footer">
+        <div style="font-size:0.75rem; color:var(--usd-emerald);">
+          ✔ Convenio bancario ABA / ACH vinculado al expediente y sincronizado con Google Drive
+        </div>
+        <div class="modal-footer-right" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-pill-ghost" id="btnPrintDdTaxModal">🖨️ Imprimir Orden</button>
+          <button type="button" class="btn-pill-ghost" id="btnDownloadDdTaxWord">📝 Descargar Word (.doc)</button>
+          <button type="button" class="btn-modal-save" id="btnDownloadDdTaxPdf" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+            📥 Descargar Certificado de Depósito Directo e Impuestos (.pdf)
+          </button>
+          <button type="button" class="btn-pill-ghost" id="btnCloseDdTaxModalFooter">Cerrar</button>
         </div>
       </div>
     </div>

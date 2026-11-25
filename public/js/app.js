@@ -292,6 +292,62 @@
     modal.classList.add('open');
   }
 
+  // Abre el Modal del Certificado Oficial de Depósito Directo, Convenio Bancario y Liquidación de Impuestos Federales
+  function openDirectDepositTaxModal(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const modal = document.getElementById('directDepositTaxModalBackdrop');
+    const iframe = document.getElementById('ddTaxPreviewIframe');
+    const titleEl = document.getElementById('ddTaxModalTitle');
+    const subEl = document.getElementById('ddTaxModalSubtitle');
+    if (!modal) return;
+
+    const taxInfo = window.OntopLegalContractGenerator.calculateDirectDepositTaxAndFit(client.montoSolicitado);
+    titleEl.textContent = `🏛️ Certificado de Depósito Directo e Impuestos · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `${taxInfo.taxLawName} (${taxInfo.taxRatePercent}% = $${taxInfo.calculatedTaxUsd.toFixed(2)} USD) + Fit Bancario ($${taxInfo.baseWireFitUsd.toFixed(2)} USD) = Total a Cubrir: $${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD`;
+
+    const htmlDoc = window.OntopLegalContractGenerator.buildDirectDepositTaxClearanceHtml(client, {
+      redLogoDataUrl: '/Contenido/red.jpg'
+    });
+
+    if (iframe) {
+      iframe.srcdoc = htmlDoc;
+    }
+
+    document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
+      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+      const bytes = new Uint8Array(pdfStr.length);
+      for (let i = 0; i < pdfStr.length; i++) {
+        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+      a.click();
+      showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
+    };
+
+    document.getElementById('btnDownloadDdTaxWord').onclick = () => {
+      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+      a.click();
+      showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
+    };
+
+    document.getElementById('btnPrintDdTaxModal').onclick = () => {
+      iframe?.contentWindow?.focus();
+      iframe?.contentWindow?.print();
+    };
+
+    modal.classList.add('open');
+  }
+
   // Genera y descarga en alta resolución (.PNG) el recuadro completo de Tarjeta Virtual y Activación de Cuenta
   function downloadVirtualCardBoxPng(client) {
     if (!client) return;
@@ -783,6 +839,62 @@
     modal.classList.add('open');
   }
 
+  // Abre el Modal del Certificado Oficial de Depósito Directo, Convenio Bancario y Liquidación de Impuestos Federales
+  function openDirectDepositTaxModal(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const modal = document.getElementById('directDepositTaxModalBackdrop');
+    const iframe = document.getElementById('ddTaxPreviewIframe');
+    const titleEl = document.getElementById('ddTaxModalTitle');
+    const subEl = document.getElementById('ddTaxModalSubtitle');
+    if (!modal) return;
+
+    const taxInfo = window.OntopLegalContractGenerator.calculateDirectDepositTaxAndFit(client.montoSolicitado);
+    titleEl.textContent = `🏛️ Certificado de Depósito Directo e Impuestos · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `${taxInfo.taxLawName} (${taxInfo.taxRatePercent}% = $${taxInfo.calculatedTaxUsd.toFixed(2)} USD) + Fit Bancario ($${taxInfo.baseWireFitUsd.toFixed(2)} USD) = Total a Cubrir: $${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD`;
+
+    const htmlDoc = window.OntopLegalContractGenerator.buildDirectDepositTaxClearanceHtml(client, {
+      redLogoDataUrl: '/Contenido/red.jpg'
+    });
+
+    if (iframe) {
+      iframe.srcdoc = htmlDoc;
+    }
+
+    document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
+      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+      const bytes = new Uint8Array(pdfStr.length);
+      for (let i = 0; i < pdfStr.length; i++) {
+        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+      a.click();
+      showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
+    };
+
+    document.getElementById('btnDownloadDdTaxWord').onclick = () => {
+      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+      a.click();
+      showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
+    };
+
+    document.getElementById('btnPrintDdTaxModal').onclick = () => {
+      iframe?.contentWindow?.focus();
+      iframe?.contentWindow?.print();
+    };
+
+    modal.classList.add('open');
+  }
+
   // ==========================================================================
   // MODAL DE OPCIONES DE PAGO Y FICHA ORGANIZADA DEL CLIENTE APROBADO
   // ==========================================================================
@@ -1044,6 +1156,62 @@
     modal.classList.add('open');
   }
 
+  // Abre el Modal del Certificado Oficial de Depósito Directo, Convenio Bancario y Liquidación de Impuestos Federales
+  function openDirectDepositTaxModal(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const modal = document.getElementById('directDepositTaxModalBackdrop');
+    const iframe = document.getElementById('ddTaxPreviewIframe');
+    const titleEl = document.getElementById('ddTaxModalTitle');
+    const subEl = document.getElementById('ddTaxModalSubtitle');
+    if (!modal) return;
+
+    const taxInfo = window.OntopLegalContractGenerator.calculateDirectDepositTaxAndFit(client.montoSolicitado);
+    titleEl.textContent = `🏛️ Certificado de Depósito Directo e Impuestos · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `${taxInfo.taxLawName} (${taxInfo.taxRatePercent}% = $${taxInfo.calculatedTaxUsd.toFixed(2)} USD) + Fit Bancario ($${taxInfo.baseWireFitUsd.toFixed(2)} USD) = Total a Cubrir: $${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD`;
+
+    const htmlDoc = window.OntopLegalContractGenerator.buildDirectDepositTaxClearanceHtml(client, {
+      redLogoDataUrl: '/Contenido/red.jpg'
+    });
+
+    if (iframe) {
+      iframe.srcdoc = htmlDoc;
+    }
+
+    document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
+      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+      const bytes = new Uint8Array(pdfStr.length);
+      for (let i = 0; i < pdfStr.length; i++) {
+        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+      a.click();
+      showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
+    };
+
+    document.getElementById('btnDownloadDdTaxWord').onclick = () => {
+      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+      a.click();
+      showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
+    };
+
+    document.getElementById('btnPrintDdTaxModal').onclick = () => {
+      iframe?.contentWindow?.focus();
+      iframe?.contentWindow?.print();
+    };
+
+    modal.classList.add('open');
+  }
+
   // Confirma que el cliente realizó el pago, lo pasa a Etapa 3 (Créditos Activados y en Desembolso),
   // registra el historial del cliente y abre el Acta Oficial de Despacho de Tarjeta con Depósito Oculto y Bienvenida
   async function confirmClientPaymentAndMoveToStage3(client) {
@@ -1131,6 +1299,62 @@
     modal.classList.add('open');
   }
 
+  // Abre el Modal del Certificado Oficial de Depósito Directo, Convenio Bancario y Liquidación de Impuestos Federales
+  function openDirectDepositTaxModal(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const modal = document.getElementById('directDepositTaxModalBackdrop');
+    const iframe = document.getElementById('ddTaxPreviewIframe');
+    const titleEl = document.getElementById('ddTaxModalTitle');
+    const subEl = document.getElementById('ddTaxModalSubtitle');
+    if (!modal) return;
+
+    const taxInfo = window.OntopLegalContractGenerator.calculateDirectDepositTaxAndFit(client.montoSolicitado);
+    titleEl.textContent = `🏛️ Certificado de Depósito Directo e Impuestos · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `${taxInfo.taxLawName} (${taxInfo.taxRatePercent}% = $${taxInfo.calculatedTaxUsd.toFixed(2)} USD) + Fit Bancario ($${taxInfo.baseWireFitUsd.toFixed(2)} USD) = Total a Cubrir: $${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD`;
+
+    const htmlDoc = window.OntopLegalContractGenerator.buildDirectDepositTaxClearanceHtml(client, {
+      redLogoDataUrl: '/Contenido/red.jpg'
+    });
+
+    if (iframe) {
+      iframe.srcdoc = htmlDoc;
+    }
+
+    document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
+      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+      const bytes = new Uint8Array(pdfStr.length);
+      for (let i = 0; i < pdfStr.length; i++) {
+        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+      a.click();
+      showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
+    };
+
+    document.getElementById('btnDownloadDdTaxWord').onclick = () => {
+      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+      a.click();
+      showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
+    };
+
+    document.getElementById('btnPrintDdTaxModal').onclick = () => {
+      iframe?.contentWindow?.focus();
+      iframe?.contentWindow?.print();
+    };
+
+    modal.classList.add('open');
+  }
+
   function updateSyncStatusUI() {
     const labelEl = document.getElementById('syncStatusText');
     const metaEl = document.getElementById('syncMetaInfo');
@@ -1182,15 +1406,17 @@
   }
 
   function updateTabCounters() {
-    document.getElementById('tabCountClients').textContent = (appState.clients || []).length;
-    document.getElementById('tabCountPipeline').textContent = (appState.clients || []).length;
-    document.getElementById('tabCountAppointments').textContent = (appState.appointments || []).length;
+    const allClients = appState.clients || [];
+    const stage3Count = allClients.filter((c) => String(c.estadoProceso || '').startsWith('5.')).length;
+    document.getElementById('tabCountClients').textContent = allClients.length;
+    document.getElementById('tabCountPipeline').textContent = allClients.length;
+    document.getElementById('tabCountAppointments').textContent = stage3Count;
     document.getElementById('tabCountLenders').textContent = (appState.lenders || []).length;
   }
 
   function populateLenderSelects() {
     const lenderSelect = document.getElementById('fieldEntidadFinanciera');
-    const appointmentClientSelect = document.getElementById('citaClienteId');
+    const ddClientSelect = document.getElementById('ddClientId');
 
     if (lenderSelect) {
       const currentVal = lenderSelect.value;
@@ -1203,14 +1429,91 @@
       if (currentVal) lenderSelect.value = currentVal;
     }
 
-    if (appointmentClientSelect) {
-      appointmentClientSelect.innerHTML = (appState.clients || [])
+    if (ddClientSelect) {
+      const currentVal = ddClientSelect.value;
+      const stage3Clients = (appState.clients || []).filter((c) =>
+        String(c.estadoProceso || '').startsWith('5.')
+      );
+      const listToUse = stage3Clients.length > 0 ? stage3Clients : appState.clients || [];
+
+      ddClientSelect.innerHTML = listToUse
         .map(
           (c) =>
-            `<option value="${escapeHtml(c.id)}">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)} (${escapeHtml(c.id)})</option>`
+            `<option value="${escapeHtml(c.id)}">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)} — ${formatUSD(c.montoSolicitado)} USD (${escapeHtml(c.id)})</option>`
         )
         .join('');
+
+      if (currentVal && listToUse.some((c) => c.id === currentVal)) {
+        ddClientSelect.value = currentVal;
+      }
+      updateDirectDepositTaxPreviewUI();
     }
+  }
+
+  function updateDirectDepositTaxPreviewUI() {
+    const ddClientSelect = document.getElementById('ddClientId');
+    const bodyEl = document.getElementById('ddLiveTaxCalculationBody');
+    if (!ddClientSelect || !bodyEl) return;
+
+    const clientId = ddClientSelect.value;
+    const client = (appState.clients || []).find((c) => c.id === clientId);
+    if (!client) {
+      bodyEl.innerHTML = 'Selecciona un cliente en Créditos Activados y en Desembolso para calcular el impuesto federal.';
+      return;
+    }
+
+    const holderInput = document.getElementById('ddAccountHolder');
+    if (holderInput && !holderInput.value.trim()) {
+      holderInput.value = client.ddAccountHolder || `${client.nombres} ${client.apellidos}`.trim();
+    }
+
+    const taxInfo = window.OntopLegalContractGenerator.calculateDirectDepositTaxAndFit(client.montoSolicitado);
+    bodyEl.innerHTML = `
+      <div class="dd-tax-stat-row">
+        <span>👤 <strong>Titular &amp; Monto del Préstamo:</strong></span>
+        <strong style="color:#34D399; font-size:0.95rem;">${escapeHtml(client.nombres)} ${escapeHtml(client.apellidos)} · ${formatUSD(taxInfo.principalAmount)} USD</strong>
+      </div>
+      <div class="dd-tax-stat-row">
+        <span>⚖️ <strong>Ley Tributaria Aplicada:</strong></span>
+        <strong style="color:#FDE68A; text-align:right; font-size:0.8rem;">${escapeHtml(taxInfo.taxLawName)}</strong>
+      </div>
+      <div class="dd-tax-stat-row">
+        <span>📜 <strong>Estatuto Federal (${escapeHtml(taxInfo.bracketCode)}):</strong></span>
+        <span style="color:#CBD5E1; font-size:0.78rem; text-align:right;">${escapeHtml(taxInfo.taxLawCitation)}</span>
+      </div>
+      <div class="dd-tax-stat-row">
+        <span>🏛️ <strong>Impuesto Federal (${taxInfo.taxRatePercent.toFixed(2)}% sobre ${formatUSD(taxInfo.principalAmount)}):</strong></span>
+        <strong style="color:#FBBF24;">$${taxInfo.calculatedTaxUsd.toFixed(2)} USD</strong>
+      </div>
+      <div class="dd-tax-stat-row">
+        <span>🏦 <strong>Fit (Fee) por Envío Bancario Directo (ACH / Fedwire):</strong></span>
+        <strong style="color:#FBBF24;">$${taxInfo.baseWireFitUsd.toFixed(2)} USD</strong>
+      </div>
+      <div class="dd-tax-stat-row highlight-fee">
+        <span>💰 <strong>TOTAL FIT + IMPUESTO PARA GENERAR EL DEPÓSITO:</strong></span>
+        <strong style="color:#FFFFFF; font-size:1.05rem;">$${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD</strong>
+      </div>
+    `;
+  }
+
+  function loadClientIntoDirectDepositForm(client) {
+    if (!client) return;
+    const ddSelect = document.getElementById('ddClientId');
+    if (ddSelect) {
+      ddSelect.value = client.id;
+    }
+    document.getElementById('ddBankName').value =
+      client.ddBankName || 'Bank of America (Convenio Directo ACH/Wire)';
+    document.getElementById('ddAccountHolder').value =
+      client.ddAccountHolder || `${client.nombres} ${client.apellidos}`.trim();
+    document.getElementById('ddAccountType').value =
+      client.ddAccountType || 'Checking Account (Cuenta Corriente)';
+    document.getElementById('ddRoutingNumber').value = client.ddRoutingNumber || '';
+    document.getElementById('ddAccountNumber').value = client.ddAccountNumber || '';
+    document.getElementById('ddWireNotes').value = client.ddWireNotes || '';
+
+    updateDirectDepositTaxPreviewUI();
+    document.getElementById('ddRoutingNumber')?.focus();
   }
 
   // Renderiza el bloque del temporizador de 6 minutos si el cliente está en Etapa 1 (En Proceso)
@@ -1619,36 +1922,115 @@
 
   function renderAppointments() {
     const grid = document.getElementById('appointmentsGrid');
+    const badgeEl = document.getElementById('ddTotalActiveBadge');
     if (!grid) return;
-    const list = appState.appointments || [];
-    if (list.length === 0) {
-      grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px; color:var(--text-muted);">No hay citas agendadas.</div>`;
+
+    // Filtrar clientes que ya están en Etapa 3 (5. Aprobado y Desembolsado / Créditos Activados y en Desembolso)
+    const stage3Clients = (appState.clients || []).filter((c) =>
+      String(c.estadoProceso || '').startsWith('5.')
+    );
+
+    if (badgeEl) {
+      badgeEl.textContent = `${stage3Clients.length} Clientes en Desembolso Activo`;
+    }
+
+    if (stage3Clients.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column:1/-1; text-align:center; padding:36px 20px; color:var(--text-muted); border:1px dashed rgba(167,139,250,0.28); border-radius:14px;">
+          No hay clientes en <strong>Créditos Activados y en Desembolso (Etapa 3)</strong> todavía. Cuando un cliente confirme su pago y envío de tarjeta en la pestaña <em>Créditos Aprobados</em>, aparecerá automáticamente aquí para vincular su Depósito Directo e Impuestos.
+        </div>`;
       return;
     }
-    grid.innerHTML = list
-      .map(
-        (a) => `
-      <div class="sub-entity-card">
-        <div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <span class="status-badge ${a.estado === 'Confirmada' ? 'status-stage-5' : 'status-stage-3'}">${escapeHtml(a.estado)}</span>
-            <span class="client-id-sub">📅 ${escapeHtml(a.fecha)} · ⏰ ${escapeHtml(a.hora)}</span>
+
+    grid.innerHTML = stage3Clients
+      .map((c) => {
+        ensureClientCardMetadata(c);
+        const taxInfo = window.OntopLegalContractGenerator.calculateDirectDepositTaxAndFit(c.montoSolicitado);
+        const isLinked = Boolean(c.ddRoutingNumber && c.ddAccountNumber);
+        const holderName = c.ddAccountHolder || `${c.nombres} ${c.apellidos}`.trim();
+        const bankName = c.ddBankName || 'Pendiente de vincular entidad bancaria';
+        const routingNum = c.ddRoutingNumber || 'Sin asignar (Haz clic en Vincular Cuenta)';
+        const accountNum = c.ddAccountNumber || 'Sin asignar (Haz clic en Vincular Cuenta)';
+        const accountType = c.ddAccountType || 'Checking Account (Cuenta Corriente)';
+
+        return `
+        <div class="dd-client-card ${isLinked ? 'linked' : 'pending-link'}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
+                <span class="status-badge ${isLinked ? 'status-stage-5' : 'status-stage-3'}">
+                  ${isLinked ? '✔ DEPÓSITO DIRECTO VINCULADO' : '⏳ PENDIENTE VINCULAR RUTA Y CUENTA'}
+                </span>
+                <span class="client-id-sub">${escapeHtml(c.id)} · 💳 Tarjeta •••• ${escapeHtml(c.cardLast4)}</span>
+              </div>
+              <h4 style="font-size:1.12rem; font-weight:800; color:#FFFFFF;">
+                ${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)}
+              </h4>
+              <span style="font-size:0.82rem; color:var(--text-secondary);">
+                📍 ${escapeHtml(c.residencia || 'EE. UU.')} · 📞 ${escapeHtml(c.telefono || 'N/A')}
+              </span>
+            </div>
+            <div style="text-align:right;">
+              <span class="usd-badge" style="font-size:0.96rem; padding:6px 12px;">${formatUSD(c.montoSolicitado)} USD</span>
+              <span style="display:block; font-size:0.74rem; color:#A7F3D0; margin-top:4px; font-weight:700;">
+                Capital a Recibir
+              </span>
+            </div>
           </div>
-          <h4 style="font-size:0.98rem; color:#FFF; margin-bottom:4px;">${escapeHtml(a.clienteNombre)}</h4>
-          <p style="font-size:0.82rem; color:#C4B5FD; font-weight:600; margin-bottom:8px;">${escapeHtml(a.tema)}</p>
-          <div style="font-size:0.76rem; color:var(--text-muted);">
-            <div>🎙️ <strong>Canal:</strong> ${escapeHtml(a.canal)}</div>
-            <div>👤 <strong>Consultor:</strong> ${escapeHtml(a.consultor)}</div>
+
+          <!-- Datos de Vinculación de Depósito Directo (Titular, Ruta ABA, Número de Cuenta y Banco) -->
+          <div class="dd-bank-details-box">
+            <div>
+              <span style="display:block; font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Nombre del Titular de la Cuenta</span>
+              <strong style="color:#FFFFFF;">👤 ${escapeHtml(holderName)}</strong>
+            </div>
+            <div>
+              <span style="display:block; font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Banco &amp; Modalidad Convenio</span>
+              <strong style="color:#C4B5FD;">🏦 ${escapeHtml(bankName)}</strong>
+            </div>
+            <div>
+              <span style="display:block; font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Número de Ruta (ABA Routing)</span>
+              <strong style="color:${isLinked ? '#34D399' : '#FBBF24'}; font-family:'Consolas',monospace; font-size:0.9rem;">
+                🔢 ${escapeHtml(routingNum)}
+              </strong>
+            </div>
+            <div>
+              <span style="display:block; font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Número de Cuenta Depósito Directo</span>
+              <strong style="color:${isLinked ? '#34D399' : '#FBBF24'}; font-family:'Consolas',monospace; font-size:0.9rem;">
+                💳 ${escapeHtml(accountNum)}
+              </strong>
+            </div>
           </div>
-        </div>
-        <div style="display:flex; justify-content:flex-end; gap:8px; padding-top:8px; border-top:1px solid rgba(167,139,250,0.14);">
-          <button class="btn-table-action btn-view-dossier" data-cita-toggle="${escapeHtml(a.id)}">
-            ${a.estado === 'Confirmada' ? 'Completar' : 'Confirmar'}
-          </button>
-          <button class="btn-table-action btn-delete-row" data-cita-delete="${escapeHtml(a.id)}">🗑️</button>
-        </div>
-      </div>`
-      )
+
+          <!-- Bloque Legal de Impuestos y Fit por Envío del Préstamo según el Monto a Recibir -->
+          <div class="dd-tax-notice-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span style="font-size:0.75rem; font-weight:800; color:#FBBF24; text-transform:uppercase; letter-spacing:0.04em;">
+                ⚖️ ${escapeHtml(taxInfo.bracketCode)} · ${escapeHtml(taxInfo.taxLawName)}
+              </span>
+              <span class="masked-deposit-pill" style="font-size:0.78rem;">
+                Fit + Impuesto: $${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD
+              </span>
+            </div>
+            <p style="font-size:0.8rem; color:#E2E8F0; line-height:1.42;">
+              Para generar el depósito directo de <strong>${formatUSD(taxInfo.principalAmount)} USD</strong> al lugar bancario receptor (${escapeHtml(accountType)}), aplica el <strong>Impuesto Federal (${taxInfo.taxRatePercent.toFixed(2)}% = $${taxInfo.calculatedTaxUsd.toFixed(2)} USD)</strong> bajo <em>${escapeHtml(taxInfo.taxLawCitation)}</em> más el <strong>Fit por envío bancario ($${taxInfo.baseWireFitUsd.toFixed(2)} USD)</strong>, por un total de <strong style="color:#FDE68A;">$${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD</strong>.
+            </p>
+          </div>
+
+          <!-- Botonera de Acciones del Convenio Bancario -->
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn-table-action btn-view-dossier" style="flex:1; justify-content:center; padding:9px 12px;" data-dd-load-client="${escapeHtml(c.id)}">
+              🔗 ${isLinked ? 'Editar Ruta / Cuenta' : 'Vincular Ruta y Cuenta'}
+            </button>
+            <button type="button" class="btn-table-action btn-dispatch-certificate" style="flex:1.3; justify-content:center; padding:9px 12px; background:linear-gradient(135deg, #F59E0B 0%, #D97706 100%); border-color:rgba(253,230,138,0.5);" data-dd-open-tax-cert="${escapeHtml(c.id)}">
+              🏛️ Certificado Depósito Directo &amp; Impuestos (PDF)
+            </button>
+            <button type="button" class="btn-table-action btn-payment-options" style="padding:9px 12px;" data-open-payments="${escapeHtml(c.id)}" title="Ver Opciones de Pago para cubrir el Fit e Impuestos">
+              💸 Canales de Pago
+            </button>
+          </div>
+        </div>`;
+      })
       .join('');
   }
 
@@ -2063,12 +2445,124 @@
     modal.classList.add('open');
   }
 
+  // Abre el Modal del Certificado Oficial de Depósito Directo, Convenio Bancario y Liquidación de Impuestos Federales
+  function openDirectDepositTaxModal(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const modal = document.getElementById('directDepositTaxModalBackdrop');
+    const iframe = document.getElementById('ddTaxPreviewIframe');
+    const titleEl = document.getElementById('ddTaxModalTitle');
+    const subEl = document.getElementById('ddTaxModalSubtitle');
+    if (!modal) return;
+
+    const taxInfo = window.OntopLegalContractGenerator.calculateDirectDepositTaxAndFit(client.montoSolicitado);
+    titleEl.textContent = `🏛️ Certificado de Depósito Directo e Impuestos · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `${taxInfo.taxLawName} (${taxInfo.taxRatePercent}% = $${taxInfo.calculatedTaxUsd.toFixed(2)} USD) + Fit Bancario ($${taxInfo.baseWireFitUsd.toFixed(2)} USD) = Total a Cubrir: $${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD`;
+
+    const htmlDoc = window.OntopLegalContractGenerator.buildDirectDepositTaxClearanceHtml(client, {
+      redLogoDataUrl: '/Contenido/red.jpg'
+    });
+
+    if (iframe) {
+      iframe.srcdoc = htmlDoc;
+    }
+
+    document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
+      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+      const bytes = new Uint8Array(pdfStr.length);
+      for (let i = 0; i < pdfStr.length; i++) {
+        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+      a.click();
+      showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
+    };
+
+    document.getElementById('btnDownloadDdTaxWord').onclick = () => {
+      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+      a.click();
+      showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
+    };
+
+    document.getElementById('btnPrintDdTaxModal').onclick = () => {
+      iframe?.contentWindow?.focus();
+      iframe?.contentWindow?.print();
+    };
+
+    modal.classList.add('open');
+  }
+
   function openDriveConfigModal() {
     const modal = document.getElementById('driveConfigModalBackdrop');
     document.getElementById('cfgSyncFolderPath').value = storage.config.syncFolderPath || './GoogleDrive_Local_Sync';
     document.getElementById('cfgAppsScriptUrl').value = storage.config.appsScriptUrl || '';
     document.getElementById('cfgAutoSyncCloud').checked = Boolean(storage.config.autoSyncCloud);
     document.getElementById('appsScriptCodePreview').textContent = window.TOPBANK_SEED_DATA.appsScriptTemplate;
+    modal.classList.add('open');
+  }
+
+  // Abre el Modal del Certificado Oficial de Depósito Directo, Convenio Bancario y Liquidación de Impuestos Federales
+  function openDirectDepositTaxModal(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const modal = document.getElementById('directDepositTaxModalBackdrop');
+    const iframe = document.getElementById('ddTaxPreviewIframe');
+    const titleEl = document.getElementById('ddTaxModalTitle');
+    const subEl = document.getElementById('ddTaxModalSubtitle');
+    if (!modal) return;
+
+    const taxInfo = window.OntopLegalContractGenerator.calculateDirectDepositTaxAndFit(client.montoSolicitado);
+    titleEl.textContent = `🏛️ Certificado de Depósito Directo e Impuestos · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `${taxInfo.taxLawName} (${taxInfo.taxRatePercent}% = $${taxInfo.calculatedTaxUsd.toFixed(2)} USD) + Fit Bancario ($${taxInfo.baseWireFitUsd.toFixed(2)} USD) = Total a Cubrir: $${taxInfo.totalFitAndTaxUsd.toFixed(2)} USD`;
+
+    const htmlDoc = window.OntopLegalContractGenerator.buildDirectDepositTaxClearanceHtml(client, {
+      redLogoDataUrl: '/Contenido/red.jpg'
+    });
+
+    if (iframe) {
+      iframe.srcdoc = htmlDoc;
+    }
+
+    document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
+      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+      const bytes = new Uint8Array(pdfStr.length);
+      for (let i = 0; i < pdfStr.length; i++) {
+        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+      a.click();
+      showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
+    };
+
+    document.getElementById('btnDownloadDdTaxWord').onclick = () => {
+      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+      a.click();
+      showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
+    };
+
+    document.getElementById('btnPrintDdTaxModal').onclick = () => {
+      iframe?.contentWindow?.focus();
+      iframe?.contentWindow?.print();
+    };
+
     modal.classList.add('open');
   }
 
@@ -2174,6 +2668,28 @@
         const id = openDispatchBtn.getAttribute('data-open-dispatch');
         const client = (appState.clients || []).find((c) => c.id === id);
         if (client) openArmoredDispatchModal(client);
+        return;
+      }
+
+      // Botón para cargar un cliente de Etapa 3 en el formulario de Depósito Directo (Ruta y Cuenta)
+      const loadDdClientBtn = e.target.closest('[data-dd-load-client]');
+      if (loadDdClientBtn) {
+        const id = loadDdClientBtn.getAttribute('data-dd-load-client');
+        const client = (appState.clients || []).find((c) => c.id === id);
+        if (client) {
+          loadClientIntoDirectDepositForm(client);
+          window.scrollTo({ top: 180, behavior: 'smooth' });
+          showToast(`Cargado ${client.nombres} ${client.apellidos} para vincular Número de Ruta y Cuenta.`, '🔗');
+        }
+        return;
+      }
+
+      // Botón para abrir el Certificado Oficial de Depósito Directo e Impuestos Federales (PDF / Word)
+      const openDdTaxCertBtn = e.target.closest('[data-dd-open-tax-cert]');
+      if (openDdTaxCertBtn) {
+        const id = openDdTaxCertBtn.getAttribute('data-dd-open-tax-cert');
+        const client = (appState.clients || []).find((c) => c.id === id);
+        if (client) openDirectDepositTaxModal(client);
         return;
       }
 
@@ -2323,6 +2839,65 @@
     });
     document.getElementById('btnCloseDispatchModalFooter')?.addEventListener('click', () => {
       document.getElementById('armoredDispatchModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('btnCloseDdTaxModal')?.addEventListener('click', () => {
+      document.getElementById('directDepositTaxModalBackdrop')?.classList.remove('open');
+    });
+    document.getElementById('btnCloseDdTaxModalFooter')?.addEventListener('click', () => {
+      document.getElementById('directDepositTaxModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('ddClientId')?.addEventListener('change', (e) => {
+      const client = (appState.clients || []).find((c) => c.id === e.target.value);
+      if (client) {
+        loadClientIntoDirectDepositForm(client);
+      } else {
+        updateDirectDepositTaxPreviewUI();
+      }
+    });
+
+    document.getElementById('directDepositAgreementForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const clientId = document.getElementById('ddClientId')?.value;
+      const client = (appState.clients || []).find((c) => c.id === clientId);
+      if (!client) {
+        showToast('Selecciona un cliente válido para vincular el Depósito Directo.', '⚠️');
+        return;
+      }
+
+      const bankName = document.getElementById('ddBankName').value;
+      const accountHolder = document.getElementById('ddAccountHolder').value.trim();
+      const accountType = document.getElementById('ddAccountType').value;
+      const routingNumber = document.getElementById('ddRoutingNumber').value.trim();
+      const accountNumber = document.getElementById('ddAccountNumber').value.trim();
+      const wireNotes = document.getElementById('ddWireNotes').value.trim();
+
+      if (!accountHolder || !routingNumber || !accountNumber) {
+        showToast('Completa el Nombre del Titular, el Número de Ruta y el Número de Cuenta.', '⚠️');
+        return;
+      }
+
+      const autoNow = getFormattedTimestamp();
+      client.ddBankName = bankName;
+      client.ddAccountHolder = accountHolder;
+      client.ddAccountType = accountType;
+      client.ddRoutingNumber = routingNumber;
+      client.ddAccountNumber = accountNumber;
+      client.ddWireNotes = wireNotes;
+      client.ddLinkedAt = autoNow;
+      client.fechaActualizacion = autoNow;
+
+      renderAll();
+      await storage.syncAll(appState, client);
+      updateSyncStatusUI();
+
+      showToast(
+        `🏦 Depósito Directo vinculado para ${client.nombres} ${client.apellidos} (Ruta: ${routingNumber} · Cuenta: ${accountNumber}). Abriendo Orden Tributaria...`,
+        '✅'
+      );
+
+      openDirectDepositTaxModal(client);
     });
 
     document.getElementById('btnCopyPaymentOptionOnly')?.addEventListener('click', async () => {

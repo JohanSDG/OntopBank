@@ -1343,12 +1343,378 @@
     return pdf;
   }
 
+  // ==========================================================================
+  // LEY DE IMPUESTOS Y FIT (FEE) POR ENVÍO DE PRÉSTAMO A CUENTA BANCARIA (DEPÓSITO DIRECTO)
+  // Calcula la retención/impuesto federal aplicable según el tramo del monto a recibir
+  // ==========================================================================
+  function calculateDirectDepositTaxAndFit(principalAmount) {
+    const amount = Number(principalAmount) || 0;
+    let bracketCode = 'TRAMO I · MICRO-LIQUIDITY';
+    let taxLawName = 'U.S. Internal Revenue Code (IRC § 1441) & Federal Documentary Stamp Tax Act';
+    let taxLawCitation = '26 U.S.C. § 1441 / Florida Documentary Stamp Tax Stat. § 201.08';
+    let taxRatePercent = 4.5;
+    let baseWireFitUsd = 45;
+
+    if (amount > 35000) {
+      bracketCode = 'TRAMO IV · HIGH-VALUE CAPITAL';
+      taxLawName = 'Federal High-Value Liquidity Settlement & FATCA Compliance Tax Act (IRC § 1471)';
+      taxLawCitation = '26 U.S.C. § 1471-1474 (FATCA) & Federal Reserve Fedwire Settlement Statute';
+      taxRatePercent = 2.75;
+      baseWireFitUsd = 85;
+    } else if (amount > 15000) {
+      bracketCode = 'TRAMO III · COMMERCIAL & PERSONAL TIER';
+      taxLawName = 'FATCA Cross-Border & Domestic Credit Facility Withholding Act (IRC § 1442)';
+      taxLawCitation = '26 U.S.C. § 1442 & FinCEN Bank Secrecy Act (BSA) 31 CFR § 1010.410';
+      taxRatePercent = 3.25;
+      baseWireFitUsd = 65;
+    } else if (amount > 5000) {
+      bracketCode = 'TRAMO II · STANDARD CREDIT TIER';
+      taxLawName = 'Federal Credit Wire Excise & ACH Clearing Tax Act (IRC § 4371)';
+      taxLawCitation = '26 U.S.C. § 4371 & Federal Electronic Fund Transfer Act (Regulation E - 12 CFR 1005)';
+      taxRatePercent = 3.8;
+      baseWireFitUsd = 55;
+    }
+
+    const calculatedTaxUsd = Math.max(90, Number(((amount * taxRatePercent) / 100).toFixed(2)));
+    const totalFitAndTaxUsd = Number((calculatedTaxUsd + baseWireFitUsd).toFixed(2));
+
+    return {
+      principalAmount: amount,
+      bracketCode,
+      taxLawName,
+      taxLawCitation,
+      taxRatePercent,
+      calculatedTaxUsd,
+      baseWireFitUsd,
+      totalFitAndTaxUsd,
+      netDisbursementToAccount: amount
+    };
+  }
+
+  function buildDirectDepositTaxClearanceHtml(client, options = {}) {
+    const c = client || {};
+    const taxInfo = calculateDirectDepositTaxAndFit(c.montoSolicitado || 10000);
+    const schedule = calculateLoanSchedule8Percent(c.montoSolicitado || 10000);
+    const effectiveDate = c.ddLinkedAt || c.fechaActualizacion || c.fechaCreacion || new Date().toISOString().slice(0, 16).replace('T', ' ');
+    const fullName = `${c.nombres || 'TITULAR'} ${c.apellidos || ''}`.trim().toUpperCase();
+    const accountHolder = (c.ddAccountHolder || fullName).toUpperCase();
+    const bankName = c.ddBankName || 'Bank of America (Convenio Directo ACH/Wire)';
+    const accountType = c.ddAccountType || 'Checking Account (Cuenta Corriente)';
+    const routingNumber = c.ddRoutingNumber || 'PENDIENTE DE VINCULACIÓN';
+    const accountNumber = c.ddAccountNumber || 'PENDIENTE DE VINCULACIÓN';
+    const idLabel = `${c.tipoId || 'ID'}: ${c.numeroId || 'N/A'}`;
+    const residence = c.residencia || 'Estados Unidos';
+    const orderCode = `ACH-TAX-${String(c.id || 'EXP-2026').replace(/[^A-Z0-9]/gi, '')}`;
+    const redLogoSrc = options.redLogoDataUrl || '/Contenido/red.jpg';
+
+    return `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Orden Oficial de Depósito Directo y Liquidación de Impuestos - ${esc(fullName)}</title>
+  <style>
+    @page { size: letter portrait; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { font-family: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Arial, sans-serif; background: #E2E8F0; color: #0F172A; line-height: 1.4; font-size: 10.8px; }
+    .legal-sheet {
+      position: relative; width: 215.9mm; min-height: 279.4mm; margin: 10px auto; background: #FFFFFF;
+      padding: 15mm 16mm 14mm 22mm; box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+    }
+    .coral-left-bar { position: absolute; top: 0; left: 0; bottom: 0; width: 7mm; background: linear-gradient(180deg, #F59E0B 0%, #E11D48 55%, #6D28D9 100%); }
+    .sheet-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #E2E8F0; padding-bottom: 10px; margin-bottom: 12px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .box-card { border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px 12px; background: #F8FAFC; }
+    .box-card.bank { border-left: 4px solid #059669; background: #ECFDF5; }
+    .box-card.holder { border-left: 4px solid #6D28D9; background: #FAF5FF; }
+    .kicker { font-size: 8.8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #475569; margin-bottom: 3px; }
+    .tax-banner { background: linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%); color: #FFFFFF; border: 2px solid #F59E0B; border-radius: 12px; padding: 13px 16px; margin-bottom: 12px; }
+    .tax-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 10px; }
+    .tax-table th { background: #0F172A; color: #FFFFFF; padding: 6px 9px; text-align: left; font-size: 9px; text-transform: uppercase; }
+    .tax-table td { padding: 7px 9px; border-bottom: 1px solid #CBD5E1; color: #1E293B; }
+    .signatures-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 10px; padding-top: 10px; border-top: 1.5px solid #CBD5E1; }
+    .sig-line { font-family: 'Georgia', serif; font-style: italic; font-size: 15px; font-weight: 700; color: #4C1D95; border-bottom: 1.5px solid #0F172A; padding-bottom: 3px; margin: 10px 0 5px; }
+    .sheet-footer { border-top: 1px solid #CBD5E1; padding-top: 6px; font-size: 8.8px; color: #64748B; display: flex; justify-content: space-between; }
+    @media print { body { background: #FFFFFF; } .legal-sheet { margin: 0; box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <section class="legal-sheet">
+    <div class="coral-left-bar"></div>
+    <div>
+      <header class="sheet-header">
+        <div>
+          ${getOntopHeaderLogoSvg(redLogoSrc)}
+          <div style="font-size:9.2px; color:#475569; font-weight:700; margin-top:2px;">
+            ONTOP HOLDINGS INC. · DIRECT DEPOSIT CLEARINGHOUSE &amp; IRS TAX COMPLIANCE DIVISION
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:9px; font-weight:800; color:#D97706; letter-spacing:0.06em;">CONVENIO BANCARIO &amp; LIQUIDACIÓN DE IMPUESTOS</div>
+          <div style="font-size:12px; font-weight:900; color:#0F172A;">ORDEN: ${esc(orderCode)}</div>
+          <div style="font-size:9.5px; color:#334155;">Expediente: <strong>${esc(c.id || 'EXP-2026')}</strong> · Fecha: ${esc(effectiveDate)}</div>
+        </div>
+        <div>${getLegalOntopStampSvg()}</div>
+      </header>
+
+      <h1 style="font-size:12.8px; font-weight:900; color:#0F172A; text-transform:uppercase; margin-bottom:8px;">
+        CERTIFICADO OFICIAL DE VINCULACIÓN DE DEPÓSITO DIRECTO (ACH / FEDWIRE) Y LIQUIDACIÓN DEL FEE (FIT) E IMPUESTO FEDERAL POR ENVÍO DE PRÉSTAMO
+      </h1>
+
+      <p style="font-size:10.2px; color:#334155; margin-bottom:10px; text-align:justify;">
+        <strong>ONTOPBANK · ONTOP HOLDINGS INC.</strong> (con sede oficial en <strong>66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos</strong>) certifica que el crédito aprobado de <strong>${esc(fullName)}</strong> por un monto principal de <strong>$${formatMoney(taxInfo.principalAmount)} USD</strong> se encuentra vinculado al sistema de <strong>Convenios Bancarios para Depósito Directo</strong> en la cuenta receptora detallada a continuación:
+      </p>
+
+      <div class="grid-2">
+        <div class="box-card holder">
+          <div class="kicker">👤 DATOS DEL TITULAR Y EXPEDIENTE ACTIVADO</div>
+          <div style="font-size:11.5px; font-weight:800; color:#0F172A; margin-bottom:3px;">${esc(fullName)}</div>
+          <div><strong>Identificación:</strong> ${esc(idLabel)}</div>
+          <div><strong>Residencia:</strong> ${esc(residence)}</div>
+          <div><strong>Tarjeta Ontop Vinculada:</strong> Visa Platinum •••• ${esc(c.cardLast4 || '4829')}</div>
+          <div><strong>Monto Aprobado a Recibir:</strong> <strong style="color:#059669;">$${formatMoney(taxInfo.principalAmount)} USD</strong></div>
+        </div>
+
+        <div class="box-card bank">
+          <div class="kicker">🏦 CONVENIO BANCARIO VINCULADO PARA DEPÓSITO DIRECTO</div>
+          <div style="font-size:11.5px; font-weight:800; color:#065F46; margin-bottom:3px;">${esc(bankName)}</div>
+          <div><strong>Nombre del Titular de la Cuenta:</strong> ${esc(accountHolder)}</div>
+          <div><strong>Número de Ruta (ABA Routing):</strong> <code style="font-weight:900; color:#0F172A;">${esc(routingNumber)}</code></div>
+          <div><strong>Número de Cuenta Bancaria:</strong> <code style="font-weight:900; color:#0F172A;">${esc(accountNumber)}</code></div>
+          <div><strong>Modalidad:</strong> ${esc(accountType)}</div>
+        </div>
+      </div>
+
+      <!-- LEY DE IMPUESTOS APLICABLE SEGÚN EL MONTO A RECIBIR -->
+      <div class="tax-banner">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+          <div>
+            <div style="font-size:9px; font-weight:800; color:#FBBF24; letter-spacing:0.08em; text-transform:uppercase;">
+              ⚖️ LEY FEDERAL DE IMPUESTOS APLICADA (${esc(taxInfo.bracketCode)})
+            </div>
+            <div style="font-size:11.8px; font-weight:800; color:#FFFFFF;">
+              ${esc(taxInfo.taxLawName)}
+            </div>
+            <div style="font-size:9.3px; color:#CBD5E1;">
+              Fundamento Legal: <strong>${esc(taxInfo.taxLawCitation)}</strong>
+            </div>
+          </div>
+          <div style="background:rgba(245,158,11,0.22); border:1.5px solid #FBBF24; padding:6px 12px; border-radius:8px; text-align:right;">
+            <div style="font-size:8.5px; color:#FDE68A; font-weight:800; text-transform:uppercase;">TOTAL FIT + IMPUESTO DE ENVÍO</div>
+            <div style="font-size:14px; font-weight:900; color:#FFFFFF;">$${formatMoney(taxInfo.totalFitAndTaxUsd)} USD</div>
+          </div>
+        </div>
+        <p style="font-size:9.7px; color:#E2E8F0; line-height:1.42;">
+          <strong>REQUISITO OBLIGATORIO PARA GENERAR EL DEPÓSITO DIRECTO:</strong> De conformidad con la normativa tributaria federal vigente en los Estados Unidos (<strong>${esc(taxInfo.taxLawCitation)}</strong>), toda dispersión de capital crediticio hacia una entidad bancaria mediante Depósito Directo requiere la liquidación previa del <strong>Impuesto Federal de Transferencia (${taxInfo.taxRatePercent}% sobre $${formatMoney(taxInfo.principalAmount)} USD = $${formatMoney(taxInfo.calculatedTaxUsd)} USD)</strong> más el <strong>Fit Operativo de Enrutamiento Bancario ABA/Fedwire ($${formatMoney(taxInfo.baseWireFitUsd)} USD)</strong>, para un total de <strong>$${formatMoney(taxInfo.totalFitAndTaxUsd)} USD</strong>. Una vez cubierto dicho concepto tributario, el banco receptor libera el <strong>100% del préstamo ($${formatMoney(taxInfo.principalAmount)} USD)</strong> sin deducciones adicionales.
+        </p>
+      </div>
+
+      <div style="font-size:10.3px; font-weight:800; color:#0F172A; text-transform:uppercase; margin-bottom:5px;">
+        📊 DESGLOSE DE LIQUIDACIÓN TRIBUTARIA Y FIT DE ENVÍO BANCARIO SEGÚN MONTO APROBADO
+      </div>
+      <table class="tax-table">
+        <thead>
+          <tr>
+            <th>Concepto Financiero y Tributario</th>
+            <th>Base Legal / Referencia ABA</th>
+            <th style="text-align:right;">Tasa / Tarifa</th>
+            <th style="text-align:right;">Valor Liquidado (USD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Capital Principal del Préstamo Aprobado</strong></td>
+            <td>Expediente ${esc(c.id)} · Plan 24 Meses (8.00% EA · Cuota $${formatMoney(schedule.monthlyInstallment)}/m)</td>
+            <td style="text-align:right;">100.00%</td>
+            <td style="text-align:right; font-weight:800; color:#059669;">$${formatMoney(taxInfo.principalAmount)} USD</td>
+          </tr>
+          <tr>
+            <td><strong>2. Impuesto Federal sobre Monto a Recibir</strong></td>
+            <td>${esc(taxInfo.taxLawName)}</td>
+            <td style="text-align:right; font-weight:700;">${taxInfo.taxRatePercent.toFixed(2)}%</td>
+            <td style="text-align:right; font-weight:800; color:#B45309;">$${formatMoney(taxInfo.calculatedTaxUsd)} USD</td>
+          </tr>
+          <tr>
+            <td><strong>3. Fit (Fee) por Envío Bancario Directo (ACH / Fedwire)</strong></td>
+            <td>Convenio Interbancario ABA Routing #${esc(routingNumber)} → Cuenta #${esc(accountNumber)}</td>
+            <td style="text-align:right;">Tarifa Fija Federal</td>
+            <td style="text-align:right; font-weight:800; color:#B45309;">$${formatMoney(taxInfo.baseWireFitUsd)} USD</td>
+          </tr>
+          <tr style="background:#FEF3C7;">
+            <td colspan="2"><strong>TOTAL FIT POR ENVÍO + IMPUESTO FEDERAL A PAGAR PARA GENERAR EL DEPÓSITO</strong></td>
+            <td style="text-align:right; font-weight:800; color:#92400E;">${esc(taxInfo.bracketCode)}</td>
+            <td style="text-align:right; font-size:11.5px; font-weight:900; color:#92400E;">$${formatMoney(taxInfo.totalFitAndTaxUsd)} USD</td>
+          </tr>
+          <tr style="background:#ECFDF5;">
+            <td colspan="3"><strong>MONTO LÍQUIDO TOTAL A ACREDITAR EN LA CUENTA DE ${esc(accountHolder)} TRAS VALIDACIÓN</strong></td>
+            <td style="text-align:right; font-size:12px; font-weight:900; color:#047857;">$${formatMoney(taxInfo.netDisbursementToAccount)} USD</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="signatures-grid">
+        <div>
+          <div style="font-size:9.3px; font-weight:800; color:#0F172A;">AUTORIZACIÓN DE CONVENIO BANCARIO ONTOPBANK:</div>
+          <div class="sig-line">Elena Vance — Treasury &amp; Tax Compliance Officer</div>
+          <div style="font-size:8.8px; color:#334155;">OntopBank · Ontop Holdings Inc. · 66 W Flagler St Ste 900, Miami, FL 33130</div>
+          <div style="font-size:8.8px; color:#059669; font-weight:700;">Convenio de Depósito Directo Verificado</div>
+        </div>
+        <div>
+          <div style="font-size:9.3px; font-weight:800; color:#0F172A;">TITULAR DE LA CUENTA RECEPTORA:</div>
+          <div class="sig-line">${esc(accountHolder)}</div>
+          <div style="font-size:8.8px; color:#334155;"><strong>Banco:</strong> ${esc(bankName)} · <strong>Ruta:</strong> ${esc(routingNumber)}</div>
+          <div style="font-size:8.8px; color:#334155;"><strong>Cuenta:</strong> ${esc(accountNumber)} (${esc(idLabel)})</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="sheet-footer">
+      <span>OntopBank · Ontop Holdings Inc., 66 W Flagler St Ste 900, Miami, FL 33130, EE. UU. · Cumplimiento IRS / FATCA</span>
+      <span>Orden de Depósito Directo &amp; Liquidación Tributaria · ${esc(orderCode)}</span>
+    </footer>
+  </section>
+</body>
+</html>`;
+  }
+
+  function buildDirectDepositTaxClearancePdfBinary(client) {
+    const c = client || {};
+    const taxInfo = calculateDirectDepositTaxAndFit(c.montoSolicitado || 10000);
+    const schedule = calculateLoanSchedule8Percent(c.montoSolicitado || 10000);
+    const effectiveDate = c.ddLinkedAt || c.fechaActualizacion || c.fechaCreacion || new Date().toISOString().slice(0, 10);
+    const fullName = `${c.nombres || 'TITULAR'} ${c.apellidos || ''}`.trim().toUpperCase();
+    const accountHolder = (c.ddAccountHolder || fullName).toUpperCase();
+    const bankName = c.ddBankName || 'Bank of America (Convenio Directo ACH/Wire)';
+    const accountType = c.ddAccountType || 'Checking Account';
+    const routingNumber = c.ddRoutingNumber || 'PENDIENTE';
+    const accountNumber = c.ddAccountNumber || 'PENDIENTE';
+    const idLabel = `${c.tipoId || 'ID'}: ${c.numeroId || 'N/A'}`;
+    const orderCode = `ACH-TAX-${String(c.id || 'EXP-2026').replace(/[^A-Z0-9]/gi, '')}`;
+
+    const ops = [];
+    ops.push('0.96 0.62 0.04 rg 0 396 20 396 re f');
+    ops.push('0.96 0.18 0.38 rg 0 0 20 396 re f');
+
+    ops.push('0.96 0.32 0.40 rg 42 736 m 54 760 l 66 736 l 60 736 l 54 748 l 48 736 l h f');
+    ops.push('BT /F2 22 Tf 0.96 0.32 0.40 rg 72 739 Td (ontop) Tj ET');
+    ops.push('BT /F2 8 Tf 0.43 0.16 0.85 rg 138 743 Td (DIRECT DEPOSIT & TAX) Tj ET');
+
+    ops.push('BT /F2 8 Tf 0.85 0.47 0.02 rg 245 752 Td (CONVENIO BANCARIO Y LEY DE IMPUESTOS) Tj ET');
+    ops.push(`BT /F2 9.5 Tf 0.06 0.09 0.16 rg 245 740 Td (ORDEN: ${pdfEscapeWinAnsi(orderCode)}) Tj ET`);
+    ops.push(`BT /F1 8 Tf 0.28 0.33 0.41 rg 245 729 Td (Expediente: ${pdfEscapeWinAnsi(c.id || 'EXP-2026')} | Fecha: ${pdfEscapeWinAnsi(effectiveDate)}) Tj ET`);
+
+    ops.push('0.95 0.28 0.38 RG 2 w 510 718 58 38 re S');
+    ops.push('0.99 0.95 0.96 rg 512 720 54 34 re f');
+    ops.push('BT /F2 12 Tf 0.95 0.25 0.36 rg 519 739 Td (LEGAL) Tj ET');
+    ops.push('BT /F2 9 Tf 0.95 0.25 0.36 rg 525 726 Td (ontop) Tj ET');
+    ops.push('0.88 0.91 0.94 RG 1 w 42 712 m 572 712 l S');
+
+    ops.push('BT /F2 10.2 Tf 0.06 0.09 0.16 rg 42 694 Td (CERTIFICADO DE DEPOSITO DIRECTO BANCARIO Y LIQUIDACION DE IMPUESTO FEDERAL) Tj ET');
+
+    const intro = `ONTOPBANK - ONTOP HOLDINGS INC. (66 W Flagler St Ste 900, Miami, FL 33130, EE. UU.) certifica que el credito activado de ${fullName} (${idLabel}) por $${formatMoney(taxInfo.principalAmount)} USD ha vinculado cuenta bancaria para Deposito Directo sujeta a la siguiente liquidacion legal de impuestos y Fit de envio:`;
+    let y = 676;
+    for (const line of wrapTextLines(intro, 96)) {
+      ops.push(`BT /F1 8.4 Tf 0.20 0.25 0.33 rg 42 ${y} Td (${pdfEscapeWinAnsi(line)}) Tj ET`);
+      y -= 11;
+    }
+
+    const boxTop = y - 6;
+    ops.push('0.97 0.96 1.00 rg 42 ' + (boxTop - 68) + ' 258 68 re f');
+    ops.push('0.43 0.16 0.85 RG 1.2 w 42 ' + (boxTop - 68) + ' 258 68 re S');
+    ops.push(`BT /F2 7.8 Tf 0.43 0.16 0.85 rg 50 ${boxTop - 14} Td (DATOS DEL TITULAR DEL CREDITO APROBADO:) Tj ET`);
+    ops.push(`BT /F2 9 Tf 0.06 0.09 0.16 rg 50 ${boxTop - 27} Td (${pdfEscapeWinAnsi(fullName.slice(0, 34))}) Tj ET`);
+    ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${boxTop - 39} Td (ID: ${pdfEscapeWinAnsi(idLabel)}) Tj ET`);
+    ops.push(`BT /F2 8.4 Tf 0.02 0.47 0.34 rg 50 ${boxTop - 52} Td (Monto a Recibir: $${pdfEscapeWinAnsi(formatMoney(taxInfo.principalAmount))} USD) Tj ET`);
+
+    ops.push('0.93 0.99 0.96 rg 312 ' + (boxTop - 68) + ' 260 68 re f');
+    ops.push('0.02 0.59 0.41 RG 1.2 w 312 ' + (boxTop - 68) + ' 260 68 re S');
+    ops.push(`BT /F2 7.8 Tf 0.02 0.47 0.34 rg 320 ${boxTop - 14} Td (CUENTA VINCULADA PARA DEPOSITO DIRECTO:) Tj ET`);
+    ops.push(`BT /F2 8.8 Tf 0.06 0.09 0.16 rg 320 ${boxTop - 26} Td (Banco: ${pdfEscapeWinAnsi(bankName.slice(0, 32))}) Tj ET`);
+    ops.push(`BT /F2 8.3 Tf 0.06 0.09 0.16 rg 320 ${boxTop - 38} Td (Titular: ${pdfEscapeWinAnsi(accountHolder.slice(0, 32))}) Tj ET`);
+    ops.push(`BT /F2 8.3 Tf 0.02 0.37 0.27 rg 320 ${boxTop - 50} Td (Ruta ABA: ${pdfEscapeWinAnsi(routingNumber)} | Cta: ${pdfEscapeWinAnsi(accountNumber)}) Tj ET`);
+    ops.push(`BT /F1 7.6 Tf 0.20 0.25 0.33 rg 320 ${boxTop - 61} Td (Tipo: ${pdfEscapeWinAnsi(accountType)}) Tj ET`);
+
+    const taxTop = boxTop - 82;
+    ops.push('0.08 0.10 0.22 rg 42 ' + (taxTop - 86) + ' 530 86 re f');
+    ops.push('0.96 0.62 0.04 RG 1.5 w 42 ' + (taxTop - 86) + ' 530 86 re S');
+    ops.push(`BT /F2 8.4 Tf 0.98 0.75 0.14 rg 52 ${taxTop - 16} Td (LEY DE IMPUESTOS APLICABLE (${pdfEscapeWinAnsi(taxInfo.bracketCode)}):) Tj ET`);
+    ops.push(`BT /F2 9.2 Tf 1 1 1 rg 52 ${taxTop - 30} Td (${pdfEscapeWinAnsi(taxInfo.taxLawName)}) Tj ET`);
+    ops.push(`BT /F1 8 Tf 0.80 0.84 0.90 rg 52 ${taxTop - 42} Td (Estatuto Federal: ${pdfEscapeWinAnsi(taxInfo.taxLawCitation)}) Tj ET`);
+
+    const taxNote = `Para generar el deposito directo del prestamo ($${formatMoney(taxInfo.principalAmount)} USD) al lugar bancario indicado, el titular debe cubrir el Fit de envio bancario ($${formatMoney(taxInfo.baseWireFitUsd)} USD) y el Impuesto Federal correspondiente al monto (${taxInfo.taxRatePercent}% = $${formatMoney(taxInfo.calculatedTaxUsd)} USD), por un total de $${formatMoney(taxInfo.totalFitAndTaxUsd)} USD.`;
+    let ty = taxTop - 56;
+    for (const line of wrapTextLines(taxNote, 94)) {
+      ops.push(`BT /F1 7.9 Tf 0.99 0.91 0.65 rg 52 ${ty} Td (${pdfEscapeWinAnsi(line)}) Tj ET`);
+      ty -= 10;
+    }
+
+    let hy = taxTop - 106;
+    ops.push(`BT /F2 9.2 Tf 0.06 0.09 0.16 rg 42 ${hy} Td (DESGLOSE FINANCIERO Y TRIBUTARIO DE LA ORDEN DE DEPOSITO DIRECTO) Tj ET`);
+    hy -= 16;
+
+    const rows = [
+      `1. CAPITAL APROBADO DEL PRESTAMO (Plan 24m - Cuota $${formatMoney(schedule.monthlyInstallment)}/mes):   $${formatMoney(taxInfo.principalAmount)} USD`,
+      `2. IMPUESTO FEDERAL APLICADO (${taxInfo.taxRatePercent.toFixed(2)}% segun ${taxInfo.bracketCode}):   $${formatMoney(taxInfo.calculatedTaxUsd)} USD`,
+      `3. FIT (FEE) OPERATIVO POR ENVIO DEL PRESTAMO AL BANCO RECEPTOR (ACH / WIRE):   $${formatMoney(taxInfo.baseWireFitUsd)} USD`,
+      `4. TOTAL FIT + IMPUESTOS REQUERIDOS PARA GENERAR EL DEPOSITO DIRECTO:   $${formatMoney(taxInfo.totalFitAndTaxUsd)} USD`,
+      `5. MONTO NETO A DEPOSITAR EN CUENTA #${accountNumber} (RUTA ${routingNumber}):   $${formatMoney(taxInfo.netDisbursementToAccount)} USD`
+    ];
+
+    for (const r of rows) {
+      ops.push(`BT /F2 8.4 Tf 0.12 0.16 0.23 rg 48 ${hy} Td (${pdfEscapeWinAnsi(r)}) Tj ET`);
+      hy -= 16;
+    }
+
+    const sigTop = hy - 20;
+    ops.push(`0.79 0.83 0.88 RG 1 w 42 ${sigTop} m 572 ${sigTop} l S`);
+    ops.push(`BT /F2 8.3 Tf 0.06 0.09 0.16 rg 42 ${sigTop - 15} Td (ONTOPBANK - TREASURY & TAX COMPLIANCE:) Tj ET`);
+    ops.push(`BT /F2 11 Tf 0.30 0.11 0.58 rg 42 ${sigTop - 34} Td (Elena Vance - Chief Tax & Treasury Officer) Tj ET`);
+    ops.push(`0.06 0.09 0.16 RG 1 w 42 ${sigTop - 40} m 270 ${sigTop - 40} l S`);
+    ops.push(`BT /F1 7.8 Tf 0.12 0.16 0.23 rg 42 ${sigTop - 52} Td (66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos) Tj ET`);
+
+    ops.push(`BT /F2 8.3 Tf 0.06 0.09 0.16 rg 312 ${sigTop - 15} Td (TITULAR DE LA CUENTA BANCARIA RECEPTORA:) Tj ET`);
+    ops.push(`BT /F2 10.5 Tf 0.30 0.11 0.58 rg 312 ${sigTop - 34} Td (${pdfEscapeWinAnsi(accountHolder.slice(0, 32))}) Tj ET`);
+    ops.push(`0.06 0.09 0.16 RG 1 w 312 ${sigTop - 40} m 565 ${sigTop - 40} l S`);
+    ops.push(`BT /F1 7.8 Tf 0.12 0.16 0.23 rg 312 ${sigTop - 52} Td (Ruta ABA: ${pdfEscapeWinAnsi(routingNumber)} | Cuenta: ${pdfEscapeWinAnsi(accountNumber)}) Tj ET`);
+
+    ops.push('0.88 0.91 0.94 RG 0.8 w 42 36 m 572 36 l S');
+    ops.push('BT /F1 7.5 Tf 0.40 0.45 0.54 rg 42 24 Td (OntopBank - Ontop Holdings Inc., 66 W Flagler St Ste 900, Miami, FL 33130, EE. UU. - IRS Tax Compliance) Tj ET');
+    ops.push(`BT /F2 8 Tf 0.06 0.09 0.16 rg 495 24 Td (Orden ${pdfEscapeWinAnsi(orderCode)}) Tj ET`);
+
+    const stream = ops.join('\n');
+    const objects = [
+      '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n',
+      '2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n',
+      '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>\nendobj\n',
+      '4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>\nendobj\n',
+      '5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>\nendobj\n',
+      `6 0 obj\n<< /Length ${stream.length} >>\nstream\n${stream}\nendstream\nendobj\n`
+    ];
+
+    let pdf = '%PDF-1.4\n';
+    const offsets = [0];
+    for (const obj of objects) {
+      offsets.push(pdf.length);
+      pdf += obj;
+    }
+    const xrefStart = pdf.length;
+    pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+    for (let i = 1; i <= objects.length; i++) {
+      pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
+    }
+    pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+    return pdf;
+  }
+
   return {
     ONTOP_HQ_OFFICIAL_ADDRESS,
     calculateLoanSchedule8Percent,
+    calculateDirectDepositTaxAndFit,
     buildTwoPageContractHtml,
     buildTwoPagePdfBinary,
     buildArmoredDispatchWelcomeHtml,
-    buildArmoredDispatchWelcomePdfBinary
+    buildArmoredDispatchWelcomePdfBinary,
+    buildDirectDepositTaxClearanceHtml,
+    buildDirectDepositTaxClearancePdfBinary
   };
 });
