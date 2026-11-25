@@ -222,7 +222,7 @@
         <div style="text-align:center;">
           <div style="font-size:9px; font-weight:700; color:#64748B; letter-spacing:0.08em;">DOCUMENTO LEGAL VINCULANTE</div>
           <div style="font-size:11px; font-weight:800; color:#0F172A;">EXPEDIENTE N° EXP-2026-899</div>
-          <div style="font-size:9px; color:#475569;">Fecha Efectiva: 2026-11-25 10:38</div>
+          <div style="font-size:9px; color:#475569;">Fecha Efectiva: 2026-11-25 17:35</div>
         </div>
         
       <svg width="96" height="96" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(-14deg); filter: drop-shadow(0 2px 4px rgba(244,63,94,0.18));">
@@ -258,7 +258,7 @@
       </div>
 
       <p class="parties-paragraph">
-        <strong>ONTOPBANK IC OPERATIONS LLC.</strong>, sociedad de responsabilidad limitada constituida y existente bajo las leyes del Estado de Delaware, Estados Unidos de América (<strong>"OntopBank"</strong>), en alianza con la entidad financiera asignada <strong>Ontop Global Credit Bridge</strong>; y por la otra parte, <strong>JUAN HERNANDEZ MORALES</strong>, con residencia actual en <strong>Texas</strong>, identificado(a) con <strong>Pasaporte: 10000011200</strong> y correo electrónico <strong>092057hdzjuan@gmail.com</strong> (<strong>"El Solicitante / Prestatario"</strong>), celebran el presente Acuerdo Oficial de Préstamo Financiero sujeto a las siguientes condiciones económicas verificadas:
+        <strong>ONTOPBANK IC OPERATIONS LLC.</strong>, sociedad de responsabilidad limitada constituida y existente bajo las leyes del Estado de Delaware, Estados Unidos de América (<strong>"OntopBank"</strong>), en alianza con la entidad financiera asignada <strong>Ontop Global Credit Bridge</strong>; y por la otra parte, <strong>JUAN HERNANDEZ MORALES</strong>, con residencia actual en <strong>11426 pine Knoll Houston TX 77099</strong>, identificado(a) con <strong>Pasaporte: 10000011200</strong> y correo electrónico <strong>092057hdzjuan@gmail.com</strong> (<strong>"El Solicitante / Prestatario"</strong>), celebran el presente Acuerdo Oficial de Préstamo Financiero sujeto a las siguientes condiciones económicas verificadas:
       </p>
 
       <!-- Resumen Corto de la Información del Cliente y Liquidación al 8% Anual -->
@@ -267,7 +267,7 @@
           <h4>1. Resumen Verificado del Solicitante</h4>
           <div class="summary-line"><strong>Nombre del Solicitante:</strong> JUAN HERNANDEZ MORALES</div>
           <div class="summary-line"><strong>Identificación Oficial:</strong> Pasaporte: 10000011200 (Migrante en EE. UU. (Con ITIN))</div>
-          <div class="summary-line"><strong>Lugar de Residencia:</strong> Texas</div>
+          <div class="summary-line"><strong>Lugar de Residencia:</strong> 11426 pine Knoll Houston TX 77099</div>
           <div class="summary-line"><strong>Lugar de Trabajo / Empresa:</strong> Construcccion :1.500 a 1.800 -800 semanales</div>
           <div class="summary-line"><strong>Funciones / Cargo:</strong> Independiente</div>
           <div class="summary-line"><strong>Fuente de Ingresos:</strong> Kash ($4,000.00 USD/mes)</div>
@@ -275,13 +275,13 @@
         </div>
 
         <div class="summary-col">
-          <h4>2. Estructura del Préstamo y Liquidación (8% Anual)</h4>
+          <h4>2. Estructura del Préstamo y Liquidación (8% Anual · 24 Meses)</h4>
           <div class="summary-line"><strong>Monto Solicitado y Aprobado:</strong> <strong style="color:#0F172A;">$6,000.00 USD</strong></div>
           <div class="summary-line"><strong>Propósito del Crédito:</strong> Compra de Vivienda / Hipotecario</div>
           <div class="summary-line"><strong>Tasa de Interés Fija:</strong> <strong>8.00% Anual (8% E.A.)</strong> sobre el valor prestado</div>
           <div class="summary-line"><strong>Interés Total (24 Meses):</strong> $960.00 USD</div>
           <div class="summary-line"><strong>Cuota Fija Mensual a Pagar:</strong> <strong style="color:#047857;">$290.00 USD / mes</strong></div>
-          <div class="summary-line"><strong>Plazo de Amortización:</strong> 24 Meses Consecutivos</div>
+          <div class="summary-line"><strong>Plazo de Amortización:</strong> 24 Meses Consecutivos (2 Años)</div>
           <div class="summary-line" style="margin-top:3px; padding-top:3px; border-top:1px dashed #CBD5E1;">
             <strong>TOTAL A PAGAR EN 24 MESES (*24 MESES):</strong>
             <strong style="color:#6D28D9; font-size:10.5px;">$6,960.00 USD</strong>
@@ -291,7 +291,7 @@
 
       <!-- Tabla de Pagos Mensuales (*24 Meses) con el 8% de Interés Anual -->
       <div style="font-size:9.5px; font-weight:800; color:#0F172A; margin-bottom:3px; text-transform:uppercase;">
-        Cronograma Oficial de Pagos Mensuales (*24 Meses — Capital + 8.00% de Interés Anual sobre el Valor Prestado)
+        Cronograma Oficial de Pagos Mensuales (*24 Meses — Capital $6,000.00 + 8.00% Anual · Cuota Mensual $290.00 USD)
       </div>
       <table class="amortization-table">
         <thead>
@@ -516,7 +516,7 @@
         <div style="text-align:center;">
           <div style="font-size:9px; font-weight:700; color:#64748B; letter-spacing:0.08em;">TÉRMINOS LEGALES Y PRIVACIDAD</div>
           <div style="font-size:11px; font-weight:800; color:#0F172A;">TITULAR: JUAN HERNANDEZ MORALES</div>
-          <div style="font-size:9px; color:#475569;">Residencia: Texas</div>
+          <div style="font-size:9px; color:#475569;">Residencia: 11426 pine Knoll Houston TX 77099</div>
         </div>
         
       <svg width="96" height="96" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(-14deg); filter: drop-shadow(0 2px 4px rgba(244,63,94,0.18));">
@@ -536,7 +536,7 @@
 
       <div class="legal-clause-title">1. Reconocimiento de las Partes, Desembolso y Modalidad de Pago (OntopBank Platform)</div>
       <p class="legal-clause-text">
-        El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 del presente contrato por un monto principal de <strong>$6,000.00 USD</strong>, con una tasa preferencial fija del <strong>8.00% anual</strong> sobre el valor prestado, pagadero en veinticuatro (24) cuotas mensuales iguales de <strong>$290.00 USD</strong> para un total acumulado a los veinticuatro (24) meses de <strong>$6,960.00 USD</strong>. Todos los desembolsos y recaudos mensuales se ejecutarán a través de los canales bancarios autorizados en la plataforma OntopBank conforme a los Términos de Servicio disponibles en <em>https://www.getontop.com/legal/terms-of-service</em>.
+        El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 del presente contrato por un monto principal de <strong>$6,000.00 USD</strong>, con una tasa preferencial fija del <strong>8.00% anual</strong> sobre el valor prestado, pagadero en veinticuatro (24) meses iguales de <strong>$290.00 USD</strong> para un total acumulado a los veinticuatro (24) meses de <strong>$6,960.00 USD</strong>. Todos los desembolsos y recaudos mensuales se ejecutarán a través de los canales bancarios autorizados en la plataforma OntopBank conforme a los Términos de Servicio disponibles en <em>https://www.getontop.com/legal/terms-of-service</em>.
       </p>
 
       <div class="legal-clause-title">2. Políticas de Privacidad y Protección de Datos Personales de OntopBank (Personal Data Protection &amp; Privacy Policy)</div>
@@ -587,7 +587,7 @@
           <div class="sig-line">JUAN HERNANDEZ MORALES</div>
           <div><strong>Nombre:</strong> JUAN HERNANDEZ MORALES</div>
           <div><strong>Identificación:</strong> Pasaporte: 10000011200</div>
-          <div><strong>Residencia:</strong> Texas</div>
+          <div><strong>Residencia:</strong> 11426 pine Knoll Houston TX 77099</div>
         </div>
       </div>
     </div>

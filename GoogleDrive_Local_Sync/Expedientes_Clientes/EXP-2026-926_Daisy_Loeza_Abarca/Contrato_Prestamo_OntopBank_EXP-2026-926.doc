@@ -275,212 +275,268 @@
         </div>
 
         <div class="summary-col">
-          <h4>2. Estructura del Préstamo y Liquidación (8% Anual)</h4>
+          <h4>2. Estructura del Préstamo y Liquidación (8% Anual · 60 Meses)</h4>
           <div class="summary-line"><strong>Monto Solicitado y Aprobado:</strong> <strong style="color:#0F172A;">$40,000.00 USD</strong></div>
           <div class="summary-line"><strong>Propósito del Crédito:</strong> Consolidación de Deuda</div>
           <div class="summary-line"><strong>Tasa de Interés Fija:</strong> <strong>8.00% Anual (8% E.A.)</strong> sobre el valor prestado</div>
-          <div class="summary-line"><strong>Interés Total (24 Meses):</strong> $6,400.00 USD</div>
-          <div class="summary-line"><strong>Cuota Fija Mensual a Pagar:</strong> <strong style="color:#047857;">$1,933.33 USD / mes</strong></div>
-          <div class="summary-line"><strong>Plazo de Amortización:</strong> 24 Meses Consecutivos</div>
+          <div class="summary-line"><strong>Interés Total (60 Meses):</strong> $16,000.00 USD</div>
+          <div class="summary-line"><strong>Cuota Fija Mensual a Pagar:</strong> <strong style="color:#047857;">$933.33 USD / mes</strong></div>
+          <div class="summary-line"><strong>Plazo de Amortización:</strong> 60 Meses Consecutivos (5 Años)</div>
           <div class="summary-line" style="margin-top:3px; padding-top:3px; border-top:1px dashed #CBD5E1;">
-            <strong>TOTAL A PAGAR EN 24 MESES (*24 MESES):</strong>
-            <strong style="color:#6D28D9; font-size:10.5px;">$46,400.00 USD</strong>
+            <strong>TOTAL A PAGAR EN 60 MESES (*60 MESES):</strong>
+            <strong style="color:#6D28D9; font-size:10.5px;">$56,000.00 USD</strong>
           </div>
         </div>
       </div>
 
-      <!-- Tabla de Pagos Mensuales (*24 Meses) con el 8% de Interés Anual -->
+      <!-- Tabla de Pagos Mensuales (*60 Meses) con el 8% de Interés Anual -->
       <div style="font-size:9.5px; font-weight:800; color:#0F172A; margin-bottom:3px; text-transform:uppercase;">
-        Cronograma Oficial de Pagos Mensuales (*24 Meses — Capital + 8.00% de Interés Anual sobre el Valor Prestado)
+        Cronograma Oficial de Pagos Mensuales (*60 Meses — Capital $40,000.00 + 8.00% Anual · Cuota Mensual $933.33 USD)
       </div>
-      <table class="amortization-table">
+      <table class="amortization-table" style="font-size:8px;">
         <thead>
           <tr>
-            <th style="text-align:center;">Período</th>
-            <th style="text-align:right;">Abono Mensual a Capital</th>
-            <th style="text-align:right;">Interés Mensual (8% Anual)</th>
-            <th style="text-align:right;">Monto a Pagar Mensualmente</th>
-            <th style="text-align:right;">Saldo Capital Restante</th>
+            <th style="text-align:center;">Mes (1-20)</th>
+            <th style="text-align:right;">Cuota Mensual</th>
+            <th style="text-align:right; border-right:1.5px solid #334155;">Saldo Capital</th>
+            <th style="text-align:center;">Mes (21-40)</th>
+            <th style="text-align:right;">Cuota Mensual</th>
+            <th style="text-align:right; border-right:1.5px solid #334155;">Saldo Capital</th>
+            <th style="text-align:center;">Mes (41-60)</th>
+            <th style="text-align:right;">Cuota Mensual</th>
+            <th style="text-align:right;">Saldo Capital</th>
           </tr>
         </thead>
         <tbody>
           
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 1</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$38,333.33 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 2</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$36,666.67 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 3</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$35,000.00 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 4</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$33,333.33 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 5</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$31,666.67 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 6</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$30,000.00 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 7</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$28,333.33 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 8</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$26,666.67 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 9</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$25,000.00 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 10</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$23,333.33 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 11</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$21,666.67 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 12</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$20,000.00 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 13</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$18,333.33 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 14</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$16,666.67 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 15</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$15,000.00 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 16</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$13,333.33 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 17</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$11,666.67 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 18</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$10,000.00 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 19</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$8,333.33 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 20</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$6,666.67 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 21</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$5,000.00 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 22</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$3,333.33 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 23</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$1,666.67 USD</td>
-        </tr>
-        <tr>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes 24</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$1,666.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#047857;">$266.67 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$1,933.33 USD</td>
-          <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$0.00 USD</td>
-        </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 1</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$39,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 21</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$26,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 41</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$12,666.67</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 2</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$38,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 22</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$25,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 42</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$12,000.00</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 3</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$38,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 23</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$24,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 43</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$11,333.33</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 4</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$37,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 24</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$24,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 44</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$10,666.67</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 5</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$36,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 25</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$23,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 45</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$10,000.00</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 6</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$36,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 26</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$22,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 46</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$9,333.33</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 7</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$35,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 27</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$22,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 47</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$8,666.67</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 8</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$34,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 28</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$21,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 48</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$8,000.00</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 9</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$34,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 29</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$20,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 49</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$7,333.33</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 10</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$33,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 30</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$20,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 50</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$6,666.67</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 11</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$32,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 31</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$19,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 51</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$6,000.00</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 12</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$32,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 32</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$18,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 52</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$5,333.33</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 13</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$31,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$18,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 53</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$4,666.67</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 14</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$30,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 34</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$17,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 54</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$4,000.00</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 15</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$30,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 35</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$16,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 55</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$3,333.33</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 16</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$29,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 36</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$16,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 56</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$2,666.67</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 17</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$28,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 37</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$15,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 57</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$2,000.00</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 18</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$28,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 38</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$14,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 58</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$1,333.33</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 19</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$27,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 39</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$14,000.00</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 59</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$666.67</td>
+          </tr>
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 20</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$26,666.67</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 40</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$13,333.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes 60</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$933.33</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$0.00</td>
+          </tr>
         </tbody>
         <tfoot>
           <tr>
-            <td style="text-align:center;">TOTAL * 24 MESES</td>
-            <td style="text-align:right;">$40,000.00 USD</td>
-            <td style="text-align:right; color:#047857;">$6,400.00 USD (8% Anual)</td>
-            <td style="text-align:right; color:#6D28D9; font-size:9.5px;">$46,400.00 USD</td>
-            <td style="text-align:right;">$0.00 USD</td>
+            <td colspan="2" style="text-align:left;">TOTAL * 60 MESES (5 AÑOS)</td>
+            <td colspan="2" style="text-align:right;">Capital: $40,000.00 USD</td>
+            <td colspan="2" style="text-align:right; color:#047857;">Interés (8% EA): $16,000.00 USD</td>
+            <td colspan="2" style="text-align:right; color:#6D28D9; font-size:9.2px;">TOTAL: $56,000.00 USD</td>
+            <td style="text-align:right;">Saldo: $0.00</td>
           </tr>
         </tfoot>
       </table>
@@ -488,7 +544,7 @@
       <!-- Cláusula de Abono a Capital Anticipado -->
       <div class="prepayment-callout">
         <strong>CLÁUSULA DE ABONO A CAPITAL ANTICIPADO (SÍ ES POSIBLE ABONAR A CAPITAL SIN PENALIDAD):</strong>
-        OntopBank certifica expresamente que <strong>EL SOLICITANTE SÍ PUEDE REALIZAR ABONOS EXTRAORDINARIOS A CAPITAL</strong> o pagar la totalidad del préstamo de forma anticipada en cualquier momento durante la vigencia de los veinticuatro (24) meses, <strong>sin ningún tipo de multa, comisión o penalidad por prepago</strong>. Todo abono adicional a la cuota mensual de <strong>$1,933.33 USD</strong> se imputará directamente a reducir el saldo de capital principal, disminuyendo proporcionalmente el plazo o las cuotas restantes.
+        OntopBank certifica expresamente que <strong>EL SOLICITANTE SÍ PUEDE REALIZAR ABONOS EXTRAORDINARIOS A CAPITAL</strong> o pagar la totalidad del préstamo de forma anticipada en cualquier momento durante la vigencia de los sesenta (60) meses, <strong>sin ningún tipo de multa, comisión o penalidad por prepago</strong>. Todo abono adicional a la cuota mensual de <strong>$933.33 USD</strong> se imputará directamente a reducir el saldo de capital principal, disminuyendo proporcionalmente el plazo o las cuotas restantes.
       </div>
     </div>
 
@@ -536,7 +592,7 @@
 
       <div class="legal-clause-title">1. Reconocimiento de las Partes, Desembolso y Modalidad de Pago (OntopBank Platform)</div>
       <p class="legal-clause-text">
-        El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 del presente contrato por un monto principal de <strong>$40,000.00 USD</strong>, con una tasa preferencial fija del <strong>8.00% anual</strong> sobre el valor prestado, pagadero en veinticuatro (24) cuotas mensuales iguales de <strong>$1,933.33 USD</strong> para un total acumulado a los veinticuatro (24) meses de <strong>$46,400.00 USD</strong>. Todos los desembolsos y recaudos mensuales se ejecutarán a través de los canales bancarios autorizados en la plataforma OntopBank conforme a los Términos de Servicio disponibles en <em>https://www.getontop.com/legal/terms-of-service</em>.
+        El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 del presente contrato por un monto principal de <strong>$40,000.00 USD</strong>, con una tasa preferencial fija del <strong>8.00% anual</strong> sobre el valor prestado, pagadero en sesenta (60) meses iguales de <strong>$933.33 USD</strong> para un total acumulado a los sesenta (60) meses de <strong>$56,000.00 USD</strong>. Todos los desembolsos y recaudos mensuales se ejecutarán a través de los canales bancarios autorizados en la plataforma OntopBank conforme a los Términos de Servicio disponibles en <em>https://www.getontop.com/legal/terms-of-service</em>.
       </p>
 
       <div class="legal-clause-title">2. Políticas de Privacidad y Protección de Datos Personales de OntopBank (Personal Data Protection &amp; Privacy Policy)</div>
@@ -560,7 +616,7 @@
 
       <div class="legal-clause-title">4. Derecho de Prepago, Abono a Capital e Integridad Contractual</div>
       <p class="legal-clause-text">
-        De conformidad con la regulación federal de protección al consumidor financiero, ninguna disposición de este Acuerdo restringe el derecho del Solicitante a efectuar pagos anticipados. El Solicitante podrá abonar a capital cualquier suma adicional en cualquier fecha anterior al vencimiento de las 24 cuotas sin recargo alguno. Si alguna disposición del presente Acuerdo fuese declarada inválida, las disposiciones restantes continuarán en pleno vigor y efecto.
+        De conformidad con la regulación federal de protección al consumidor financiero, ninguna disposición de este Acuerdo restringe el derecho del Solicitante a efectuar pagos anticipados. El Solicitante podrá abonar a capital cualquier suma adicional en cualquier fecha anterior al vencimiento de las 60 cuotas sin recargo alguno. Si alguna disposición del presente Acuerdo fuese declarada inválida, las disposiciones restantes continuarán en pleno vigor y efecto.
       </p>
 
       <div class="legal-clause-title">5. Firma Electrónica, Ley Aplicable y Jurisdicción (Electronic Signature &amp; Governing Law)</div>

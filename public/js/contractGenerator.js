@@ -30,44 +30,91 @@
     });
   }
 
-  // Calcula el plan financiero del préstamo con 8% de interés anual sobre el valor prestado a 24 meses
+  // Calcula el plan financiero del préstamo con 8% de interés anual sobre el valor prestado:
+  // - Montos menores a $25,000 USD -> 24 meses (2 años)
+  // - Montos de $25,000 USD o mayores (>= 25000) -> 60 meses automáticamente (5 años)
   function calculateLoanSchedule8Percent(principalAmount) {
     const principal = Number(principalAmount) || 0;
+    const is60Months = principal >= 25000;
+    const termMonths = is60Months ? 60 : 24;
+    const termYears = termMonths / 12; // 2 años (24m) o 5 años (60m)
     const annualInterestRate = 0.08; // 8% anual fijo sobre el valor prestado
-    const totalInterest24Months = principal * annualInterestRate * 2; // 8% anual en 24 meses (2 años)
-    const totalPayable24Months = principal + totalInterest24Months; // Total * 24 meses
+    const totalInterestTerm = principal * annualInterestRate * termYears;
+    const totalPayableTerm = principal + totalInterestTerm;
 
-    const monthlyPrincipal = principal / 24;
-    const monthlyInterest = totalInterest24Months / 24;
-    const monthlyInstallment = totalPayable24Months / 24;
+    const monthlyPrincipal = principal / termMonths;
+    const monthlyInterest = totalInterestTerm / termMonths;
+    const monthlyInstallment = totalPayableTerm / termMonths;
 
     const rows = [];
     let remainingPrincipal = principal;
 
-    for (let m = 1; m <= 24; m++) {
+    for (let m = 1; m <= termMonths; m++) {
       remainingPrincipal = Math.max(0, remainingPrincipal - monthlyPrincipal);
       rows.push({
         month: m,
         monthlyPrincipal,
         monthlyInterest,
         monthlyInstallment,
-        remainingPrincipal: m === 24 ? 0 : remainingPrincipal
+        remainingPrincipal: m === termMonths ? 0 : remainingPrincipal
       });
+    }
+
+    // Filas para la tabla impresa en la Hoja 1 (si son 60 meses, se agrupan en 20 trimestres/bloques o tabla compacta para caber en la Hoja 1 perfectamente)
+    const displayRows = [];
+    if (termMonths === 60) {
+      let rem = principal;
+      for (let q = 1; q <= 20; q++) {
+        const startM = (q - 1) * 3 + 1;
+        const endM = q * 3;
+        rem = Math.max(0, rem - monthlyPrincipal * 3);
+        displayRows.push({
+          label: `Meses ${startM} al ${endM} (Cuota Mensual: $${formatMoney(monthlyInstallment)})`,
+          shortLabel: `Mes ${startM}-${endM}`,
+          month: endM,
+          monthlyPrincipal: monthlyPrincipal * 3,
+          monthlyInterest: monthlyInterest * 3,
+          monthlyInstallment: monthlyInstallment * 3,
+          unitMonthlyInstallment: monthlyInstallment,
+          remainingPrincipal: q === 20 ? 0 : rem,
+          isGroupedQuarter: true
+        });
+      }
+    } else {
+      for (const r of rows) {
+        displayRows.push({
+          label: `Mes ${r.month}`,
+          shortLabel: `Mes ${r.month}`,
+          month: r.month,
+          monthlyPrincipal: r.monthlyPrincipal,
+          monthlyInterest: r.monthlyInterest,
+          monthlyInstallment: r.monthlyInstallment,
+          unitMonthlyInstallment: r.monthlyInstallment,
+          remainingPrincipal: r.remainingPrincipal,
+          isGroupedQuarter: false
+        });
+      }
     }
 
     return {
       principal,
-      termMonths: 24,
+      termMonths,
+      termYears,
+      termLabel: `${termMonths} Meses`,
+      termLabelWord: is60Months ? 'sesenta (60) meses' : 'veinticuatro (24) meses',
       annualRatePercent: 8,
-      totalInterest24Months,
-      totalPayable24Months,
-      // Alias de compatibilidad
-      totalInterest12Months: totalInterest24Months,
-      totalPayable12Months: totalPayable24Months,
+      totalInterestTerm,
+      totalPayableTerm,
+      // Alias de compatibilidad hacia atrás para que todo el código existente use el total del plazo activo (24 o 60 meses)
+      totalInterest24Months: totalInterestTerm,
+      totalPayable24Months: totalPayableTerm,
+      totalInterest12Months: totalInterestTerm,
+      totalPayable12Months: totalPayableTerm,
       monthlyPrincipal,
       monthlyInterest,
       monthlyInstallment,
-      rows
+      rows,
+      displayRows
     };
   }
 
@@ -120,9 +167,29 @@
     const score = c.scoreCredito || 650;
     const redLogoSrc = options.redLogoDataUrl || '/Contenido/red.jpg';
 
-    const scheduleRowsHtml = schedule.rows
-      .map(
-        (r) => `
+    const termM = schedule.termMonths;
+    const is60 = termM === 60;
+    const scheduleRowsHtml = is60
+      ? Array.from({ length: 20 }, (_, i) => {
+          const r1 = schedule.rows[i];
+          const r2 = schedule.rows[i + 20];
+          const r3 = schedule.rows[i + 40];
+          return `
+          <tr>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes ${r1.month}</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$${formatMoney(r1.monthlyInstallment)}</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$${formatMoney(r1.remainingPrincipal)}</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes ${r2.month}</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$${formatMoney(r2.monthlyInstallment)}</td>
+            <td style="padding:1.9px 6px; border-bottom:1px solid #E2E8F0; border-right:1.5px solid #CBD5E1; text-align:right; color:#475569;">$${formatMoney(r2.remainingPrincipal)}</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:800; color:#1E293B; background:#F8FAFC;">Mes ${r3.month}</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:700; color:#0F172A;">$${formatMoney(r3.monthlyInstallment)}</td>
+            <td style="padding:1.9px 5px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$${formatMoney(r3.remainingPrincipal)}</td>
+          </tr>`;
+        }).join('')
+      : schedule.rows
+          .map(
+            (r) => `
         <tr>
           <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:center; font-weight:700; color:#1E293B;">Mes ${r.month}</td>
           <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right;">$${formatMoney(r.monthlyPrincipal)} USD</td>
@@ -130,8 +197,8 @@
           <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; font-weight:800; color:#0F172A;">$${formatMoney(r.monthlyInstallment)} USD</td>
           <td style="padding:1.8px 8px; border-bottom:1px solid #E2E8F0; text-align:right; color:#475569;">$${formatMoney(r.remainingPrincipal)} USD</td>
         </tr>`
-      )
-      .join('');
+          )
+          .join('');
 
     return `<!DOCTYPE html>
 <html lang="es">
@@ -391,25 +458,54 @@
         </div>
 
         <div class="summary-col">
-          <h4>2. Estructura del Préstamo y Liquidación (8% Anual)</h4>
+          <h4>2. Estructura del Préstamo y Liquidación (8% Anual · ${termM} Meses)</h4>
           <div class="summary-line"><strong>Monto Solicitado y Aprobado:</strong> <strong style="color:#0F172A;">$${formatMoney(schedule.principal)} USD</strong></div>
           <div class="summary-line"><strong>Propósito del Crédito:</strong> ${esc(c.propositoPrestamo || 'Libre Inversión / Calidad de Vida')}</div>
           <div class="summary-line"><strong>Tasa de Interés Fija:</strong> <strong>8.00% Anual (8% E.A.)</strong> sobre el valor prestado</div>
-          <div class="summary-line"><strong>Interés Total (24 Meses):</strong> $${formatMoney(schedule.totalInterest24Months)} USD</div>
+          <div class="summary-line"><strong>Interés Total (${termM} Meses):</strong> $${formatMoney(schedule.totalInterestTerm)} USD</div>
           <div class="summary-line"><strong>Cuota Fija Mensual a Pagar:</strong> <strong style="color:#047857;">$${formatMoney(schedule.monthlyInstallment)} USD / mes</strong></div>
-          <div class="summary-line"><strong>Plazo de Amortización:</strong> 24 Meses Consecutivos</div>
+          <div class="summary-line"><strong>Plazo de Amortización:</strong> ${termM} Meses Consecutivos (${schedule.termYears} Años)</div>
           <div class="summary-line" style="margin-top:3px; padding-top:3px; border-top:1px dashed #CBD5E1;">
-            <strong>TOTAL A PAGAR EN 24 MESES (*24 MESES):</strong>
-            <strong style="color:#6D28D9; font-size:10.5px;">$${formatMoney(schedule.totalPayable24Months)} USD</strong>
+            <strong>TOTAL A PAGAR EN ${termM} MESES (*${termM} MESES):</strong>
+            <strong style="color:#6D28D9; font-size:10.5px;">$${formatMoney(schedule.totalPayableTerm)} USD</strong>
           </div>
         </div>
       </div>
 
-      <!-- Tabla de Pagos Mensuales (*24 Meses) con el 8% de Interés Anual -->
+      <!-- Tabla de Pagos Mensuales (*${termM} Meses) con el 8% de Interés Anual -->
       <div style="font-size:9.5px; font-weight:800; color:#0F172A; margin-bottom:3px; text-transform:uppercase;">
-        Cronograma Oficial de Pagos Mensuales (*24 Meses — Capital + 8.00% de Interés Anual sobre el Valor Prestado)
+        Cronograma Oficial de Pagos Mensuales (*${termM} Meses — Capital $${formatMoney(schedule.principal)} + 8.00% Anual · Cuota Mensual $${formatMoney(schedule.monthlyInstallment)} USD)
       </div>
-      <table class="amortization-table">
+      ${
+        is60
+          ? `<table class="amortization-table" style="font-size:8px;">
+        <thead>
+          <tr>
+            <th style="text-align:center;">Mes (1-20)</th>
+            <th style="text-align:right;">Cuota Mensual</th>
+            <th style="text-align:right; border-right:1.5px solid #334155;">Saldo Capital</th>
+            <th style="text-align:center;">Mes (21-40)</th>
+            <th style="text-align:right;">Cuota Mensual</th>
+            <th style="text-align:right; border-right:1.5px solid #334155;">Saldo Capital</th>
+            <th style="text-align:center;">Mes (41-60)</th>
+            <th style="text-align:right;">Cuota Mensual</th>
+            <th style="text-align:right;">Saldo Capital</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${scheduleRowsHtml}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="text-align:left;">TOTAL * 60 MESES (5 AÑOS)</td>
+            <td colspan="2" style="text-align:right;">Capital: $${formatMoney(schedule.principal)} USD</td>
+            <td colspan="2" style="text-align:right; color:#047857;">Interés (8% EA): $${formatMoney(schedule.totalInterestTerm)} USD</td>
+            <td colspan="2" style="text-align:right; color:#6D28D9; font-size:9.2px;">TOTAL: $${formatMoney(schedule.totalPayableTerm)} USD</td>
+            <td style="text-align:right;">Saldo: $0.00</td>
+          </tr>
+        </tfoot>
+      </table>`
+          : `<table class="amortization-table">
         <thead>
           <tr>
             <th style="text-align:center;">Período</th>
@@ -426,17 +522,18 @@
           <tr>
             <td style="text-align:center;">TOTAL * 24 MESES</td>
             <td style="text-align:right;">$${formatMoney(schedule.principal)} USD</td>
-            <td style="text-align:right; color:#047857;">$${formatMoney(schedule.totalInterest24Months)} USD (8% Anual)</td>
-            <td style="text-align:right; color:#6D28D9; font-size:9.5px;">$${formatMoney(schedule.totalPayable24Months)} USD</td>
+            <td style="text-align:right; color:#047857;">$${formatMoney(schedule.totalInterestTerm)} USD (8% Anual)</td>
+            <td style="text-align:right; color:#6D28D9; font-size:9.5px;">$${formatMoney(schedule.totalPayableTerm)} USD</td>
             <td style="text-align:right;">$0.00 USD</td>
           </tr>
         </tfoot>
-      </table>
+      </table>`
+      }
 
       <!-- Cláusula de Abono a Capital Anticipado -->
       <div class="prepayment-callout">
         <strong>CLÁUSULA DE ABONO A CAPITAL ANTICIPADO (SÍ ES POSIBLE ABONAR A CAPITAL SIN PENALIDAD):</strong>
-        OntopBank certifica expresamente que <strong>EL SOLICITANTE SÍ PUEDE REALIZAR ABONOS EXTRAORDINARIOS A CAPITAL</strong> o pagar la totalidad del préstamo de forma anticipada en cualquier momento durante la vigencia de los veinticuatro (24) meses, <strong>sin ningún tipo de multa, comisión o penalidad por prepago</strong>. Todo abono adicional a la cuota mensual de <strong>$${formatMoney(schedule.monthlyInstallment)} USD</strong> se imputará directamente a reducir el saldo de capital principal, disminuyendo proporcionalmente el plazo o las cuotas restantes.
+        OntopBank certifica expresamente que <strong>EL SOLICITANTE SÍ PUEDE REALIZAR ABONOS EXTRAORDINARIOS A CAPITAL</strong> o pagar la totalidad del préstamo de forma anticipada en cualquier momento durante la vigencia de los ${schedule.termLabelWord}, <strong>sin ningún tipo de multa, comisión o penalidad por prepago</strong>. Todo abono adicional a la cuota mensual de <strong>$${formatMoney(schedule.monthlyInstallment)} USD</strong> se imputará directamente a reducir el saldo de capital principal, disminuyendo proporcionalmente el plazo o las cuotas restantes.
       </div>
     </div>
 
@@ -465,7 +562,7 @@
 
       <div class="legal-clause-title">1. Reconocimiento de las Partes, Desembolso y Modalidad de Pago (OntopBank Platform)</div>
       <p class="legal-clause-text">
-        El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 del presente contrato por un monto principal de <strong>$${formatMoney(schedule.principal)} USD</strong>, con una tasa preferencial fija del <strong>8.00% anual</strong> sobre el valor prestado, pagadero en veinticuatro (24) cuotas mensuales iguales de <strong>$${formatMoney(schedule.monthlyInstallment)} USD</strong> para un total acumulado a los veinticuatro (24) meses de <strong>$${formatMoney(schedule.totalPayable24Months)} USD</strong>. Todos los desembolsos y recaudos mensuales se ejecutarán a través de los canales bancarios autorizados en la plataforma OntopBank conforme a los Términos de Servicio disponibles en <em>https://www.getontop.com/legal/terms-of-service</em>.
+        El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 del presente contrato por un monto principal de <strong>$${formatMoney(schedule.principal)} USD</strong>, con una tasa preferencial fija del <strong>8.00% anual</strong> sobre el valor prestado, pagadero en ${schedule.termLabelWord} iguales de <strong>$${formatMoney(schedule.monthlyInstallment)} USD</strong> para un total acumulado a los ${schedule.termLabelWord} de <strong>$${formatMoney(schedule.totalPayableTerm)} USD</strong>. Todos los desembolsos y recaudos mensuales se ejecutarán a través de los canales bancarios autorizados en la plataforma OntopBank conforme a los Términos de Servicio disponibles en <em>https://www.getontop.com/legal/terms-of-service</em>.
       </p>
 
       <div class="legal-clause-title">2. Políticas de Privacidad y Protección de Datos Personales de OntopBank (Personal Data Protection &amp; Privacy Policy)</div>
@@ -489,7 +586,7 @@
 
       <div class="legal-clause-title">4. Derecho de Prepago, Abono a Capital e Integridad Contractual</div>
       <p class="legal-clause-text">
-        De conformidad con la regulación federal de protección al consumidor financiero, ninguna disposición de este Acuerdo restringe el derecho del Solicitante a efectuar pagos anticipados. El Solicitante podrá abonar a capital cualquier suma adicional en cualquier fecha anterior al vencimiento de las 24 cuotas sin recargo alguno. Si alguna disposición del presente Acuerdo fuese declarada inválida, las disposiciones restantes continuarán en pleno vigor y efecto.
+        De conformidad con la regulación federal de protección al consumidor financiero, ninguna disposición de este Acuerdo restringe el derecho del Solicitante a efectuar pagos anticipados. El Solicitante podrá abonar a capital cualquier suma adicional en cualquier fecha anterior al vencimiento de las ${termM} cuotas sin recargo alguno. Si alguna disposición del presente Acuerdo fuese declarada inválida, las disposiciones restantes continuarán en pleno vigor y efecto.
       </p>
 
       <div class="legal-clause-title">5. Firma Electrónica, Ley Aplicable y Jurisdicción (Electronic Signature &amp; Governing Law)</div>
@@ -673,18 +770,19 @@
       yLeft -= 11;
     }
 
-    // Columna 2 del Resumen (Liquidación al 8% anual * 24 meses)
+    // Columna 2 del Resumen (Liquidación al 8% anual * 24 o 60 meses)
+    const termM = schedule.termMonths;
     let yRight = boxTop - 13;
-    p1.push(`BT /F2 8.2 Tf 0.43 0.16 0.85 rg 313 ${yRight} Td (2. LIQUIDACION DEL PRESTAMO - 8% ANUAL) Tj ET`);
+    p1.push(`BT /F2 8.2 Tf 0.43 0.16 0.85 rg 313 ${yRight} Td (2. LIQUIDACION DEL PRESTAMO - 8% ANUAL (${termM} MESES)) Tj ET`);
     yRight -= 12;
     const rightItems = [
       `Monto Solicitado Aprobado: $${formatMoney(schedule.principal)} USD`,
       `Proposito: ${(c.propositoPrestamo || 'Calidad de Vida').slice(0, 32)}`,
       `Tasa de Interes Fija: 8.00% Anual sobre valor prestado`,
-      `Interes Total (24 Meses): $${formatMoney(schedule.totalInterest24Months)} USD`,
+      `Interes Total (${termM} Meses): $${formatMoney(schedule.totalInterestTerm)} USD`,
       `Monto a Pagar Mensualmente: $${formatMoney(schedule.monthlyInstallment)} USD / mes`,
-      `Plazo de Amortizacion: 24 Meses Consecutivos`,
-      `TOTAL A PAGAR *24 MESES: $${formatMoney(schedule.totalPayable24Months)} USD`
+      `Plazo de Amortizacion: ${termM} Meses Consecutivos (${schedule.termYears} Anos)`,
+      `TOTAL A PAGAR *${termM} MESES: $${formatMoney(schedule.totalPayableTerm)} USD`
     ];
     for (let idx = 0; idx < rightItems.length; idx++) {
       const font = idx === rightItems.length - 1 || idx === 4 ? '/F2' : '/F1';
@@ -692,9 +790,9 @@
       yRight -= 11;
     }
 
-    // Tabla única de 24 Meses (* 24 Meses)
+    // Tabla única de 24 o 60 Meses
     let yTable = boxBottom - 14;
-    p1.push(`BT /F2 8.2 Tf 0.06 0.09 0.16 rg 42 ${yTable} Td (CRONOGRAMA OFICIAL DE PAGOS MENSUALES (*24 MESES - CAPITAL + 8.00% DE INTERES ANUAL)) Tj ET`);
+    p1.push(`BT /F2 8.2 Tf 0.06 0.09 0.16 rg 42 ${yTable} Td (CRONOGRAMA OFICIAL DE PAGOS MENSUALES (*${termM} MESES - CAPITAL + 8.00% DE INTERES ANUAL)) Tj ET`);
     yTable -= 13;
 
     // Cabecera de tabla
@@ -702,30 +800,31 @@
     p1.push('BT /F2 7.2 Tf 1 1 1 rg 50 ' + (yTable + 3.5) + ' Td (PERIODO) Tj ET');
     p1.push('BT /F2 7.2 Tf 1 1 1 rg 130 ' + (yTable + 3.5) + ' Td (ABONO CAPITAL) Tj ET');
     p1.push('BT /F2 7.2 Tf 1 1 1 rg 245 ' + (yTable + 3.5) + ' Td (INTERES 8% ANUAL) Tj ET');
-    p1.push('BT /F2 7.2 Tf 1 1 1 rg 360 ' + (yTable + 3.5) + ' Td (PAGO MENSUAL USD) Tj ET');
+    p1.push('BT /F2 7.2 Tf 1 1 1 rg 360 ' + (yTable + 3.5) + ' Td (PAGO PERIODO USD) Tj ET');
     p1.push('BT /F2 7.2 Tf 1 1 1 rg 475 ' + (yTable + 3.5) + ' Td (SALDO RESTANTE) Tj ET');
 
-    for (const r of schedule.rows) {
+    for (let idx = 0; idx < schedule.displayRows.length; idx++) {
+      const r = schedule.displayRows[idx];
       yTable -= 9.5;
-      if (r.month % 2 === 0) {
+      if (idx % 2 === 1) {
         p1.push(`0.96 0.97 0.99 rg 42 ${yTable} 530 9.5 re f`);
       }
       p1.push(`0.88 0.91 0.94 RG 0.4 w 42 ${yTable} m 572 ${yTable} l S`);
-      p1.push(`BT /F2 6.8 Tf 0.12 0.16 0.23 rg 50 ${yTable + 2.5} Td (Mes ${r.month}) Tj ET`);
+      p1.push(`BT /F2 6.8 Tf 0.12 0.16 0.23 rg 50 ${yTable + 2.5} Td (${pdfEscapeWinAnsi(r.shortLabel)}) Tj ET`);
       p1.push(`BT /F1 6.8 Tf 0.12 0.16 0.23 rg 130 ${yTable + 2.5} Td ($${pdfEscapeWinAnsi(formatMoney(r.monthlyPrincipal))} USD) Tj ET`);
       p1.push(`BT /F1 6.8 Tf 0.02 0.47 0.34 rg 245 ${yTable + 2.5} Td ($${pdfEscapeWinAnsi(formatMoney(r.monthlyInterest))} USD) Tj ET`);
-      p1.push(`BT /F2 6.8 Tf 0.06 0.09 0.16 rg 360 ${yTable + 2.5} Td ($${pdfEscapeWinAnsi(formatMoney(r.monthlyInstallment))} USD) Tj ET`);
+      p1.push(`BT /F2 6.8 Tf 0.06 0.09 0.16 rg 360 ${yTable + 2.5} Td ($${pdfEscapeWinAnsi(formatMoney(r.unitMonthlyInstallment))}/m) Tj ET`);
       p1.push(`BT /F1 6.8 Tf 0.28 0.33 0.41 rg 475 ${yTable + 2.5} Td ($${pdfEscapeWinAnsi(formatMoney(r.remainingPrincipal))} USD) Tj ET`);
     }
 
-    // Fila Total * 24 Meses
+    // Fila Total * Plazo Meses
     yTable -= 13;
     p1.push(`0.93 0.95 0.98 rg 42 ${yTable} 530 13 re f`);
     p1.push(`0.06 0.09 0.16 RG 1.2 w 42 ${yTable + 13} m 572 ${yTable + 13} l S`);
-    p1.push(`BT /F2 7.5 Tf 0.06 0.09 0.16 rg 50 ${yTable + 3.5} Td (TOTAL * 24 MESES) Tj ET`);
+    p1.push(`BT /F2 7.5 Tf 0.06 0.09 0.16 rg 50 ${yTable + 3.5} Td (TOTAL * ${termM} MESES) Tj ET`);
     p1.push(`BT /F2 7.5 Tf 0.06 0.09 0.16 rg 130 ${yTable + 3.5} Td ($${pdfEscapeWinAnsi(formatMoney(schedule.principal))} USD) Tj ET`);
-    p1.push(`BT /F2 7.5 Tf 0.02 0.47 0.34 rg 245 ${yTable + 3.5} Td ($${pdfEscapeWinAnsi(formatMoney(schedule.totalInterest24Months))} USD) Tj ET`);
-    p1.push(`BT /F2 8 Tf 0.43 0.16 0.85 rg 360 ${yTable + 3.5} Td ($${pdfEscapeWinAnsi(formatMoney(schedule.totalPayable24Months))} USD) Tj ET`);
+    p1.push(`BT /F2 7.5 Tf 0.02 0.47 0.34 rg 245 ${yTable + 3.5} Td ($${pdfEscapeWinAnsi(formatMoney(schedule.totalInterestTerm))} USD) Tj ET`);
+    p1.push(`BT /F2 8 Tf 0.43 0.16 0.85 rg 360 ${yTable + 3.5} Td ($${pdfEscapeWinAnsi(formatMoney(schedule.totalPayableTerm))} USD) Tj ET`);
     p1.push(`BT /F2 7.5 Tf 0.06 0.09 0.16 rg 475 ${yTable + 3.5} Td ($0.00 USD) Tj ET`);
 
     // Cláusula de Abono a Capital Anticipado
@@ -734,7 +833,7 @@
     p1.push(`0.49 0.23 0.93 RG 1 w 42 ${yCallout} 530 40 re S`);
     p1.push(`BT /F2 7.8 Tf 0.29 0.11 0.58 rg 50 ${yCallout + 28} Td (CLAUSULA DE ABONO A CAPITAL ANTICIPADO - SI ES POSIBLE ABONAR A CAPITAL SIN PENALIDAD:) Tj ET`);
     const prepayLines = wrapTextLines(
-      `OntopBank certifica expresamente que EL SOLICITANTE SI PUEDE REALIZAR ABONOS EXTRAORDINARIOS A CAPITAL o cancelar anticipadamente el saldo total del prestamo en cualquier momento dentro de los 24 meses, sin ningun tipo de penalidad o comision por prepago, reduciendo directamente el capital e intereses.`,
+      `OntopBank certifica expresamente que EL SOLICITANTE SI PUEDE REALIZAR ABONOS EXTRAORDINARIOS A CAPITAL o cancelar anticipadamente el saldo total del prestamo en cualquier momento dentro de los ${termM} meses, sin ningun tipo de penalidad o comision por prepago, reduciendo directamente el capital e intereses.`,
       98
     );
     let yPre = yCallout + 17;
@@ -752,7 +851,7 @@
     const clauses = [
       {
         title: '1. MODALIDAD DE DESEMBOLSO Y PAGOS EN PLATAFORMA ONTOPBANK',
-        body: `El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 por un monto principal de $${formatMoney(schedule.principal)} USD, con una tasa fija del 8.00% anual sobre el valor prestado, pagadero en 24 cuotas mensuales de $${formatMoney(schedule.monthlyInstallment)} USD para un total acumulado a los 24 meses (*24 meses) de $${formatMoney(schedule.totalPayable24Months)} USD. Todos los pagos y abonos a capital se ejecutaran a traves de los canales autorizados de OntopBank conforme a los Terminos de Servicio en https://www.getontop.com/legal/terms-of-service.`
+        body: `El Solicitante acepta de manera libre, voluntaria e informada las condiciones financieras aprobadas en la Hoja 1 por un monto principal de $${formatMoney(schedule.principal)} USD, con una tasa fija del 8.00% anual sobre el valor prestado, pagadero en ${termM} cuotas mensuales de $${formatMoney(schedule.monthlyInstallment)} USD para un total acumulado a los ${termM} meses (*${termM} meses) de $${formatMoney(schedule.totalPayableTerm)} USD. Todos los pagos y abonos a capital se ejecutaran a traves de los canales autorizados de OntopBank conforme a los Terminos de Servicio en https://www.getontop.com/legal/terms-of-service.`
       },
       {
         title: '2. POLITICAS DE PRIVACIDAD Y PROTECCION DE DATOS PERSONALES DE ONTOPBANK (PRIVACY POLICY)',
@@ -776,7 +875,7 @@
       },
       {
         title: '4. DERECHO IRRESTRICTO DE ABONO A CAPITAL Y PREPAGO TOTAL O PARCIAL',
-        body: `Ninguna disposicion de este Contrato restringe el derecho del Solicitante a realizar abonos extraordinarios a capital antes de los 24 meses. Todo pago anticipado se aplicara directamente al principal sin penalidad, multa ni recargo alguno.`
+        body: `Ninguna disposicion de este Contrato restringe el derecho del Solicitante a realizar abonos extraordinarios a capital antes de los ${termM} meses. Todo pago anticipado se aplicara directamente al principal sin penalidad, multa ni recargo alguno.`
       },
       {
         title: '5. FIRMA ELECTRONICA, LEY APLICABLE Y JURISDICCION (DELAWARE & FLORIDA, EE. UU.)',
@@ -1128,9 +1227,9 @@
             <td>${esc(c.fechaCreacion || effectiveDate)}</td>
           </tr>
           <tr>
-            <td><strong>2. Emisión Contrato Legal 24m</strong></td>
+            <td><strong>2. Emisión Contrato Legal ${schedule.termMonths}m</strong></td>
             <td><strong style="color:#059669;">✔ FIRMADO</strong></td>
-            <td>Contrato Oficial a 24 meses (8.00% EA · Cuota $${formatMoney(schedule.monthlyInstallment)}/mes) emitido.</td>
+            <td>Contrato Oficial a ${schedule.termMonths} meses (8.00% EA · Cuota $${formatMoney(schedule.monthlyInstallment)}/mes) emitido.</td>
             <td>${esc(c.fechaCreacion || effectiveDate)}</td>
           </tr>
           <tr>
@@ -1155,7 +1254,7 @@
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:9.8px; color:#1E293B;">
           <div>✔ <strong>1. Tarjeta Física Ontop Visa Platinum (•••• ${esc(cardLast4)}):</strong> Con chip EMV y depósito pre-cargado oculto por seguridad listo para retiro al recibir.</div>
-          <div>✔ <strong>2. Contrato Oficial de Préstamo (2 Hojas):</strong> Copia física sellada del acuerdo al 8.00% anual estructurado a 24 meses.</div>
+          <div>✔ <strong>2. Contrato Oficial de Préstamo (2 Hojas):</strong> Copia física sellada del acuerdo al 8.00% anual estructurado a ${schedule.termMonths} meses.</div>
           <div>✔ <strong>3. Carta Oficial de Bienvenida OntopBank:</strong> Credenciales de activación en recepción y protocolo de retiro seguro sin restricciones.</div>
           <div>✔ <strong>4. Papeleo Legal y Certificado de Custodia:</strong> Póliza de seguro de transporte de valores desde Miami, FL hasta el domicilio del titular.</div>
         </div>
@@ -1277,7 +1376,7 @@
 
     const historyItems = [
       `1. ORIGINACION Y SCORE KYC: Identificacion verificada (${idLabel}) - Score Matematico aprobado: ${c.scoreCredito || 650}/750.`,
-      `2. CONTRATO LEGAL EMITIDO: Acuerdo oficial a 24 meses (8.00% EA - Cuota mensual $${formatMoney(schedule.monthlyInstallment)} USD) firmado.`,
+      `2. CONTRATO LEGAL EMITIDO: Acuerdo oficial a ${schedule.termMonths} meses (8.00% EA - Cuota mensual $${formatMoney(schedule.monthlyInstallment)} USD) firmado.`,
       `3. PAGO Y ACTIVACION DE CUENTA: Habilitacion confirmada (${paymentChannelUsed}). Paso a Etapa 3: Credito Activado y en Desembolso.`,
       `4. DESPACHO TRANSPORTADORA DE VALORES: Envio fisico desde Ontop Holdings Inc. (66 W Flagler St Ste 900, Miami, FL 33130) hacia ${residence}.`
     ];
@@ -1296,7 +1395,7 @@
     ops.push('0.79 0.83 0.88 RG 1 w 42 ' + (hy - 78) + ' 530 88 re S');
     ops.push(`BT /F2 8.8 Tf 0.06 0.09 0.16 rg 50 ${hy - 6} Td (CONTENIDO DEL PAQUETE DE BIENVENIDA, CONTRATO Y PAPELEO CORRESPONDIENTE:) Tj ET`);
     ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 21} Td (* Tarjeta Fisica Ontop Visa Platinum (**** ${pdfEscapeWinAnsi(cardLast4)}) con el deposito cargado y oculto por seguridad.) Tj ET`);
-    ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 34} Td (* Contrato Oficial de Prestamo (2 Hojas) sellado por OntopBank IC Operations LLC. y cronograma a 24 meses.) Tj ET`);
+    ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 34} Td (* Contrato Oficial de Prestamo (2 Hojas) sellado por OntopBank IC Operations LLC. y cronograma a ${schedule.termMonths} meses.) Tj ET`);
     ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 47} Td (* Carta Oficial de Bienvenida e instrucciones para retiro inmediato del deposito a la llegada del blindado.) Tj ET`);
     ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 60} Td (* Acta de Custodia y Seguro de la Transportadora de Valores desde Miami, FL 33130 hasta el domicilio.) Tj ET`);
 
@@ -1524,7 +1623,7 @@
         <tbody>
           <tr>
             <td><strong>1. Capital Principal del Préstamo Aprobado</strong></td>
-            <td>Expediente ${esc(c.id)} · Plan 24 Meses (8.00% EA · Cuota $${formatMoney(schedule.monthlyInstallment)}/m)</td>
+            <td>Expediente ${esc(c.id)} · Plan ${schedule.termMonths} Meses (8.00% EA · Cuota $${formatMoney(schedule.monthlyInstallment)}/m)</td>
             <td style="text-align:right;">100.00%</td>
             <td style="text-align:right; font-weight:800; color:#059669;">$${formatMoney(taxInfo.principalAmount)} USD</td>
           </tr>
@@ -1653,7 +1752,7 @@
     hy -= 16;
 
     const rows = [
-      `1. CAPITAL APROBADO DEL PRESTAMO (Plan 24m - Cuota $${formatMoney(schedule.monthlyInstallment)}/mes):   $${formatMoney(taxInfo.principalAmount)} USD`,
+      `1. CAPITAL APROBADO DEL PRESTAMO (Plan ${schedule.termMonths}m - Cuota $${formatMoney(schedule.monthlyInstallment)}/mes):   $${formatMoney(taxInfo.principalAmount)} USD`,
       `2. IMPUESTO FEDERAL APLICADO (${taxInfo.taxRatePercent.toFixed(2)}% segun ${taxInfo.bracketCode}):   $${formatMoney(taxInfo.calculatedTaxUsd)} USD`,
       `3. FIT (FEE) OPERATIVO POR ENVIO DEL PRESTAMO AL BANCO RECEPTOR (ACH / WIRE):   $${formatMoney(taxInfo.baseWireFitUsd)} USD`,
       `4. TOTAL FIT + IMPUESTOS REQUERIDOS PARA GENERAR EL DEPOSITO DIRECTO:   $${formatMoney(taxInfo.totalFitAndTaxUsd)} USD`,

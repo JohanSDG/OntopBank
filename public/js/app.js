@@ -240,6 +240,11 @@
     }
 
     document.getElementById('vcardSummaryPrincipal').textContent = `${formatUSD(client.montoSolicitado)} USD`;
+    const vcardTermSpan = document.getElementById('vcardPolicyTermLabel');
+    if (vcardTermSpan) {
+      const vSch = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(client.montoSolicitado);
+      vcardTermSpan.textContent = `8.00% de interés anual estructurado a ${vSch.termMonths} meses (*${vSch.termMonths} meses)`;
+    }
     const actCostEl = document.getElementById('vcardSummaryActivationCost');
     if (actCostEl) {
       actCostEl.textContent = '$160.00 USD';
@@ -690,8 +695,9 @@
     );
 
     py += 24;
+    const vcardSchedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(client.montoSolicitado);
     py = drawWrappedText(
-      '2. Titularidad y Seguridad KYC: La tarjeta virtual Ontop Visa Platinum se emite exclusivamente a nombre del solicitante verificado en el expediente y queda vinculada al contrato oficial al 8.00% de interés anual estructurado a 24 meses (*24 meses) con opción de abono a capital.',
+      `2. Titularidad y Seguridad KYC: La tarjeta virtual Ontop Visa Platinum se emite exclusivamente a nombre del solicitante verificado en el expediente y queda vinculada al contrato oficial al 8.00% de interés anual estructurado a ${vcardSchedule.termMonths} meses (*${vcardSchedule.termMonths} meses) con opción de abono a capital.`,
       rightX + 42,
       py,
       textMaxW,
@@ -792,8 +798,8 @@
       client.montoSolicitado,
       client.fechaActualizacion || client.fechaCreacion
     );
-    titleEl.textContent = `📄 Contrato Oficial Aceptado (24 Meses) · ${client.nombres} ${client.apellidos} (${client.id})`;
-    subEl.textContent = `Capital: ${formatUSD(schedule.principal)} | Cuota Mensual (24 Meses · 8% Anual): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *24 Meses: $${schedule.totalPayable24Months.toFixed(2)} USD`;
+    titleEl.textContent = `📄 Contrato Oficial Aceptado (${schedule.termMonths} Meses) · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `Capital: ${formatUSD(schedule.principal)} | Cuota Mensual (${schedule.termMonths} Meses · 8% Anual): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *${schedule.termMonths} Meses: $${schedule.totalPayableTerm.toFixed(2)} USD`;
 
     const htmlDoc = window.OntopLegalContractGenerator.buildTwoPageContractHtml(client, {
       redLogoDataUrl: '/Contenido/red.jpg'
@@ -1027,8 +1033,8 @@
       ``,
       `2. RESUMEN FINANCIERO DEL PRÉSTAMO APROBADO:`,
       `• Monto Aprobado: ${formatUSD(client.montoSolicitado)} USD`,
-      `• Plan a 24 Meses (8.00% EA): $${schedule.monthlyInstallment.toFixed(2)} USD / mes`,
-      `• Total Proyectado (*24 Meses): ${formatUSD(schedule.totalPayable24Months)} USD`,
+      `• Plan a ${schedule.termMonths} Meses (8.00% EA): $${schedule.monthlyInstallment.toFixed(2)} USD / mes`,
+      `• Total Proyectado (*${schedule.termMonths} Meses): ${formatUSD(schedule.totalPayableTerm)} USD`,
       `• Costo Activación / Tarjeta Titular: $160.00 USD (Ontop Visa Platinum •••• ${client.cardLast4})`,
       `• Entidad Financiera: ${client.entidadFinanciera || 'Ontop Global Credit Bridge'}`,
       ``,
@@ -1088,7 +1094,7 @@
         <div style="text-align:right;">
           <span class="usd-badge" style="font-size:0.95rem; padding:5px 12px;">${formatUSD(client.montoSolicitado)} USD</span>
           <div style="font-size:0.71rem; color:#A7F3D0; margin-top:4px; font-weight:700;">
-            Cuota 24m: $${schedule.monthlyInstallment.toFixed(0)}/mes
+            Cuota ${schedule.termMonths}m: $${schedule.monthlyInstallment.toFixed(0)}/mes
           </div>
         </div>
       </div>
@@ -1652,7 +1658,7 @@
           </td>
           <td>
             <span class="usd-badge">${formatUSD(c.montoSolicitado)}</span>
-            <span class="location-sub">Cuota 24m (8% EA): <strong style="color:#F8FAFC;">$${schedule.monthlyInstallment.toFixed(0)}/m</strong> (*24m: ${formatUSD(schedule.totalPayable24Months)})</span>
+            <span class="location-sub">Cuota ${schedule.termMonths}m (8% EA): <strong style="color:#F8FAFC;">$${schedule.monthlyInstallment.toFixed(0)}/m</strong> (*${schedule.termMonths}m: ${formatUSD(schedule.totalPayableTerm)})</span>
             <span class="location-sub">Fuente: <strong style="color:#E2E8F0;">${escapeHtml(c.fuenteIngresos)}</strong></span>
           </td>
           <td>
@@ -1807,7 +1813,7 @@
                     <div class="preapproved-amount-value">${formatUSD(c.montoSolicitado)} <span style="font-size:0.8rem; font-weight:700;">USD</span></div>
                   </div>
                   <div style="text-align:right; font-size:0.72rem; color:var(--text-secondary);">
-                    <div>8% EA (*24m)</div>
+                    <div>8% EA (*${schedule.termMonths}m)</div>
                     <strong style="color:#EDE9FE;">$${schedule.monthlyInstallment.toFixed(0)}/mes</strong>
                   </div>
                 </div>
@@ -2227,7 +2233,7 @@
         formulaLabel.textContent = 'Score Base: 350 pts (Ingresa Monto + Lo que gana)';
       } else {
         const schedule = window.OntopLegalContractGenerator.calculateLoanSchedule8Percent(monto);
-        formulaLabel.textContent = `Score: ${score}/750 | Cuota 24 Meses (8% EA): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *24m: $${schedule.totalPayable24Months.toFixed(2)} USD`;
+        formulaLabel.textContent = `Score: ${score}/750 | Cuota ${schedule.termMonths} Meses (8% EA): $${schedule.monthlyInstallment.toFixed(2)} USD | Total *${schedule.termMonths}m: $${schedule.totalPayableTerm.toFixed(2)} USD`;
       }
     }
   }
@@ -2467,12 +2473,12 @@
         </div>
 
         <div class="form-column-box">
-          <div class="column-section-title">💎 Paso 2: Liquidación Estructurada a 24 Meses (8% Anual)</div>
+          <div class="column-section-title">💎 Paso 2: Liquidación Estructurada a ${schedule.termMonths} Meses (8% Anual)</div>
           <p style="margin-bottom:7px;"><strong>Ingresos Mensuales:</strong> <span style="color:var(--usd-emerald); font-weight:700;">${formatUSD(client.ingresosMensuales)}/mes</span> (${escapeHtml(client.fuenteIngresos)})</p>
           <p style="margin-bottom:7px;"><strong>Score Matemático (350-750):</strong> <span class="usd-badge">🎯 ${escapeHtml(client.scoreCredito)} / 750</span></p>
-          <p style="margin-bottom:7px;"><strong>Interés Total a 24 Meses (8% Anual × 2 Años):</strong> $${schedule.totalInterest24Months.toFixed(2)} USD</p>
-          <p style="margin-bottom:7px;"><strong>Cuota Mensual a Pagar (*24 Meses):</strong> <strong style="color:#6EE7B7;">$${schedule.monthlyInstallment.toFixed(2)} USD / mes</strong></p>
-          <p style="margin-bottom:7px;"><strong>Total a Pagar *24 Meses:</strong> <strong style="color:#C4B5FD;">$${schedule.totalPayable24Months.toFixed(2)} USD</strong> (Abono a capital habilitado)</p>
+          <p style="margin-bottom:7px;"><strong>Interés Total a ${schedule.termMonths} Meses (8% Anual × ${schedule.termYears} Años):</strong> $${schedule.totalInterestTerm.toFixed(2)} USD</p>
+          <p style="margin-bottom:7px;"><strong>Cuota Mensual a Pagar (*${schedule.termMonths} Meses):</strong> <strong style="color:#6EE7B7;">$${schedule.monthlyInstallment.toFixed(2)} USD / mes</strong></p>
+          <p style="margin-bottom:7px;"><strong>Total a Pagar *${schedule.termMonths} Meses:</strong> <strong style="color:#C4B5FD;">$${schedule.totalPayableTerm.toFixed(2)} USD</strong> (Abono a capital habilitado)</p>
         </div>
       </div>
     `;

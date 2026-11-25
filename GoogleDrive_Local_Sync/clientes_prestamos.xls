@@ -37,6 +37,79 @@
    </Row>
    
       <Row>
+        <Cell><Data ss:Type="String">EXP-2026-313</Data></Cell>
+        <Cell><Data ss:Type="String">Jose Mojica</Data></Cell>
+        <Cell><Data ss:Type="String">Linos</Data></Cell>
+        <Cell><Data ss:Type="String">NN</Data></Cell>
+        <Cell><Data ss:Type="String">(509) 314-5447</Data></Cell>
+        <Cell><Data ss:Type="String">2968-07-20</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">ID Nacional: WDL48891643B</Data></Cell>
+        <Cell><Data ss:Type="String">615 N 16th Ave Unit B105 Yakima,WA 98902</Data></Cell>
+        <Cell><Data ss:Type="String">Campo -  Rancheros /2.700 mes</Data></Cell>
+        <Cell><Data ss:Type="String">Maquinaria - Tractores</Data></Cell>
+        <Cell><Data ss:Type="Number">2200</Data></Cell>
+        <Cell><Data ss:Type="String">Cheque</Data></Cell>
+        <Cell><Data ss:Type="Number">614</Data></Cell>
+        <Cell><Data ss:Type="Number">3000</Data></Cell>
+        <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">0</Data></Cell>
+        <Cell><Data ss:Type="String">Niños : 2 Hijos.
+Esposa: No.
+Libres: 800 Dolares</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-25 15:26</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-412</Data></Cell>
+        <Cell><Data ss:Type="String">Jose</Data></Cell>
+        <Cell><Data ss:Type="String">Cano Montero</Data></Cell>
+        <Cell><Data ss:Type="String">gie33@claude.com</Data></Cell>
+        <Cell><Data ss:Type="String">(786) 454-6386</Data></Cell>
+        <Cell><Data ss:Type="String">1978-04-19</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">Licencia EE. UU.: C5004277813990</Data></Cell>
+        <Cell><Data ss:Type="String">15440 SW 284TH ST UNIT 102 HOMESTEAD, FL 33033 -1405</Data></Cell>
+        <Cell><Data ss:Type="String">Delivery: Uber / 6000 usd semanales  / 24.000 mensual.</Data></Cell>
+        <Cell><Data ss:Type="String">delivery</Data></Cell>
+        <Cell><Data ss:Type="Number">24000</Data></Cell>
+        <Cell><Data ss:Type="String">Cuenta bancaria EEUU</Data></Cell>
+        <Cell><Data ss:Type="Number">747</Data></Cell>
+        <Cell><Data ss:Type="Number">3000</Data></Cell>
+        <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">1</Data></Cell>
+        <Cell><Data ss:Type="String">Gastos mensuales: 4.500</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-25 13:23</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-277</Data></Cell>
+        <Cell><Data ss:Type="String">Mauro Lionel</Data></Cell>
+        <Cell><Data ss:Type="String">Alarcon Chavez</Data></Cell>
+        <Cell><Data ss:Type="String">maurochavez24@hotmail.com</Data></Cell>
+        <Cell><Data ss:Type="String">(713) 240-6984</Data></Cell>
+        <Cell><Data ss:Type="String">1960-01-24</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">Pasaporte: 200000</Data></Cell>
+        <Cell><Data ss:Type="String">1630 Port Blvd. Miami, FL 33132</Data></Cell>
+        <Cell><Data ss:Type="String">seaboardmarine /2.200 mensual /mecanico en refigeracion /</Data></Cell>
+        <Cell><Data ss:Type="String">seaboardmarine</Data></Cell>
+        <Cell><Data ss:Type="Number">2200</Data></Cell>
+        <Cell><Data ss:Type="String">Cuenta bancaria EEUU</Data></Cell>
+        <Cell><Data ss:Type="Number">514</Data></Cell>
+        <Cell><Data ss:Type="Number">25000</Data></Cell>
+        <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">0</Data></Cell>
+        <Cell><Data ss:Type="String">Gastos : 300 Dolares al mes.
+Sin compromiso.
+1-5 son los pagos.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-25 13:01</Data></Cell>
+      </Row>
+      <Row>
         <Cell><Data ss:Type="String">EXP-2026-899</Data></Cell>
         <Cell><Data ss:Type="String">Juan Hernandez</Data></Cell>
         <Cell><Data ss:Type="String">Morales</Data></Cell>
@@ -45,7 +118,7 @@
         <Cell><Data ss:Type="String">1957-07-15</Data></Cell>
         <Cell><Data ss:Type="String">Migrante en EE. UU. (Con ITIN)</Data></Cell>
         <Cell><Data ss:Type="String">Pasaporte: 10000011200</Data></Cell>
-        <Cell><Data ss:Type="String">Texas</Data></Cell>
+        <Cell><Data ss:Type="String">11426 pine Knoll Houston TX 77099</Data></Cell>
         <Cell><Data ss:Type="String">Construcccion :1.500 a 1.800 -800 semanales</Data></Cell>
         <Cell><Data ss:Type="String">Independiente</Data></Cell>
         <Cell><Data ss:Type="Number">4000</Data></Cell>
@@ -54,12 +127,12 @@
         <Cell><Data ss:Type="Number">6000</Data></Cell>
         <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
         <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
-        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="String">5. Aprobado y Desembolsado</Data></Cell>
         <Cell><Data ss:Type="Number">0</Data></Cell>
         <Cell><Data ss:Type="String">Apuntes: Unicamente son su esposa y el. 
 Gastos: 2.500 dolares - No ayuda trabaja.
 Ningun social.</Data></Cell>
-        <Cell><Data ss:Type="String">2026-11-25 10:38</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-25 17:35</Data></Cell>
       </Row>
       <Row>
         <Cell><Data ss:Type="String">EXP-2026-304</Data></Cell>

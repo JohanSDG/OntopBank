@@ -1,0 +1,37 @@
+{
+  "id": "EXP-2026-412",
+  "nombres": "Jose",
+  "apellidos": "Cano Montero",
+  "email": "gie33@claude.com",
+  "telefono": "(786) 454-6386",
+  "fechaNacimiento": "1978-04-19",
+  "perfilMigratorio": "Residente EE. UU. / Ciudadano",
+  "tipoId": "Licencia EE. UU.",
+  "numeroId": "C5004277813990",
+  "residencia": "15440 SW 284TH ST UNIT 102 HOMESTEAD, FL 33033 -1405",
+  "lugarTrabajo": "Delivery: Uber / 6000 usd semanales  / 24.000 mensual.",
+  "funcionesTrabajo": "delivery",
+  "ingresosMensuales": 24000,
+  "fuenteIngresos": "Cuenta bancaria EEUU",
+  "scoreCredito": 747,
+  "montoSolicitado": 3000,
+  "propositoPrestamo": "Compra de Vivienda / Hipotecario",
+  "entidadFinanciera": "Ontop Global Credit Bridge",
+  "estadoProceso": "4. Pre-Aprobado",
+  "timerStartedAt": null,
+  "timerEndsAt": null,
+  "adjuntos": [
+    {
+      "name": "cano.jpeg",
+      "size": 784994,
+      "type": "image/jpeg",
+      "category": "Soporte KYC / Financiero"
+    }
+  ],
+  "notasConsultor": "Gastos mensuales: 4.500",
+  "fechaCreacion": "2026-11-25 13:14",
+  "fechaActualizacion": "2026-11-25 13:23",
+  "contratoAprobado": true,
+  "cardLast4": "6263",
+  "cardExpiry": "08/29"
+}
