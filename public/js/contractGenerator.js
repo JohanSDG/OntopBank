@@ -848,9 +848,507 @@
     return pdf;
   }
 
+  // ==========================================================================
+  // GENERADOR DE ACTA OFICIAL DE DESPACHO DE TARJETA CON DEPÓSITO OCULTO POR
+  // SEGURIDAD, TRANSPORTADORA DE VALORES Y KIT DE BIENVENIDA (HTML / WORD / PDF)
+  // Origen: OntopBank Ontop Holdings Inc. 66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos
+  // ==========================================================================
+  const ONTOP_HQ_OFFICIAL_ADDRESS =
+    'OntopBank · Ontop Holdings Inc., 66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos';
+
+  function buildArmoredDispatchWelcomeHtml(client, options = {}) {
+    const c = client || {};
+    const schedule = calculateLoanSchedule8Percent(c.montoSolicitado || 10000);
+    const effectiveDate = c.cardActivatedAt || c.fechaActualizacion || c.fechaCreacion || new Date().toISOString().slice(0, 16).replace('T', ' ');
+    const fullName = `${c.nombres || 'TITULAR'} ${c.apellidos || ''}`.trim().toUpperCase();
+    const idLabel = `${c.tipoId || 'ID'}: ${c.numeroId || 'N/A'}`;
+    const residence = c.residencia || 'Dirección de Residencia Verificada del Titular en EE. UU.';
+    const cardLast4 = c.cardLast4 || '4829';
+    const cardExpiry = c.cardExpiry || '08/29';
+    const paymentChannelUsed = c.paymentChannelUsed || 'Canal Oficial Autorizado OntopBank';
+    const guideCode = `VAL-ONTOP-${String(c.id || 'EXP-2026').replace(/[^A-Z0-9]/gi, '')}-${cardLast4}`;
+    const redLogoSrc = options.redLogoDataUrl || '/Contenido/red.jpg';
+
+    return `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Acta Oficial de Despacho y Transportadora de Valores - ${esc(fullName)}</title>
+  <style>
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: #E2E8F0;
+      color: #0F172A;
+      line-height: 1.42;
+      font-size: 11px;
+    }
+    .legal-sheet {
+      position: relative;
+      width: 215.9mm;
+      min-height: 279.4mm;
+      margin: 10px auto;
+      background: #FFFFFF;
+      padding: 15mm 16mm 14mm 22mm;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    .coral-left-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 7mm;
+      background: linear-gradient(180deg, #FF7E70 0%, #F43F5E 50%, #BE123C 100%);
+    }
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .route-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .route-card {
+      border: 1.5px solid #CBD5E1;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #F8FAFC;
+    }
+    .route-card.origin {
+      border-left: 4px solid #6D28D9;
+      background: #FAF5FF;
+    }
+    .route-card.destination {
+      border-left: 4px solid #059669;
+      background: #ECFDF5;
+    }
+    .route-kicker {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #475569;
+      margin-bottom: 3px;
+    }
+    .route-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 3px;
+    }
+    .security-vault-banner {
+      background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+      color: #FFFFFF;
+      border: 2px solid #F59E0B;
+      border-radius: 12px;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+    }
+    .masked-amount-box {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1.5px dashed #FBBF24;
+      color: #FDE68A;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 8px;
+      letter-spacing: 0.08em;
+    }
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+      font-size: 10px;
+    }
+    .history-table th {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 6px 8px;
+      text-align: left;
+      font-size: 9.2px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .history-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #CBD5E1;
+      color: #1E293B;
+    }
+    .kit-checklist {
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+    }
+    .signatures-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1.5px solid #CBD5E1;
+    }
+    .sig-line {
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      font-size: 15px;
+      font-weight: 700;
+      color: #4C1D95;
+      border-bottom: 1.5px solid #0F172A;
+      padding-bottom: 3px;
+      margin: 10px 0 5px;
+    }
+    .sheet-footer {
+      border-top: 1px solid #CBD5E1;
+      padding-top: 6px;
+      font-size: 8.8px;
+      color: #64748B;
+      display: flex;
+      justify-content: space-between;
+    }
+    @media print {
+      body { background: #FFFFFF; }
+      .legal-sheet { margin: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="legal-sheet">
+    <div class="coral-left-bar"></div>
+    <div>
+      <header class="sheet-header">
+        <div>
+          ${getOntopHeaderLogoSvg(redLogoSrc)}
+          <div style="font-size:9.5px; color:#475569; font-weight:600; margin-top:2px;">
+            ONTOP HOLDINGS INC. · ARMORED VALUE TRANSPORT &amp; WELCOME DISPATCH DIVISION
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:9px; font-weight:800; color:#BE123C; letter-spacing:0.06em;">CERTIFICADO OFICIAL DE DESPACHO DE VALORES</div>
+          <div style="font-size:12px; font-weight:900; color:#0F172A;">GUÍA DE SEGURIDAD: ${esc(guideCode)}</div>
+          <div style="font-size:9.5px; color:#334155;">Expediente: <strong>${esc(c.id || 'EXP-2026')}</strong> · Fecha: ${esc(effectiveDate)}</div>
+        </div>
+        <div>${getLegalOntopStampSvg()}</div>
+      </header>
+
+      <h1 style="font-size:13px; font-weight:900; color:#0F172A; text-transform:uppercase; margin-bottom:8px; letter-spacing:-0.01em;">
+        ACTA OFICIAL DE DESPACHO DE TARJETA TITULAR CON DEPÓSITO PROTEGIDO, CONTRATO Y PAQUETE DE BIENVENIDA VIA TRANSPORTADORA DE VALORES
+      </h1>
+
+      <p style="font-size:10.3px; color:#334155; margin-bottom:10px; text-align:justify;">
+        Por medio de la presente Acta Oficial de Custodia y Despacho, <strong>ONTOPBANK · ONTOP HOLDINGS INC.</strong> certifica que el expediente crediticio perteneciente a <strong>${esc(fullName)}</strong> (identificado/a con <strong>${esc(idLabel)}</strong>) ha completado satisfactoriamente la validación de cumplimiento y pago de habilitación, pasando al estado <strong>5. CRÉDITO ACTIVADO Y EN DESEMBOLSO</strong>. En consecuencia, se ha ordenado la salida física mediante <strong>Transportadora de Valores Blindada</strong> desde nuestra sede corporativa en Miami, Florida, hasta el domicilio registrado del titular:
+      </p>
+
+      <!-- RUTA OFICIAL: ORIGEN MIAMI -> DESTINO RESIDENCIA DEL CLIENTE -->
+      <div class="route-box">
+        <div class="route-card origin">
+          <div class="route-kicker">🏢 DIRECCIÓN OFICIAL DE ORIGEN (SEDE CENTRAL ONTOPBANK)</div>
+          <div class="route-title">OntopBank · Ontop Holdings Inc.</div>
+          <div style="font-size:10.2px; color:#1E293B; font-weight:700;">
+            66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos
+          </div>
+          <div style="font-size:9.2px; color:#475569; margin-top:3px;">
+            Bóveda de Emisión y Custodia Bancaria · Jurisdicción Federal EE. UU.
+          </div>
+        </div>
+
+        <div class="route-card destination">
+          <div class="route-kicker">📍 DIRECCIÓN DE DESTINO Y ENTREGA PERSONALIZADA (RESIDENCIA TITULAR)</div>
+          <div class="route-title">${esc(fullName)}</div>
+          <div style="font-size:10.5px; color:#065F46; font-weight:800;">
+            ${esc(residence)}
+          </div>
+          <div style="font-size:9.2px; color:#047857; margin-top:3px;">
+            Contacto Verificado: ${esc(c.telefono || 'Registrado')} · ${esc(c.email || '')}
+          </div>
+        </div>
+      </div>
+
+      <!-- PROTOCOLO DE SEGURIDAD: DEPÓSITO OCULTO HASTA ENTREGA POR TRANSPORTADORA -->
+      <div class="security-vault-banner">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:6px;">
+          <div>
+            <div style="font-size:9px; font-weight:800; color:#FBBF24; letter-spacing:0.08em; text-transform:uppercase;">
+              🔒 PROTOCOLO DE SEGURIDAD BANCARIA · CUSTODIA EN TRÁNSITO BLINDADO
+            </div>
+            <div style="font-size:12px; font-weight:800; color:#FFFFFF;">
+              Tarjeta Titular Ontop Visa Platinum (•••• •••• •••• ${esc(cardLast4)} · EXP ${esc(cardExpiry)}) con Depósito Cargado
+            </div>
+          </div>
+          <div class="masked-amount-box">
+            DEPÓSITO EN CUSTODIA: $ •••,•••.•• USD (OCULTO POR SEGURIDAD)
+          </div>
+        </div>
+        <p style="font-size:9.8px; color:#E2E8F0; line-height:1.4;">
+          <strong>AVISO DE PRIVACIDAD DE FONDOS EN TRÁNSITO:</strong> Por estricta normativa de seguridad de la <strong>Transportadora de Valores</strong> y protección patrimonial del titular, el monto exacto del depósito incorporado en la tarjeta física viaja bajo <strong>reserva criptográfica oculta ($ •••,•••.•• USD)</strong> en el manifiesto exterior. El saldo total aprobado quedará <strong>100% liberado y disponible para ser retirado o utilizado de inmediato</strong> tan pronto el titular reciba el sobre sellado de bienvenida y firme el acta de entrega de la transportadora en su dirección de residencia (<strong>${esc(residence)}</strong>).
+        </p>
+      </div>
+
+      <!-- HISTORIAL CORRESPONDIENTE DEL CLIENTE -->
+      <div style="font-size:10.5px; font-weight:800; color:#0F172A; text-transform:uppercase; margin-bottom:5px;">
+        📋 HISTORIAL OFICIAL Y TRAZABILIDAD DEL EXPEDIENTE (${esc(c.id || 'EXP-2026')})
+      </div>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Etapa / Hito del Proceso</th>
+            <th>Estado Verificado</th>
+            <th>Detalle de Operación y Cumplimiento</th>
+            <th>Registro Temporal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Originación y Score KYC</strong></td>
+            <td><strong style="color:#059669;">✔ COMPLETADO</strong></td>
+            <td>Verificación de identidad (${esc(idLabel)}) y Score Matemático aprobado (${esc(c.scoreCredito || 650)}/750).</td>
+            <td>${esc(c.fechaCreacion || effectiveDate)}</td>
+          </tr>
+          <tr>
+            <td><strong>2. Emisión Contrato Legal 24m</strong></td>
+            <td><strong style="color:#059669;">✔ FIRMADO</strong></td>
+            <td>Contrato Oficial a 24 meses (8.00% EA · Cuota $${formatMoney(schedule.monthlyInstallment)}/mes) emitido.</td>
+            <td>${esc(c.fechaCreacion || effectiveDate)}</td>
+          </tr>
+          <tr>
+            <td><strong>3. Pago y Habilitación Riel</strong></td>
+            <td><strong style="color:#059669;">✔ VERIFICADO</strong></td>
+            <td>Confirmación de pago y activación de Tarjeta Ontop Visa Platinum (•••• ${esc(cardLast4)}) via ${esc(paymentChannelUsed)}.</td>
+            <td>${esc(effectiveDate)}</td>
+          </tr>
+          <tr>
+            <td><strong>4. Despacho Transportadora</strong></td>
+            <td><strong style="color:#1D4ED8;">🚚 EN TRÁNSITO</strong></td>
+            <td>Salida desde 66 W Flagler St Ste 900, Miami, FL 33130 hacia ${esc(residence)} con Depósito Oculto y Kit de Bienvenida.</td>
+            <td>Guía ${esc(guideCode)}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- CONTENIDO DEL PAQUETE DE BIENVENIDA Y PAPELEO CORRESPONDIENTE -->
+      <div class="kit-checklist">
+        <div style="font-size:10.2px; font-weight:800; color:#0F172A; text-transform:uppercase; margin-bottom:5px;">
+          📦 DOCUMENTACIÓN Y ELEMENTOS INCLUIDOS EN LA ENTREGA DE BIENVENIDA:
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:9.8px; color:#1E293B;">
+          <div>✔ <strong>1. Tarjeta Física Ontop Visa Platinum (•••• ${esc(cardLast4)}):</strong> Con chip EMV y depósito pre-cargado oculto por seguridad listo para retiro al recibir.</div>
+          <div>✔ <strong>2. Contrato Oficial de Préstamo (2 Hojas):</strong> Copia física sellada del acuerdo al 8.00% anual estructurado a 24 meses.</div>
+          <div>✔ <strong>3. Carta Oficial de Bienvenida OntopBank:</strong> Credenciales de activación en recepción y protocolo de retiro seguro sin restricciones.</div>
+          <div>✔ <strong>4. Papeleo Legal y Certificado de Custodia:</strong> Póliza de seguro de transporte de valores desde Miami, FL hasta el domicilio del titular.</div>
+        </div>
+      </div>
+
+      <!-- FIRMAS DE AUTORIZACIÓN Y RECEPCIÓN -->
+      <div class="signatures-grid">
+        <div>
+          <div style="font-size:9.5px; font-weight:800; color:#0F172A;">DESPACHADO POR ONTOPBANK HOLDINGS INC.:</div>
+          <div class="sig-line">Elena Vance — Armored Dispatch Director</div>
+          <div style="font-size:9px; color:#334155;"><strong>Origen:</strong> 66 W Flagler St Ste 900, Miami, FL 33130, EE. UU.</div>
+          <div style="font-size:9px; color:#059669; font-weight:700;">Estado: VALORES SELLADOS Y ENTREGADOS A TRANSPORTADORA</div>
+        </div>
+        <div>
+          <div style="font-size:9.5px; font-weight:800; color:#0F172A;">RECEPCIÓN EN DOMICILIO DEL TITULAR (PARA RETIRO DE DEPÓSITO):</div>
+          <div class="sig-line">${esc(fullName)}</div>
+          <div style="font-size:9px; color:#334155;"><strong>Titular:</strong> ${esc(fullName)} (${esc(idLabel)})</div>
+          <div style="font-size:9px; color:#334155;"><strong>Destino:</strong> ${esc(residence)}</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="sheet-footer">
+      <span>OntopBank · Ontop Holdings Inc. · 66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos</span>
+      <span>Acta Oficial de Despacho &amp; Bienvenida · Guía ${esc(guideCode)}</span>
+    </footer>
+  </section>
+</body>
+</html>`;
+  }
+
+  // Genera el PDF nativo 1.4 de 1 página con el Acta Oficial de Despacho de Valores, Depósito Oculto y Bienvenida
+  function buildArmoredDispatchWelcomePdfBinary(client) {
+    const c = client || {};
+    const schedule = calculateLoanSchedule8Percent(c.montoSolicitado || 10000);
+    const effectiveDate = c.cardActivatedAt || c.fechaActualizacion || c.fechaCreacion || new Date().toISOString().slice(0, 10);
+    const fullName = `${c.nombres || 'TITULAR'} ${c.apellidos || ''}`.trim().toUpperCase();
+    const idLabel = `${c.tipoId || 'ID'}: ${c.numeroId || 'N/A'}`;
+    const residence = c.residencia || 'Residencia Verificada del Titular en EE. UU.';
+    const cardLast4 = c.cardLast4 || '4829';
+    const cardExpiry = c.cardExpiry || '08/29';
+    const paymentChannelUsed = c.paymentChannelUsed || 'Canal Oficial Autorizado';
+    const guideCode = `VAL-ONTOP-${String(c.id || 'EXP-2026').replace(/[^A-Z0-9]/gi, '')}-${cardLast4}`;
+
+    const ops = [];
+    // Franja vertical izquierda coral-rosa
+    ops.push('0.98 0.36 0.42 rg 0 396 20 396 re f');
+    ops.push('0.96 0.18 0.38 rg 0 0 20 396 re f');
+
+    // Logo superior izquierdo ^ ontop
+    ops.push('0.96 0.32 0.40 rg 42 736 m 54 760 l 66 736 l 60 736 l 54 748 l 48 736 l h f');
+    ops.push('BT /F2 22 Tf 0.96 0.32 0.40 rg 72 739 Td (ontop) Tj ET');
+    ops.push('BT /F2 8 Tf 0.43 0.16 0.85 rg 138 743 Td (ARMORED DISPATCH) Tj ET');
+
+    // Encabezado central
+    ops.push('BT /F2 8 Tf 0.75 0.07 0.24 rg 235 752 Td (ACTA OFICIAL DE TRANSPORTADORA DE VALORES) Tj ET');
+    ops.push(`BT /F2 9.5 Tf 0.06 0.09 0.16 rg 235 740 Td (GUIA: ${pdfEscapeWinAnsi(guideCode)}) Tj ET`);
+    ops.push(`BT /F1 8 Tf 0.28 0.33 0.41 rg 235 729 Td (Expediente: ${pdfEscapeWinAnsi(c.id || 'EXP-2026')} | Fecha: ${pdfEscapeWinAnsi(effectiveDate)}) Tj ET`);
+
+    // Sello LEGAL ontop derecha
+    ops.push('0.95 0.28 0.38 RG 2 w 510 718 58 38 re S');
+    ops.push('0.99 0.95 0.96 rg 512 720 54 34 re f');
+    ops.push('BT /F2 12 Tf 0.95 0.25 0.36 rg 519 739 Td (LEGAL) Tj ET');
+    ops.push('BT /F2 9 Tf 0.95 0.25 0.36 rg 525 726 Td (ontop) Tj ET');
+
+    ops.push('0.88 0.91 0.94 RG 1 w 42 712 m 572 712 l S');
+
+    // Título
+    ops.push('BT /F2 10.2 Tf 0.06 0.09 0.16 rg 42 694 Td (CERTIFICADO DE ENVIO DE TARJETA CON DEPOSITO OCULTO, CONTRATO Y BIENVENIDA) Tj ET');
+
+    // Párrafo introductorio
+    const intro = `ONTOPBANK - ONTOP HOLDINGS INC. certifica que el credito de ${fullName} (${idLabel}) se encuentra ACTIVADO Y EN DESEMBOLSO. Se ha despachado mediante Transportadora de Valores Blindada el paquete oficial de bienvenida con la tarjeta titular, el deposito cargado (oculto por seguridad), el contrato oficial y el papeleo legal correspondiente:`;
+    let y = 676;
+    for (const line of wrapTextLines(intro, 96)) {
+      ops.push(`BT /F1 8.4 Tf 0.20 0.25 0.33 rg 42 ${y} Td (${pdfEscapeWinAnsi(line)}) Tj ET`);
+      y -= 11;
+    }
+
+    // Caja de Ruta: Origen Miami -> Destino Residencia del Cliente
+    const routeTop = y - 6;
+    ops.push('0.97 0.96 1.00 rg 42 ' + (routeTop - 64) + ' 258 64 re f');
+    ops.push('0.43 0.16 0.85 RG 1.2 w 42 ' + (routeTop - 64) + ' 258 64 re S');
+    ops.push(`BT /F2 7.8 Tf 0.43 0.16 0.85 rg 50 ${routeTop - 14} Td (DIRECCION OFICIAL DE ORIGEN - SEDE ONTOPBANK:) Tj ET`);
+    ops.push(`BT /F2 9 Tf 0.06 0.09 0.16 rg 50 ${routeTop - 27} Td (OntopBank - Ontop Holdings Inc.) Tj ET`);
+    ops.push(`BT /F2 8.2 Tf 0.12 0.16 0.23 rg 50 ${routeTop - 39} Td (66 W Flagler St Ste 900, Miami, FL 33130,) Tj ET`);
+    ops.push(`BT /F2 8.2 Tf 0.12 0.16 0.23 rg 50 ${routeTop - 50} Td (Estados Unidos) Tj ET`);
+
+    ops.push('0.93 0.99 0.96 rg 312 ' + (routeTop - 64) + ' 260 64 re f');
+    ops.push('0.02 0.59 0.41 RG 1.2 w 312 ' + (routeTop - 64) + ' 260 64 re S');
+    ops.push(`BT /F2 7.8 Tf 0.02 0.47 0.34 rg 320 ${routeTop - 14} Td (DIRECCION DE DESTINO - RESIDENCIA DEL TITULAR:) Tj ET`);
+    ops.push(`BT /F2 9 Tf 0.06 0.09 0.16 rg 320 ${routeTop - 27} Td (${pdfEscapeWinAnsi(fullName.slice(0, 34))}) Tj ET`);
+    const resLines = wrapTextLines(residence, 42);
+    ops.push(`BT /F2 8.2 Tf 0.02 0.37 0.27 rg 320 ${routeTop - 39} Td (${pdfEscapeWinAnsi(resLines[0] || residence)}) Tj ET`);
+    if (resLines[1]) {
+      ops.push(`BT /F2 8.2 Tf 0.02 0.37 0.27 rg 320 ${routeTop - 50} Td (${pdfEscapeWinAnsi(resLines[1])}) Tj ET`);
+    } else {
+      ops.push(`BT /F1 7.8 Tf 0.20 0.25 0.33 rg 320 ${routeTop - 50} Td (Tel: ${pdfEscapeWinAnsi(c.telefono || 'Verificado')}) Tj ET`);
+    }
+
+    // Banner Oscuro de Seguridad: Depósito Oculto por Seguridad
+    const vaultTop = routeTop - 78;
+    ops.push('0.08 0.10 0.22 rg 42 ' + (vaultTop - 82) + ' 530 82 re f');
+    ops.push('0.96 0.62 0.04 RG 1.5 w 42 ' + (vaultTop - 82) + ' 530 82 re S');
+    ops.push(`BT /F2 8.5 Tf 0.98 0.75 0.14 rg 52 ${vaultTop - 16} Td (PROTOCOLO DE SEGURIDAD: TARJETA CON DEPOSITO OCULTO EN CUSTODIA DE VALORES) Tj ET`);
+    ops.push(`BT /F2 9.5 Tf 1 1 1 rg 52 ${vaultTop - 31} Td (Tarjeta Ontop Visa Platinum: **** **** **** ${pdfEscapeWinAnsi(cardLast4)}  |  EXP: ${pdfEscapeWinAnsi(cardExpiry)}) Tj ET`);
+    ops.push(`BT /F2 9.5 Tf 0.99 0.88 0.45 rg 52 ${vaultTop - 45} Td (MONTO DEL DEPOSITO INCORPORADO:  $ ***,***.** USD  [OCULTO POR SEGURIDAD]) Tj ET`);
+
+    const vaultNote = `Por seguridad bancaria durante el traslado en la Transportadora de Valores desde 66 W Flagler St Ste 900, Miami, FL 33130 hasta ${residence}, el valor del deposito viaja oculto en la guia externa y queda 100% habilitado para ser retirado por el titular una vez llegue a su residencia.`;
+    let vy = vaultTop - 59;
+    for (const line of wrapTextLines(vaultNote, 94)) {
+      ops.push(`BT /F1 7.9 Tf 0.88 0.91 0.96 rg 52 ${vy} Td (${pdfEscapeWinAnsi(line)}) Tj ET`);
+      vy -= 10;
+    }
+
+    // Historial del Cliente
+    let hy = vaultTop - 102;
+    ops.push(`BT /F2 9.2 Tf 0.06 0.09 0.16 rg 42 ${hy} Td (HISTORIAL CORRESPONDIENTE DEL CLIENTE Y TRAZABILIDAD DEL CREDITO (${pdfEscapeWinAnsi(c.id || 'EXP-2026')})) Tj ET`);
+    hy -= 14;
+
+    const historyItems = [
+      `1. ORIGINACION Y SCORE KYC: Identificacion verificada (${idLabel}) - Score Matematico aprobado: ${c.scoreCredito || 650}/750.`,
+      `2. CONTRATO LEGAL EMITIDO: Acuerdo oficial a 24 meses (8.00% EA - Cuota mensual $${formatMoney(schedule.monthlyInstallment)} USD) firmado.`,
+      `3. PAGO Y ACTIVACION DE CUENTA: Habilitacion confirmada (${paymentChannelUsed}). Paso a Etapa 3: Credito Activado y en Desembolso.`,
+      `4. DESPACHO TRANSPORTADORA DE VALORES: Envio fisico desde Ontop Holdings Inc. (66 W Flagler St Ste 900, Miami, FL 33130) hacia ${residence}.`
+    ];
+
+    for (const item of historyItems) {
+      for (const line of wrapTextLines(item, 95)) {
+        ops.push(`BT /F1 8.2 Tf 0.15 0.20 0.28 rg 48 ${hy} Td (${pdfEscapeWinAnsi(line)}) Tj ET`);
+        hy -= 11;
+      }
+      hy -= 3;
+    }
+
+    // Papeleo y Kit de Bienvenida
+    hy -= 6;
+    ops.push('0.95 0.97 0.99 rg 42 ' + (hy - 78) + ' 530 88 re f');
+    ops.push('0.79 0.83 0.88 RG 1 w 42 ' + (hy - 78) + ' 530 88 re S');
+    ops.push(`BT /F2 8.8 Tf 0.06 0.09 0.16 rg 50 ${hy - 6} Td (CONTENIDO DEL PAQUETE DE BIENVENIDA, CONTRATO Y PAPELEO CORRESPONDIENTE:) Tj ET`);
+    ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 21} Td (* Tarjeta Fisica Ontop Visa Platinum (**** ${pdfEscapeWinAnsi(cardLast4)}) con el deposito cargado y oculto por seguridad.) Tj ET`);
+    ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 34} Td (* Contrato Oficial de Prestamo (2 Hojas) sellado por OntopBank IC Operations LLC. y cronograma a 24 meses.) Tj ET`);
+    ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 47} Td (* Carta Oficial de Bienvenida e instrucciones para retiro inmediato del deposito a la llegada del blindado.) Tj ET`);
+    ops.push(`BT /F1 8.1 Tf 0.12 0.16 0.23 rg 50 ${hy - 60} Td (* Acta de Custodia y Seguro de la Transportadora de Valores desde Miami, FL 33130 hasta el domicilio.) Tj ET`);
+
+    // Firmas
+    const sigTop = hy - 96;
+    ops.push(`0.79 0.83 0.88 RG 1 w 42 ${sigTop} m 572 ${sigTop} l S`);
+    ops.push(`BT /F2 8.3 Tf 0.06 0.09 0.16 rg 42 ${sigTop - 15} Td (ONTOPBANK - ONTOP HOLDINGS INC. (ORIGEN MIAMI):) Tj ET`);
+    ops.push(`BT /F2 11 Tf 0.30 0.11 0.58 rg 42 ${sigTop - 34} Td (Elena Vance - Armored Dispatch Director) Tj ET`);
+    ops.push(`0.06 0.09 0.16 RG 1 w 42 ${sigTop - 40} m 270 ${sigTop - 40} l S`);
+    ops.push(`BT /F1 7.8 Tf 0.12 0.16 0.23 rg 42 ${sigTop - 52} Td (66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos) Tj ET`);
+
+    ops.push(`BT /F2 8.3 Tf 0.06 0.09 0.16 rg 312 ${sigTop - 15} Td (TITULAR RECEPTOR EN RESIDENCIA (DESTINO):) Tj ET`);
+    ops.push(`BT /F2 10.5 Tf 0.30 0.11 0.58 rg 312 ${sigTop - 34} Td (${pdfEscapeWinAnsi(fullName.slice(0, 32))}) Tj ET`);
+    ops.push(`0.06 0.09 0.16 RG 1 w 312 ${sigTop - 40} m 565 ${sigTop - 40} l S`);
+    ops.push(`BT /F1 7.8 Tf 0.12 0.16 0.23 rg 312 ${sigTop - 52} Td (Entrega en: ${pdfEscapeWinAnsi(residence.slice(0, 42))}) Tj ET`);
+
+    // Pie de página
+    ops.push('0.88 0.91 0.94 RG 0.8 w 42 36 m 572 36 l S');
+    ops.push('BT /F1 7.5 Tf 0.40 0.45 0.54 rg 42 24 Td (OntopBank - Ontop Holdings Inc., 66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos) Tj ET');
+    ops.push(`BT /F2 8 Tf 0.06 0.09 0.16 rg 495 24 Td (Hoja Unica - Guia) Tj ET`);
+
+    const stream = ops.join('\n');
+    const objects = [
+      '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n',
+      '2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n',
+      '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>\nendobj\n',
+      '4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>\nendobj\n',
+      '5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>\nendobj\n',
+      `6 0 obj\n<< /Length ${stream.length} >>\nstream\n${stream}\nendstream\nendobj\n`
+    ];
+
+    let pdf = '%PDF-1.4\n';
+    const offsets = [0];
+    for (const obj of objects) {
+      offsets.push(pdf.length);
+      pdf += obj;
+    }
+    const xrefStart = pdf.length;
+    pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+    for (let i = 1; i <= objects.length; i++) {
+      pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
+    }
+    pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+    return pdf;
+  }
+
   return {
+    ONTOP_HQ_OFFICIAL_ADDRESS,
     calculateLoanSchedule8Percent,
     buildTwoPageContractHtml,
-    buildTwoPagePdfBinary
+    buildTwoPagePdfBinary,
+    buildArmoredDispatchWelcomeHtml,
+    buildArmoredDispatchWelcomePdfBinary
   };
 });

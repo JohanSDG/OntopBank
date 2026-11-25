@@ -1046,7 +1046,7 @@
 
       <div class="modal-footer">
         <div style="font-size:0.75rem; color:var(--usd-emerald);">
-          ✔ Información organizada del expediente lista para copiar o descargar
+          ✔ Información organizada del expediente lista para copiar o activar el crédito en Etapa 3
         </div>
         <div class="modal-footer-right" style="display:flex; gap:10px; flex-wrap:wrap;">
           <button type="button" class="btn-pill-ghost" id="btnCopyPaymentOptionOnly">
@@ -1055,7 +1055,45 @@
           <button type="button" class="btn-pill-primary" id="btnCopyFullClientPaymentSheet">
             📋 Copiar Ficha Completa (Cliente + Pago)
           </button>
+          <button type="button" class="btn-modal-save" id="btnConfirmPaymentAndMoveStage3" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+            ✅ Confirmar Pago Realizado y Pasar a Desembolso (Etapa 3)
+          </button>
           <button type="button" class="btn-pill-ghost" id="btnClosePaymentOptionsFooter">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL DE DOCUMENTO OFICIAL DE DESPACHO DE TARJETA, DEPÓSITO OCULTO Y BIENVENIDA (TRANSPORTADORA DE VALORES)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="armoredDispatchModalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-window" style="max-width: 1040px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="gradient-title" id="dispatchModalTitle">🚚 Acta Oficial de Envío de Tarjeta, Depósito Protegido y Kit de Bienvenida</h3>
+          <span style="font-size:0.77rem; color:#93C5FD;" id="dispatchModalSubtitle">
+            Origen Oficial: OntopBank · Ontop Holdings Inc. (66 W Flagler St Ste 900, Miami, FL 33130, EE. UU.) → Residencia del Titular via Transportadora de Valores
+          </span>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseDispatchModal">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px 20px; background: rgba(8, 5, 18, 0.92);">
+        <iframe id="dispatchPreviewIframe" class="contract-preview-iframe" title="Acta Oficial de Despacho y Transportadora de Valores"></iframe>
+      </div>
+
+      <div class="modal-footer">
+        <div style="font-size:0.75rem; color:var(--usd-emerald);">
+          🔒 Depósito cifrado y oculto por seguridad bancaria hasta la entrega física en domicilio con contrato y papeleo de bienvenida
+        </div>
+        <div class="modal-footer-right" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-pill-ghost" id="btnPrintDispatchModal">🖨️ Imprimir Acta</button>
+          <button type="button" class="btn-pill-ghost" id="btnDownloadDispatchWord">📝 Descargar Word (.doc)</button>
+          <button type="button" class="btn-modal-save" id="btnDownloadDispatchPdf" style="background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);">
+            📥 Descargar Documento de Despacho en PDF (.pdf)
+          </button>
+          <button type="button" class="btn-pill-ghost" id="btnCloseDispatchModalFooter">Cerrar</button>
         </div>
       </div>
     </div>

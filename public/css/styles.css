@@ -78,9 +78,9 @@ body::before {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 100%;
+  max-width: 1620px;
   margin: 0 auto;
-  padding: 16px 24px 48px;
+  padding: 20px 32px 54px;
 }
 
 /* Utilidades de Texto en Gradiente */
@@ -638,7 +638,7 @@ body::before {
   color: #FFFFFF;
 }
 
-/* Tabla de Datos Completa - Pantalla Completa Sin Barra Horizontal */
+/* Tabla de Datos Completa - Proporciones Óptimas y Fuentes Legibles */
 .table-responsive {
   width: 100%;
   overflow-x: visible;
@@ -652,31 +652,31 @@ body::before {
 }
 
 .fintech-table thead th {
-  padding: 12px 10px;
-  font-size: 0.7rem;
+  padding: 14px 12px;
+  font-size: 0.74rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #C4B5FD;
-  background: rgba(18, 11, 38, 0.75);
-  border-bottom: 1px solid rgba(167, 139, 250, 0.22);
+  background: rgba(18, 11, 38, 0.82);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.25);
   white-space: normal;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
-/* Distribución proporcional de las 9 columnas para aprovechar el 100% de la pantalla */
+/* Distribución proporcional de las 9 columnas para lectura limpia y profesional */
 .fintech-table thead th:nth-child(1) {
-  width: 15%;
+  width: 15.5%;
 }
 
 /* Solicitante / ID */
 .fintech-table thead th:nth-child(2) {
-  width: 15%;
+  width: 16.5%;
 }
 
 /* Lugar de Trabajo y Funciones */
 .fintech-table thead th:nth-child(3) {
-  width: 13%;
+  width: 13.5%;
 }
 
 /* Perfil / Residencia */
@@ -696,53 +696,55 @@ body::before {
 
 /* Lender Asignado */
 .fintech-table thead th:nth-child(7) {
-  width: 10%;
+  width: 9%;
 }
 
 /* Estado del Préstamo */
 .fintech-table thead th:nth-child(8) {
-  width: 7%;
+  width: 6.5%;
 }
 
 /* Fecha Automática */
 .fintech-table thead th:nth-child(9) {
-  width: 8%;
+  width: 7%;
   text-align: center;
 }
 
 /* Acciones */
 
 .fintech-table tbody tr {
-  border-bottom: 1px solid rgba(167, 139, 250, 0.1);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.12);
   transition: background 0.16s ease;
 }
 
 .fintech-table tbody tr:hover {
-  background: rgba(139, 92, 246, 0.09);
+  background: rgba(139, 92, 246, 0.1);
 }
 
 .fintech-table tbody td {
-  padding: 12px 10px;
+  padding: 14px 12px;
   vertical-align: middle;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
   word-wrap: break-word;
   overflow-wrap: anywhere;
+  line-height: 1.4;
 }
 
 .client-name-cell {
   font-weight: 700;
   color: #FFFFFF;
-  font-size: 0.86rem;
-  line-height: 1.25;
+  font-size: 0.94rem;
+  line-height: 1.3;
+  margin-bottom: 2px;
 }
 
 .client-id-sub {
   display: inline-block;
   margin-top: 2px;
-  font-size: 0.7rem;
+  font-size: 0.74rem;
   color: var(--violet-accent);
-  font-family: monospace;
+  font-family: 'Consolas', monospace;
   word-break: break-word;
 }
 
@@ -758,7 +760,7 @@ body::before {
 }
 
 .contact-phone {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
@@ -766,22 +768,22 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 8px;
-  background: rgba(139, 92, 246, 0.14);
-  border: 1px solid rgba(167, 139, 250, 0.25);
-  color: #DDD6FE;
-  font-size: 0.72rem;
+  background: rgba(139, 92, 246, 0.16);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  color: #EDE9FE;
+  font-size: 0.76rem;
   font-weight: 600;
   line-height: 1.25;
 }
 
 .location-sub {
   display: block;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  margin-top: 3px;
-  line-height: 1.3;
+  font-size: 0.77rem;
+  color: #CBD5E1;
+  margin-top: 4px;
+  line-height: 1.35;
 }
 
 /* Badges de Estado del Préstamo (6 etapas) */
@@ -791,12 +793,12 @@ body::before {
   justify-content: center;
   text-align: center;
   gap: 5px;
-  padding: 4px 9px;
+  padding: 5px 10px;
   border-radius: var(--radius-pill);
-  font-size: 0.71rem;
+  font-size: 0.74rem;
   font-weight: 700;
   white-space: normal;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .status-stage-1 {
@@ -2416,6 +2418,78 @@ body::before {
   line-height: 1.45;
   resize: vertical;
   min-height: 165px;
+}
+
+/* ==========================================================================
+   HISTORIAL DEL CLIENTE Y ACTA DE DESPACHO DE VALORES (ETAPA 3)
+   ========================================================================== */
+.stage3-history-timeline {
+  background: rgba(11, 7, 26, 0.82);
+  border: 1px solid rgba(167, 139, 250, 0.26);
+  border-radius: 11px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stage3-history-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #C4B5FD;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed rgba(167, 139, 250, 0.2);
+  padding-bottom: 5px;
+  margin-bottom: 2px;
+}
+
+.stage3-history-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 0.74rem;
+  color: #E2E8F0;
+  line-height: 1.35;
+}
+
+.stage3-history-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  margin-top: 5px;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px #10B981;
+}
+
+.masked-deposit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(245, 158, 11, 0.16);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: #FDE68A;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-family: 'Consolas', monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.btn-dispatch-certificate {
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  border: 1px solid rgba(147, 197, 253, 0.5);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.38);
+}
+
+.btn-dispatch-certificate:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.55);
 }
 
 /* Responsividad */

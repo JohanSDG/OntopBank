@@ -37,6 +37,52 @@
    </Row>
    
       <Row>
+        <Cell><Data ss:Type="String">EXP-2026-304</Data></Cell>
+        <Cell><Data ss:Type="String">Valentino</Data></Cell>
+        <Cell><Data ss:Type="String">Humberto Rodriguez</Data></Cell>
+        <Cell><Data ss:Type="String">balenrodri@hotmail.com</Data></Cell>
+        <Cell><Data ss:Type="String">571- 337-3369</Data></Cell>
+        <Cell><Data ss:Type="String">1960-02-09</Data></Cell>
+        <Cell><Data ss:Type="String">Migrante en EE. UU. (Con ITIN)</Data></Cell>
+        <Cell><Data ss:Type="String">Pasaporte: T63883021</Data></Cell>
+        <Cell><Data ss:Type="String">8072 Bookman CT ALEXANDRA VA 22309-3804</Data></Cell>
+        <Cell><Data ss:Type="String">Limpieza - 4 años - 1.000 *15 = 2.000 dolares (15)</Data></Cell>
+        <Cell><Data ss:Type="String">Empleado</Data></Cell>
+        <Cell><Data ss:Type="Number">2400</Data></Cell>
+        <Cell><Data ss:Type="String">Cuenta bancaria EEUU</Data></Cell>
+        <Cell><Data ss:Type="Number">555</Data></Cell>
+        <Cell><Data ss:Type="Number">15000</Data></Cell>
+        <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">0</Data></Cell>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-24 17:14</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">EXP-2026-151</Data></Cell>
+        <Cell><Data ss:Type="String">Antonio</Data></Cell>
+        <Cell><Data ss:Type="String">Robles Nuñez</Data></Cell>
+        <Cell><Data ss:Type="String">nestorrobles417@gmail.com</Data></Cell>
+        <Cell><Data ss:Type="String">(903) 461-3600</Data></Cell>
+        <Cell><Data ss:Type="String">1987-02-26</Data></Cell>
+        <Cell><Data ss:Type="String">Residente EE. UU. / Ciudadano</Data></Cell>
+        <Cell><Data ss:Type="String">SSN: 095-187-415</Data></Cell>
+        <Cell><Data ss:Type="String">Hipolito Teran 217 e Drew St Fort  worth TX 76110-6316</Data></Cell>
+        <Cell><Data ss:Type="String">Muebleria - 9 años 4 meses /  semanal son $1.480  - 5.920</Data></Cell>
+        <Cell><Data ss:Type="String">Director de operaciones.</Data></Cell>
+        <Cell><Data ss:Type="Number">5920</Data></Cell>
+        <Cell><Data ss:Type="String">Cuenta bancaria EEUU</Data></Cell>
+        <Cell><Data ss:Type="Number">671</Data></Cell>
+        <Cell><Data ss:Type="Number">6500</Data></Cell>
+        <Cell><Data ss:Type="String">Educación / Salud / Libre Inversión</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">0</Data></Cell>
+        <Cell><Data ss:Type="String">590 mensuales, gastos.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-24 16:59</Data></Cell>
+      </Row>
+      <Row>
         <Cell><Data ss:Type="String">EXP-2026-435</Data></Cell>
         <Cell><Data ss:Type="String">Juan Manuel</Data></Cell>
         <Cell><Data ss:Type="String">Solis</Data></Cell>

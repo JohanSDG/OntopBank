@@ -1032,7 +1032,102 @@
     document.getElementById('paymentModalTitle').textContent =
       `💸 Opciones de Pago y Ficha Organizada · ${client.nombres} ${client.apellidos}`;
 
+    const confirmStage3Btn = document.getElementById('btnConfirmPaymentAndMoveStage3');
+    if (confirmStage3Btn) {
+      const isStage3 = String(client.estadoProceso || '').startsWith('5.');
+      confirmStage3Btn.innerHTML = isStage3
+        ? `🚚 Ver Acta de Envío de Tarjeta con Depósito Oculto y Bienvenida`
+        : `✅ Confirmar Pago Realizado y Pasar a Desembolso (Etapa 3)`;
+    }
+
     renderPaymentModalContent();
+    modal.classList.add('open');
+  }
+
+  // Confirma que el cliente realizó el pago, lo pasa a Etapa 3 (Créditos Activados y en Desembolso),
+  // registra el historial del cliente y abre el Acta Oficial de Despacho de Tarjeta con Depósito Oculto y Bienvenida
+  async function confirmClientPaymentAndMoveToStage3(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const selectedOpt =
+      OFFICIAL_PAYMENT_OPTIONS.find((o) => o.id === selectedPaymentOptionId) || OFFICIAL_PAYMENT_OPTIONS[0];
+    const autoNow = getFormattedTimestamp();
+
+    client.estadoProceso = '5. Aprobado y Desembolsado';
+    client.cardActivated = true;
+    client.cardActivatedAt = autoNow;
+    client.paymentChannelUsed = `${selectedOpt.channel} (${selectedOpt.recipientName})`;
+    client.timerStartedAt = null;
+    client.timerEndsAt = null;
+    client.fechaActualizacion = autoNow;
+
+    document.getElementById('paymentOptionsModalBackdrop')?.classList.remove('open');
+    renderAll();
+
+    await storage.syncAll(appState, client);
+    updateSyncStatusUI();
+
+    showToast(
+      `✅ Pago verificado para ${client.nombres} ${client.apellidos}. Movido a Créditos Activados y en Desembolso con Acta Oficial de Transportadora de Valores.`,
+      '🚚'
+    );
+
+    openArmoredDispatchModal(client);
+  }
+
+  // Abre el Modal del Documento Oficial de Envío de Tarjeta con Depósito Oculto, Transportadora de Valores y Bienvenida
+  function openArmoredDispatchModal(client) {
+    if (!client) return;
+    ensureClientCardMetadata(client);
+
+    const modal = document.getElementById('armoredDispatchModalBackdrop');
+    const iframe = document.getElementById('dispatchPreviewIframe');
+    const titleEl = document.getElementById('dispatchModalTitle');
+    const subEl = document.getElementById('dispatchModalSubtitle');
+    if (!modal) return;
+
+    titleEl.textContent = `🚚 Acta Oficial de Despacho de Valores y Bienvenida · ${client.nombres} ${client.apellidos} (${client.id})`;
+    subEl.textContent = `Origen: OntopBank · Ontop Holdings Inc. (66 W Flagler St Ste 900, Miami, FL 33130, EE. UU.) → Destino: ${client.residencia || 'Residencia del Titular'} | Depósito Oculto por Seguridad`;
+
+    const htmlDoc = window.OntopLegalContractGenerator.buildArmoredDispatchWelcomeHtml(client, {
+      redLogoDataUrl: '/Contenido/red.jpg'
+    });
+
+    if (iframe) {
+      iframe.srcdoc = htmlDoc;
+    }
+
+    document.getElementById('btnDownloadDispatchPdf').onclick = () => {
+      const pdfStr = window.OntopLegalContractGenerator.buildArmoredDispatchWelcomePdfBinary(client);
+      const bytes = new Uint8Array(pdfStr.length);
+      for (let i = 0; i < pdfStr.length; i++) {
+        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Acta_Despacho_Valores_OntopBank_${client.id}.pdf`;
+      a.click();
+      showToast(`Descargando Acta Oficial de Envío y Bienvenida en PDF para ${client.nombres} ${client.apellidos}...`, '📥');
+    };
+
+    document.getElementById('btnDownloadDispatchWord').onclick = () => {
+      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Acta_Despacho_Valores_OntopBank_${client.id}.doc`;
+      a.click();
+      showToast(`Acta Oficial de Despacho y Bienvenida descargada en Word (.doc) para ${client.nombres}.`, '📝');
+    };
+
+    document.getElementById('btnPrintDispatchModal').onclick = () => {
+      iframe?.contentWindow?.focus();
+      iframe?.contentWindow?.print();
+    };
+
     modal.classList.add('open');
   }
 
@@ -1235,9 +1330,6 @@
           </td>
           <td>
             <div class="table-actions">
-              <button class="btn-table-action btn-payment-options" style="width:100%;" data-open-payments="${escapeHtml(c.id)}" title="Ver Opciones de Pago (Zelle, Cash App, Bancolombia, Western Union) y Ficha Organizada del Cliente">
-                💸 Opciones de Pago
-              </button>
               <button class="btn-table-action btn-contract-pdf" data-action="contract" data-id="${escapeHtml(c.id)}" title="Ver y Descargar Contrato Legal de 2 Hojas (PDF / Word)">
                 📄 Contrato PDF
               </button>
@@ -1402,20 +1494,26 @@
     // Render Tarjetas Etapa 3: Créditos Activados y Listos para Desembolso
     const stage3CardsHtml =
       stage3Clients.length === 0
-        ? `<div style="padding:26px 14px; text-align:center; color:var(--text-muted); font-size:0.8rem; border:1px dashed rgba(16,185,129,0.25); border-radius:12px;">Sin créditos activados aún. Genera la tarjeta virtual en la Etapa 2 para activar el desembolso.</div>`
+        ? `<div style="padding:26px 14px; text-align:center; color:var(--text-muted); font-size:0.8rem; border:1px dashed rgba(16,185,129,0.25); border-radius:12px;">Sin créditos activados aún. Confirma el pago o genera la tarjeta virtual en la Etapa 2 para activar el desembolso.</div>`
         : stage3Clients
             .map((c) => {
               ensureClientCardMetadata(c);
+              const guideCode = `VAL-ONTOP-${String(c.id || 'EXP').replace(/[^A-Z0-9]/gi, '')}-${c.cardLast4}`;
+              const paymentChannelLabel = c.paymentChannelUsed || 'Canal Oficial Autorizado';
+              const activatedDate = c.cardActivatedAt || c.fechaActualizacion || c.fechaCreacion;
+
               return `
-              <div class="credit-card-item" style="border-color:rgba(16,185,129,0.45);">
+              <div class="credit-card-item" style="border-color:rgba(16,185,129,0.48);">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
                   <span class="status-badge status-stage-5">✅ CRÉDITO ACTIVADO</span>
-                  <span class="usd-badge">${formatUSD(c.montoSolicitado)} USD</span>
+                  <span class="masked-deposit-pill" title="Monto del depósito oculto por seguridad durante el envío en transportadora de valores">
+                    🔒 Depósito: $ •••,•••.•• USD
+                  </span>
                 </div>
 
                 <div>
-                  <div class="pipeline-deal-name" style="font-size:0.96rem;">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)}</div>
-                  <span class="client-id-sub">${escapeHtml(c.id)} · 📍 ${escapeHtml(c.residencia)}</span>
+                  <div class="pipeline-deal-name" style="font-size:1rem;">${escapeHtml(c.nombres)} ${escapeHtml(c.apellidos)}</div>
+                  <span class="client-id-sub">${escapeHtml(c.id)} · 📍 Destino: ${escapeHtml(c.residencia)}</span>
                 </div>
 
                 <div class="stage3-mini-card-pill">
@@ -1423,23 +1521,42 @@
                   <span style="color:#6EE7B7; font-weight:700;">EXP ${escapeHtml(c.cardExpiry)}</span>
                 </div>
 
-                <div class="stage3-active-rail-box">
-                  <strong style="color:#6EE7B7;">🟢 Riel Bancario Activo - En Desembolso + Tarjeta Física en Envío</strong>
-                  <span style="font-size:0.71rem; color:#A7F3D0;">
-                    Total disponible para dispersión: ${formatUSD(c.montoSolicitado)} USD (Sin cargos previos)
-                  </span>
+                <!-- Historial Correspondiente del Cliente y Ruta desde Miami HQ hasta Residencia -->
+                <div class="stage3-history-timeline">
+                  <div class="stage3-history-title">
+                    <span>📋 Historial del Cliente &amp; Transportadora</span>
+                    <span style="color:#6EE7B7;">Guía: ${escapeHtml(guideCode)}</span>
+                  </div>
+                  <div class="stage3-history-step">
+                    <span class="stage3-history-dot"></span>
+                    <span><strong>1. Pago y Activación:</strong> Verificado (${escapeHtml(paymentChannelLabel)}) · ${escapeHtml(activatedDate)}</span>
+                  </div>
+                  <div class="stage3-history-step">
+                    <span class="stage3-history-dot"></span>
+                    <span><strong>2. Origen Despacho:</strong> OntopBank · Ontop Holdings Inc., 66 W Flagler St Ste 900, Miami, FL 33130, EE. UU.</span>
+                  </div>
+                  <div class="stage3-history-step">
+                    <span class="stage3-history-dot"></span>
+                    <span><strong>3. Destino y Retiro:</strong> Tarjeta con depósito oculto por seguridad + Contrato y Bienvenida enviada a <strong>${escapeHtml(c.residencia)}</strong> para retiro al llegar la transportadora de valores.</span>
+                  </div>
                 </div>
 
-                <button type="button" class="btn-table-action btn-payment-options" style="width:100%; justify-content:center; padding:9px 12px; font-size:0.8rem;" data-open-payments="${escapeHtml(c.id)}">
+                <!-- Botón Principal Etapa 3: Documento Oficial de Despacho de Tarjeta, Depósito Oculto y Bienvenida -->
+                <button type="button" class="btn-table-action btn-dispatch-certificate" style="width:100%; justify-content:center; padding:10px 12px; font-size:0.8rem;" data-open-dispatch="${escapeHtml(c.id)}">
+                  🚚 Documento Envío Tarjeta, Depósito Oculto y Bienvenida (PDF)
+                </button>
+
+                <!-- Botón de Opciones de Pago (también disponible para créditos aprobados) -->
+                <button type="button" class="btn-table-action btn-payment-options" style="width:100%; justify-content:center; padding:8px 12px; font-size:0.78rem;" data-open-payments="${escapeHtml(c.id)}">
                   💸 Ver Opciones de Pago y Ficha del Cliente
                 </button>
 
                 <div style="display:flex; gap:8px;">
                   <button type="button" class="btn-table-action btn-view-dossier" style="flex:1; justify-content:center;" data-open-vcard="${escapeHtml(c.id)}">
-                    💳 Ver Tarjeta Virtual
+                    💳 Tarjeta Virtual
                   </button>
                   <button type="button" class="btn-table-action btn-contract-pdf" style="flex:1; justify-content:center;" data-action="contract" data-id="${escapeHtml(c.id)}">
-                    📄 Contrato PDF
+                    📄 Contrato (2 Hojas)
                   </button>
                 </div>
               </div>`;
@@ -2051,6 +2168,15 @@
         return;
       }
 
+      // Botón para abrir el Documento Oficial de Envío de Tarjeta con Depósito Oculto, Transportadora y Bienvenida
+      const openDispatchBtn = e.target.closest('[data-open-dispatch]');
+      if (openDispatchBtn) {
+        const id = openDispatchBtn.getAttribute('data-open-dispatch');
+        const client = (appState.clients || []).find((c) => c.id === id);
+        if (client) openArmoredDispatchModal(client);
+        return;
+      }
+
       // Selección de una de las 5 opciones de pago dentro del modal
       const selectPaymentOptCard = e.target.closest('[data-select-payment-opt]');
       if (selectPaymentOptCard) {
@@ -2185,6 +2311,18 @@
     });
     document.getElementById('btnClosePaymentOptionsFooter')?.addEventListener('click', () => {
       document.getElementById('paymentOptionsModalBackdrop')?.classList.remove('open');
+    });
+
+    document.getElementById('btnConfirmPaymentAndMoveStage3')?.addEventListener('click', async () => {
+      if (!activePaymentModalClient) return;
+      await confirmClientPaymentAndMoveToStage3(activePaymentModalClient);
+    });
+
+    document.getElementById('btnCloseDispatchModal')?.addEventListener('click', () => {
+      document.getElementById('armoredDispatchModalBackdrop')?.classList.remove('open');
+    });
+    document.getElementById('btnCloseDispatchModalFooter')?.addEventListener('click', () => {
+      document.getElementById('armoredDispatchModalBackdrop')?.classList.remove('open');
     });
 
     document.getElementById('btnCopyPaymentOptionOnly')?.addEventListener('click', async () => {
