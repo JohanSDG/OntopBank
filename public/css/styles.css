@@ -77,10 +77,10 @@ body::before {
 .app-shell {
   position: relative;
   z-index: 1;
-  width: 100%;
-  max-width: 1560px;
+  width: 97%;
+  max-width: 1920px;
   margin: 0 auto;
-  padding: 22px 32px 60px;
+  padding: 18px 20px 54px;
 }
 
 /* Utilidades de Texto en Gradiente */
