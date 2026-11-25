@@ -895,11 +895,11 @@
     }
     .legal-sheet {
       position: relative;
-      width: 215.9mm;
-      min-height: 279.4mm;
+      width: 8.5in;
+      height: 11in;
       margin: 10px auto;
       background: #FFFFFF;
-      padding: 15mm 16mm 14mm 22mm;
+      padding: 0.48in 0.55in 0.42in 0.78in;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
       display: flex;
       flex-direction: column;
@@ -1417,8 +1417,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     body { font-family: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Arial, sans-serif; background: #E2E8F0; color: #0F172A; line-height: 1.4; font-size: 10.8px; }
     .legal-sheet {
-      position: relative; width: 215.9mm; min-height: 279.4mm; margin: 10px auto; background: #FFFFFF;
-      padding: 15mm 16mm 14mm 22mm; box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      position: relative; width: 8.5in; height: 11in; margin: 10px auto; background: #FFFFFF;
+      padding: 0.48in 0.55in 0.42in 0.78in; box-shadow: 0 10px 30px rgba(0,0,0,0.22);
       display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
     }
     .coral-left-bar { position: absolute; top: 0; left: 0; bottom: 0; width: 7mm; background: linear-gradient(180deg, #F59E0B 0%, #E11D48 55%, #6D28D9 100%); }

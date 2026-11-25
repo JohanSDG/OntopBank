@@ -23,9 +23,16 @@
   "adjuntos": [],
   "notasConsultor": "",
   "fechaCreacion": "2026-11-14 18:45",
-  "fechaActualizacion": "2026-11-23 17:24",
+  "fechaActualizacion": "2026-11-25 09:14",
   "cardLast4": "6448",
   "cardExpiry": "08/29",
   "cardActivated": true,
-  "cardActivatedAt": "2026-11-23 17:24"
+  "cardActivatedAt": "2026-11-23 17:24",
+  "ddBankName": "Otro Banco Comercial (Convenio Federal ABA)",
+  "ddAccountHolder": "Hector Castro Fabela",
+  "ddAccountType": "Checking Account (Cuenta Corriente)",
+  "ddRoutingNumber": "065204980",
+  "ddAccountNumber": "0904724",
+  "ddWireNotes": "1919586582",
+  "ddLinkedAt": "2026-11-25 09:14"
 }

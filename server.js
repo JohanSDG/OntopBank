@@ -34,9 +34,59 @@ try {
   console.warn('[Red Logo Load Warning]:', e.message);
 }
 
-// Genera el archivo Word (.doc) y el PDF nativo de 2 páginas para un cliente de forma instantánea
-function generateClientContractFiles(client, syncDir) {
+// Localizar Chrome o Edge instalado en Windows para renderizar el HTML exacto a PDF de alta fidelidad
+const CHROMIUM_CANDIDATES = [
+  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+  'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+  'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
+];
+
+function findChromiumExecutable() {
+  for (const candidate of CHROMIUM_CANDIDATES) {
+    if (fs.existsSync(candidate)) return candidate;
+  }
+  return null;
+}
+
+// Renderiza cualquier archivo HTML a un PDF idéntico píxel por píxel usando Chromium Headless
+function renderExactHtmlToPdfWithChromium(htmlPath, pdfPath, fallbackBinaryFn) {
   return new Promise((resolve) => {
+    const browserBin = findChromiumExecutable();
+    if (!browserBin) {
+      if (fallbackBinaryFn) {
+        fs.writeFileSync(pdfPath, Buffer.from(fallbackBinaryFn(), 'binary'));
+      }
+      return resolve({ ok: true, mode: 'fallback' });
+    }
+
+    const fileUrl = 'file:///' + htmlPath.replace(/\\/g, '/');
+    const args = [
+      '--headless',
+      '--disable-gpu',
+      '--no-pdf-header-footer',
+      '--print-to-pdf-no-header',
+      `--print-to-pdf=${pdfPath}`,
+      fileUrl
+    ];
+
+    execFile(browserBin, args, { timeout: 15000 }, (err) => {
+      if (!err && fs.existsSync(pdfPath) && fs.statSync(pdfPath).size > 500) {
+        return resolve({ ok: true, mode: 'chromium-exact' });
+      }
+      if (fallbackBinaryFn) {
+        try {
+          fs.writeFileSync(pdfPath, Buffer.from(fallbackBinaryFn(), 'binary'));
+        } catch (e) {}
+      }
+      resolve({ ok: true, mode: 'fallback' });
+    });
+  });
+}
+
+// Genera el documento solicitado ('contract', 'dispatch' o 'ddtax') con el mismo diseño visual exacto en HTML, Word (.doc) y PDF (.pdf)
+function generateClientDocumentFiles(client, syncDir, docType = 'contract') {
+  return new Promise(async (resolve) => {
     try {
       const expedientesDir = path.join(syncDir || DEFAULT_SYNC_DIR, 'Expedientes_Clientes');
       ensureDir(expedientesDir);
@@ -45,32 +95,57 @@ function generateClientContractFiles(client, syncDir) {
       const clientDir = path.join(expedientesDir, folderName);
       ensureDir(clientDir);
 
-      const htmlContent = contractGen.buildTwoPageContractHtml(client, {
-        redLogoDataUrl: RED_LOGO_DATA_URL
-      });
-      const pdfBinaryString = contractGen.buildTwoPagePdfBinary(client);
+      let htmlContent = '';
+      let baseFileName = '';
+      let fallbackBinaryFn = null;
 
-      const baseFileName = `Contrato_Prestamo_OntopBank_${sanitizeFolderName(client.id)}`;
+      if (docType === 'dispatch') {
+        htmlContent = contractGen.buildArmoredDispatchWelcomeHtml(client, {
+          redLogoDataUrl: RED_LOGO_DATA_URL
+        });
+        baseFileName = `Acta_Despacho_Valores_OntopBank_${sanitizeFolderName(client.id)}`;
+        fallbackBinaryFn = () => contractGen.buildArmoredDispatchWelcomePdfBinary(client);
+      } else if (docType === 'ddtax') {
+        htmlContent = contractGen.buildDirectDepositTaxClearanceHtml(client, {
+          redLogoDataUrl: RED_LOGO_DATA_URL
+        });
+        baseFileName = `Certificado_Deposito_Directo_Impuestos_${sanitizeFolderName(client.id)}`;
+        fallbackBinaryFn = () => contractGen.buildDirectDepositTaxClearancePdfBinary(client);
+      } else {
+        htmlContent = contractGen.buildTwoPageContractHtml(client, {
+          redLogoDataUrl: RED_LOGO_DATA_URL
+        });
+        baseFileName = `Contrato_Prestamo_OntopBank_${sanitizeFolderName(client.id)}`;
+        fallbackBinaryFn = () => contractGen.buildTwoPagePdfBinary(client);
+      }
+
       const htmlPath = path.join(clientDir, `${baseFileName}.html`);
       const docPath = path.join(clientDir, `${baseFileName}.doc`);
       const pdfPath = path.join(clientDir, `${baseFileName}.pdf`);
 
-      // Guardar versión HTML, versión Word (.doc) y versión PDF real de 2 páginas (.pdf)
+      // Guardar versión HTML y versión Word (.doc) con imágenes en Base64
       fs.writeFileSync(htmlPath, htmlContent, 'utf8');
       fs.writeFileSync(docPath, '\uFEFF' + htmlContent, 'utf8');
-      fs.writeFileSync(pdfPath, Buffer.from(pdfBinaryString, 'binary'));
+
+      // Renderizar PDF exacto a la vista previa usando Chromium/Edge Headless
+      await renderExactHtmlToPdfWithChromium(htmlPath, pdfPath, fallbackBinaryFn);
 
       resolve({
         ok: true,
         htmlPath,
         docPath,
-        pdfPath
+        pdfPath,
+        baseFileName
       });
     } catch (e) {
-      console.error('[Contract Generation Error]:', e.message);
+      console.error('[Document Generation Error]:', e.message);
       resolve({ ok: false, error: e.message });
     }
   });
+}
+
+function generateClientContractFiles(client, syncDir) {
+  return generateClientDocumentFiles(client, syncDir, 'contract');
 }
 
 function syncToGoogleDriveCloudViaCLI(xlsPath, csvPath, dbJsonPath) {
@@ -563,10 +638,11 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  // API: Descargar el PDF real de 2 páginas del Contrato Oficial de Préstamo
+  // API: Descargar el PDF real con el diseño visual exacto (type = contract | dispatch | ddtax)
   if (pathname === '/api/download-pdf' && req.method === 'GET') {
     try {
       const clientId = parsedUrl.searchParams.get('id');
+      const docType = parsedUrl.searchParams.get('type') || 'contract';
       const db = readDatabaseFromDisk();
       const client = (db.state?.clients || []).find((c) => c.id === clientId);
       if (!client) {
@@ -575,9 +651,9 @@ const server = http.createServer(async (req, res) => {
       }
 
       const cfg = loadConfig();
-      const genResult = await generateClientContractFiles(client, cfg.syncFolderPath);
+      const genResult = await generateClientDocumentFiles(client, cfg.syncFolderPath, docType);
       if (genResult.pdfPath && fs.existsSync(genResult.pdfPath)) {
-        const safeName = `Contrato_Prestamo_OntopBank_${sanitizeFolderName(client.id)}_${sanitizeFolderName(client.nombres)}.pdf`;
+        const safeName = `${genResult.baseFileName}_${sanitizeFolderName(client.nombres)}.pdf`;
         res.writeHead(200, {
           'Content-Type': 'application/pdf',
           'Content-Disposition': `attachment; filename="${safeName}"`
@@ -585,7 +661,7 @@ const server = http.createServer(async (req, res) => {
         return fs.createReadStream(genResult.pdfPath).pipe(res);
       } else {
         res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-        return res.end('No se pudo generar el PDF binario');
+        return res.end('No se pudo generar el PDF');
       }
     } catch (err) {
       res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -593,10 +669,11 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  // API: Descargar el documento Word (.doc) del Contrato Oficial de Préstamo
+  // API: Descargar el documento Word (.doc) con el diseño visual exacto (type = contract | dispatch | ddtax)
   if (pathname === '/api/download-word' && req.method === 'GET') {
     try {
       const clientId = parsedUrl.searchParams.get('id');
+      const docType = parsedUrl.searchParams.get('type') || 'contract';
       const db = readDatabaseFromDisk();
       const client = (db.state?.clients || []).find((c) => c.id === clientId);
       if (!client) {
@@ -605,9 +682,9 @@ const server = http.createServer(async (req, res) => {
       }
 
       const cfg = loadConfig();
-      const genResult = await generateClientContractFiles(client, cfg.syncFolderPath);
+      const genResult = await generateClientDocumentFiles(client, cfg.syncFolderPath, docType);
       if (genResult.docPath && fs.existsSync(genResult.docPath)) {
-        const safeName = `Contrato_Prestamo_OntopBank_${sanitizeFolderName(client.id)}_${sanitizeFolderName(client.nombres)}.doc`;
+        const safeName = `${genResult.baseFileName}_${sanitizeFolderName(client.nombres)}.doc`;
         res.writeHead(200, {
           'Content-Type': 'application/msword; charset=utf-8',
           'Content-Disposition': `attachment; filename="${safeName}"`
