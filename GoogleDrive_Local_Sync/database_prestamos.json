@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "driveFolderId": "1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39",
     "driveFolderUrl": "https://drive.google.com/drive/u/0/folders/1q7tTJCzDgQ6J4_SyCwbDAw5T1w5JN-39",
-    "updatedAt": "2026-11-24T22:14:13.609Z",
+    "updatedAt": "2026-11-25T13:11:12.145Z",
     "syncFolderPath": "C:\\STELARIX (Software IA)\\TopBank\\GoogleDrive_Local_Sync",
     "totalClients": 9
   },
@@ -239,7 +239,7 @@
       "montoSolicitado": 5000,
       "propositoPrestamo": "Capital de Trabajo / Negocio",
       "entidadFinanciera": "Ontop Global Credit Bridge",
-      "estadoProceso": "4. Pre-Aprobado",
+      "estadoProceso": "5. Aprobado y Desembolsado",
       "timerStartedAt": null,
       "timerEndsAt": null,
       "adjuntos": [
@@ -253,10 +253,12 @@
       ],
       "notasConsultor": "Rosa, prestamos personal con reembolso de 100 dolares por parte de la entidad.",
       "fechaCreacion": "2026-11-23 13:22",
-      "fechaActualizacion": "2026-11-23 13:29",
+      "fechaActualizacion": "2026-11-25 08:11",
       "contratoAprobado": true,
       "cardLast4": "3343",
-      "cardExpiry": "08/29"
+      "cardExpiry": "08/29",
+      "cardActivated": true,
+      "cardActivatedAt": "2026-11-25 08:11"
     },
     {
       "id": "EXP-2026-406",

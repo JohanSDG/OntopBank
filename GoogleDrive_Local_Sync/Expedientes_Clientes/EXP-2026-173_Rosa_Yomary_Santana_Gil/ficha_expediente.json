@@ -17,7 +17,7 @@
   "montoSolicitado": 5000,
   "propositoPrestamo": "Capital de Trabajo / Negocio",
   "entidadFinanciera": "Ontop Global Credit Bridge",
-  "estadoProceso": "4. Pre-Aprobado",
+  "estadoProceso": "5. Aprobado y Desembolsado",
   "timerStartedAt": null,
   "timerEndsAt": null,
   "adjuntos": [
@@ -30,8 +30,10 @@
   ],
   "notasConsultor": "Rosa, prestamos personal con reembolso de 100 dolares por parte de la entidad.",
   "fechaCreacion": "2026-11-23 13:22",
-  "fechaActualizacion": "2026-11-23 13:29",
+  "fechaActualizacion": "2026-11-25 08:11",
   "contratoAprobado": true,
   "cardLast4": "3343",
-  "cardExpiry": "08/29"
+  "cardExpiry": "08/29",
+  "cardActivated": true,
+  "cardActivatedAt": "2026-11-25 08:11"
 }

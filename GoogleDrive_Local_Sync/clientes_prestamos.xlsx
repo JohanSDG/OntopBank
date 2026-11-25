@@ -193,10 +193,10 @@ Ciudadana : Soltera</Data></Cell>
         <Cell><Data ss:Type="Number">5000</Data></Cell>
         <Cell><Data ss:Type="String">Capital de Trabajo / Negocio</Data></Cell>
         <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
-        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="String">5. Aprobado y Desembolsado</Data></Cell>
         <Cell><Data ss:Type="Number">1</Data></Cell>
         <Cell><Data ss:Type="String">Rosa, prestamos personal con reembolso de 100 dolares por parte de la entidad.</Data></Cell>
-        <Cell><Data ss:Type="String">2026-11-23 13:29</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-25 08:11</Data></Cell>
       </Row>
       <Row>
         <Cell><Data ss:Type="String">EXP-2026-406</Data></Cell>

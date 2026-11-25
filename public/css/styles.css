@@ -4,38 +4,38 @@
    ========================================================================== */
 
 :root {
-  --bg-deep: #070412;
-  --bg-radial-1: #1E0B4B;
-  --bg-radial-2: #2E1065;
-  --glass-bg: rgba(20, 14, 42, 0.65);
-  --glass-bg-elevated: rgba(28, 19, 58, 0.82);
-  --glass-modal: rgba(15, 10, 34, 0.94);
-  --glass-border: rgba(167, 139, 250, 0.25);
-  --glass-border-strong: rgba(167, 139, 250, 0.48);
+  --bg-deep: #030305;
+  --bg-radial-1: rgba(24, 15, 52, 0.55);
+  --bg-radial-2: rgba(18, 12, 40, 0.65);
+  --glass-bg: rgba(13, 14, 21, 0.92);
+  --glass-bg-elevated: rgba(18, 20, 30, 0.95);
+  --glass-modal: rgba(10, 11, 18, 0.97);
+  --glass-border: rgba(167, 139, 250, 0.24);
+  --glass-border-strong: rgba(167, 139, 250, 0.52);
 
-  --text-primary: #FFFFFF;
-  --text-secondary: #CBD5E1;
+  --text-primary: #F8FAFC;
+  --text-secondary: #E2E8F0;
   --text-muted: #94A3B8;
-  --violet-accent: #A78BFA;
+  --violet-accent: #C4B5FD;
   --violet-primary: #8B5CF6;
   --violet-deep: #6D28D9;
   --violet-save: #7C3AED;
 
   --btn-primary-gradient: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
-  --title-gradient: linear-gradient(90deg, #FFFFFF 0%, #A78BFA 100%);
-  --header-section-gradient: linear-gradient(135deg, rgba(46, 16, 101, 0.85) 0%, rgba(30, 11, 75, 0.65) 100%);
+  --title-gradient: linear-gradient(90deg, #FFFFFF 0%, #E2E8F0 60%, #C4B5FD 100%);
+  --header-section-gradient: linear-gradient(180deg, rgba(22, 23, 35, 0.96) 0%, rgba(13, 14, 21, 0.96) 100%);
 
-  --danger-coral: #FF4757;
+  --danger-coral: #F43F5E;
   --edit-pink: #EC4899;
   --usd-emerald: #10B981;
-  --usd-badge-bg: rgba(16, 185, 129, 0.15);
+  --usd-badge-bg: rgba(16, 185, 129, 0.16);
   --warning-amber: #F59E0B;
   --info-cyan: #38BDF8;
 
-  --radius-card: 16px;
-  --radius-modal-btn: 10px;
+  --radius-card: 20px;
+  --radius-modal-btn: 11px;
   --radius-pill: 9999px;
-  --shadow-glow: 0 20px 50px rgba(7, 4, 18, 0.75), 0 0 30px rgba(139, 92, 246, 0.12);
+  --shadow-glow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 28px rgba(139, 92, 246, 0.08);
 }
 
 * {
@@ -49,27 +49,27 @@ body {
   min-height: 100vh;
   background-color: var(--bg-deep);
   background-image:
-    radial-gradient(circle at 12% 14%, var(--bg-radial-2) 0%, rgba(30, 11, 75, 0.45) 32%, transparent 62%),
-    radial-gradient(circle at 86% 20%, var(--bg-radial-1) 0%, rgba(46, 16, 101, 0.35) 38%, transparent 68%),
-    radial-gradient(circle at 50% 88%, rgba(46, 16, 101, 0.5) 0%, transparent 65%);
+    radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 82% 18%, rgba(244, 63, 94, 0.08) 0%, transparent 48%),
+    radial-gradient(circle at 50% 90%, rgba(109, 40, 217, 0.12) 0%, transparent 55%);
   background-attachment: fixed;
   color: var(--text-primary);
   font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 15.5px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* Efecto de malla sutil estilo Ontop */
+/* Efecto de luz ambiental sutil estilo Ontop */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(167, 139, 250, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(167, 139, 250, 0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 64px 64px;
   pointer-events: none;
   z-index: 0;
 }
@@ -78,9 +78,9 @@ body::before {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 1620px;
+  max-width: 1560px;
   margin: 0 auto;
-  padding: 20px 32px 54px;
+  padding: 22px 32px 60px;
 }
 
 /* Utilidades de Texto en Gradiente */
@@ -92,13 +92,13 @@ body::before {
   color: transparent;
 }
 
-/* Tarjetas Glassmorphism Base */
+/* Tarjetas Glassmorphism Base - Estilo Ontop Oscuro de Alto Contraste */
 .glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: linear-gradient(180deg, rgba(22, 24, 34, 0.94) 0%, rgba(11, 12, 18, 0.96) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius-card);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(167, 139, 250, 0.28);
   box-shadow: var(--shadow-glow);
 }
 
@@ -113,13 +113,13 @@ body::before {
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  padding: 12px 24px;
-  background: rgba(16, 11, 35, 0.78);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  padding: 14px 28px;
+  background: rgba(12, 13, 20, 0.9);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   border-radius: var(--radius-pill);
-  border: 1px solid rgba(167, 139, 250, 0.3);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65), 0 0 24px rgba(139, 92, 246, 0.16);
+  border: 1px solid rgba(167, 139, 250, 0.34);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8), 0 0 24px rgba(139, 92, 246, 0.14);
   margin-bottom: 26px;
 }
 
@@ -418,33 +418,33 @@ body::before {
 }
 
 .kpi-label {
-  font-size: 0.73rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: #CBD5E1;
 }
 
 .kpi-icon-box {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
   background: rgba(139, 92, 246, 0.16);
-  border: 1px solid rgba(167, 139, 250, 0.3);
+  border: 1px solid rgba(167, 139, 250, 0.34);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 .kpi-icon-box.emerald {
   background: var(--usd-badge-bg);
-  border-color: rgba(16, 185, 129, 0.38);
+  border-color: rgba(16, 185, 129, 0.42);
   color: var(--usd-emerald);
 }
 
 .kpi-value {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.15;
@@ -462,21 +462,21 @@ body::before {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.76rem;
-  color: var(--text-muted);
+  font-size: 0.84rem;
+  color: #CBD5E1;
 }
 
 .usd-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 9px;
+  padding: 4px 11px;
   border-radius: var(--radius-pill);
   background: var(--usd-badge-bg);
-  color: var(--usd-emerald);
-  border: 1px solid rgba(16, 185, 129, 0.32);
-  font-weight: 700;
-  font-size: 0.78rem;
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  font-weight: 800;
+  font-size: 0.84rem;
 }
 
 /* ==========================================================================
@@ -571,25 +571,25 @@ body::before {
 }
 
 .section-title-group h2 {
-  font-size: 1.35rem;
+  font-size: 1.55rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 4px;
+  letter-spacing: -0.025em;
+  margin-bottom: 6px;
 }
 
 .section-title-group p {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
+  font-size: 0.92rem;
+  color: #CBD5E1;
 }
 
 /* Barra de Búsqueda en Tiempo Real + Filtros */
 .toolbar-filters {
   display: grid;
-  grid-template-columns: 1fr 240px 230px auto;
-  gap: 12px;
+  grid-template-columns: 1fr 250px 240px auto;
+  gap: 14px;
   padding: 18px 26px;
-  background: rgba(13, 8, 28, 0.45);
-  border-bottom: 1px solid rgba(167, 139, 250, 0.15);
+  background: rgba(8, 9, 14, 0.75);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.18);
   align-items: center;
 }
 
@@ -603,7 +603,7 @@ body::before {
   position: absolute;
   left: 14px;
   color: var(--violet-accent);
-  font-size: 0.95rem;
+  font-size: 1rem;
   pointer-events: none;
 }
 
@@ -611,13 +611,13 @@ body::before {
 .select-control,
 .textarea-control {
   width: 100%;
-  background: rgba(11, 7, 26, 0.78);
-  border: 1px solid rgba(167, 139, 250, 0.28);
-  border-radius: 10px;
-  padding: 10px 14px;
-  color: var(--text-primary);
+  background: rgba(16, 18, 27, 0.92);
+  border: 1px solid rgba(167, 139, 250, 0.32);
+  border-radius: 11px;
+  padding: 11px 15px;
+  color: #FFFFFF;
   font-family: inherit;
-  font-size: 0.84rem;
+  font-size: 0.9rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -652,16 +652,16 @@ body::before {
 }
 
 .fintech-table thead th {
-  padding: 14px 12px;
-  font-size: 0.74rem;
-  font-weight: 700;
+  padding: 15px 14px;
+  font-size: 0.77rem;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #C4B5FD;
-  background: rgba(18, 11, 38, 0.82);
-  border-bottom: 1px solid rgba(167, 139, 250, 0.25);
+  color: #E2E8F0;
+  background: rgba(18, 20, 30, 0.95);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.28);
   white-space: normal;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 /* Distribución proporcional de las 9 columnas para lectura limpia y profesional */
@@ -671,7 +671,7 @@ body::before {
 
 /* Solicitante / ID */
 .fintech-table thead th:nth-child(2) {
-  width: 16.5%;
+  width: 16%;
 }
 
 /* Lugar de Trabajo y Funciones */
@@ -691,12 +691,12 @@ body::before {
 
 /* Score (350-750) */
 .fintech-table thead th:nth-child(6) {
-  width: 10.5%;
+  width: 10%;
 }
 
 /* Lender Asignado */
 .fintech-table thead th:nth-child(7) {
-  width: 9%;
+  width: 8.5%;
 }
 
 /* Estado del Préstamo */
@@ -706,44 +706,46 @@ body::before {
 
 /* Fecha Automática */
 .fintech-table thead th:nth-child(9) {
-  width: 7%;
+  width: 8.5%;
   text-align: center;
 }
 
 /* Acciones */
 
 .fintech-table tbody tr {
-  border-bottom: 1px solid rgba(167, 139, 250, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   transition: background 0.16s ease;
 }
 
 .fintech-table tbody tr:hover {
-  background: rgba(139, 92, 246, 0.1);
+  background: rgba(139, 92, 246, 0.08);
 }
 
 .fintech-table tbody td {
-  padding: 14px 12px;
+  padding: 18px 14px;
   vertical-align: middle;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-size: 0.92rem;
+  color: #E2E8F0;
   word-wrap: break-word;
   overflow-wrap: anywhere;
-  line-height: 1.4;
+  line-height: 1.48;
 }
 
 .client-name-cell {
-  font-weight: 700;
+  font-weight: 800;
   color: #FFFFFF;
-  font-size: 0.94rem;
+  font-size: 1.03rem;
+  letter-spacing: -0.01em;
   line-height: 1.3;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .client-id-sub {
   display: inline-block;
   margin-top: 2px;
-  font-size: 0.74rem;
-  color: var(--violet-accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #C4B5FD;
   font-family: 'Consolas', monospace;
   word-break: break-word;
 }
@@ -760,30 +762,31 @@ body::before {
 }
 
 .contact-phone {
-  font-size: 0.78rem;
-  color: var(--text-muted);
+  font-size: 0.82rem;
+  color: #CBD5E1;
 }
 
 .profile-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: rgba(139, 92, 246, 0.16);
-  border: 1px solid rgba(167, 139, 250, 0.3);
-  color: #EDE9FE;
-  font-size: 0.76rem;
-  font-weight: 600;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  color: #F3E8FF;
+  font-size: 0.8rem;
+  font-weight: 700;
   line-height: 1.25;
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.15);
 }
 
 .location-sub {
   display: block;
-  font-size: 0.77rem;
+  font-size: 0.84rem;
   color: #CBD5E1;
-  margin-top: 4px;
-  line-height: 1.35;
+  margin-top: 5px;
+  line-height: 1.42;
 }
 
 /* Badges de Estado del Préstamo (6 etapas) */
@@ -793,10 +796,10 @@ body::before {
   justify-content: center;
   text-align: center;
   gap: 5px;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: var(--radius-pill);
-  font-size: 0.74rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 800;
   white-space: normal;
   line-height: 1.25;
 }
@@ -839,32 +842,34 @@ body::before {
 
 /* Botones de Acción en Tabla */
 .table-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
+  justify-items: stretch;
 }
 
 .btn-table-action {
   border: none;
-  border-radius: 8px;
-  padding: 5px 8px;
+  border-radius: 9px;
+  padding: 7px 9px;
   font-family: inherit;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: #FFFFFF;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 5px;
   transition: transform 0.15s ease, filter 0.15s ease;
   white-space: nowrap;
 }
 
 .table-actions .btn-contract-pdf {
+  grid-column: 1 / -1;
   width: 100%;
+  padding: 7px 10px;
 }
 
 .btn-table-action:hover {
@@ -1640,13 +1645,13 @@ body::before {
 }
 
 .credit-stage-column {
-  background: rgba(13, 8, 30, 0.72);
+  background: rgba(13, 14, 21, 0.94);
   border: 1px solid rgba(167, 139, 250, 0.28);
-  border-radius: 16px;
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
   min-height: 540px;
-  box-shadow: 0 14px 36px rgba(5, 3, 14, 0.65);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.8);
   overflow: hidden;
 }
 
@@ -1656,18 +1661,18 @@ body::before {
 
 .credit-stage-column.stage-col-2 {
   border-top: 3px solid #A78BFA;
-  background: linear-gradient(180deg, rgba(30, 14, 68, 0.78) 0%, rgba(13, 8, 30, 0.72) 100%);
+  background: linear-gradient(180deg, rgba(22, 20, 38, 0.95) 0%, rgba(13, 14, 21, 0.95) 100%);
 }
 
 .credit-stage-column.stage-col-3 {
   border-top: 3px solid #10B981;
-  background: linear-gradient(180deg, rgba(10, 38, 34, 0.5) 0%, rgba(13, 8, 30, 0.72) 100%);
+  background: linear-gradient(180deg, rgba(12, 28, 28, 0.92) 0%, rgba(13, 14, 21, 0.95) 100%);
 }
 
 .credit-stage-header {
   padding: 18px 20px;
-  background: rgba(22, 14, 48, 0.75);
-  border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+  background: rgba(18, 20, 30, 0.92);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.22);
 }
 
 .credit-stage-kicker {
@@ -1728,13 +1733,13 @@ body::before {
 }
 
 .credit-card-item {
-  background: rgba(24, 16, 52, 0.85);
-  border: 1px solid rgba(167, 139, 250, 0.28);
-  border-radius: 14px;
-  padding: 16px;
+  background: rgba(19, 21, 31, 0.95);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 

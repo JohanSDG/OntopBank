@@ -1300,7 +1300,7 @@
             <span class="location-sub">✉️ ${escapeHtml(c.email)}</span>
           </td>
           <td>
-            <strong style="color:#EDE9FE; font-size:0.83rem;">🏢 ${escapeHtml(c.lugarTrabajo || 'Por especificar')}</strong>
+            <strong style="color:#F8FAFC; font-size:0.93rem; display:block; margin-bottom:2px;">🏢 ${escapeHtml(c.lugarTrabajo || 'Por especificar')}</strong>
             <span class="location-sub">💼 ${escapeHtml(c.funcionesTrabajo || 'Sin especificar')}</span>
           </td>
           <td>
@@ -1309,16 +1309,16 @@
           </td>
           <td>
             <span class="usd-badge">${formatUSD(c.montoSolicitado)}</span>
-            <span class="location-sub">Cuota 24m (8% EA): <strong>$${schedule.monthlyInstallment.toFixed(0)}/m</strong> (*24m: ${formatUSD(schedule.totalPayable24Months)})</span>
-            <span class="location-sub">Fuente: <strong>${escapeHtml(c.fuenteIngresos)}</strong></span>
+            <span class="location-sub">Cuota 24m (8% EA): <strong style="color:#F8FAFC;">$${schedule.monthlyInstallment.toFixed(0)}/m</strong> (*24m: ${formatUSD(schedule.totalPayable24Months)})</span>
+            <span class="location-sub">Fuente: <strong style="color:#E2E8F0;">${escapeHtml(c.fuenteIngresos)}</strong></span>
           </td>
           <td>
-            <span class="usd-badge" style="background:rgba(139,92,246,0.2); border-color:rgba(167,139,250,0.45); color:#DDD6FE;">
+            <span class="usd-badge" style="background:rgba(139,92,246,0.18); border-color:rgba(167,139,250,0.5); color:#F3E8FF; font-size:0.84rem;">
               🎯 ${mathScore} / 750
             </span>
           </td>
           <td>
-            <strong style="color:#EDE9FE; font-size:0.82rem;">${escapeHtml(c.entidadFinanciera)}</strong>
+            <strong style="color:#F8FAFC; font-size:0.92rem; display:block; margin-bottom:2px;">${escapeHtml(c.entidadFinanciera)}</strong>
             <span class="location-sub">${escapeHtml(c.propositoPrestamo)}</span>
           </td>
           <td>
@@ -1326,7 +1326,7 @@
             ${buildTimerWidgetHtml(c)}
           </td>
           <td>
-            <div style="font-weight:600; color:#E2E8F0; font-size:0.78rem;">🔒 ${escapeHtml(c.fechaActualizacion || c.fechaCreacion)}</div>
+            <div style="font-weight:700; color:#E2E8F0; font-size:0.84rem;">🔒 ${escapeHtml(c.fechaActualizacion || c.fechaCreacion)}</div>
           </td>
           <td>
             <div class="table-actions">
