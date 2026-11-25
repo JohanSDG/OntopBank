@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Orden Oficial de Depósito Directo y Liquidación de Impuestos - HECTOR CASTRO FABELA</title>
+  <style>
+    @page { size: letter portrait; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { font-family: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', Arial, sans-serif; background: #E2E8F0; color: #0F172A; line-height: 1.4; font-size: 10.8px; }
+    .legal-sheet {
+      position: relative; width: 8.5in; height: 11in; margin: 10px auto; background: #FFFFFF;
+      padding: 0.48in 0.55in 0.42in 0.78in; box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+    }
+    .coral-left-bar { position: absolute; top: 0; left: 0; bottom: 0; width: 7mm; background: linear-gradient(180deg, #F59E0B 0%, #E11D48 55%, #6D28D9 100%); }
+    .sheet-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #E2E8F0; padding-bottom: 10px; margin-bottom: 12px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .box-card { border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px 12px; background: #F8FAFC; }
+    .box-card.bank { border-left: 4px solid #059669; background: #ECFDF5; }
+    .box-card.holder { border-left: 4px solid #6D28D9; background: #FAF5FF; }
+    .kicker { font-size: 8.8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #475569; margin-bottom: 3px; }
+    .tax-banner { background: linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%); color: #FFFFFF; border: 2px solid #F59E0B; border-radius: 12px; padding: 13px 16px; margin-bottom: 12px; }
+    .tax-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 10px; }
+    .tax-table th { background: #0F172A; color: #FFFFFF; padding: 6px 9px; text-align: left; font-size: 9px; text-transform: uppercase; }
+    .tax-table td { padding: 7px 9px; border-bottom: 1px solid #CBD5E1; color: #1E293B; }
+    .signatures-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 10px; padding-top: 10px; border-top: 1.5px solid #CBD5E1; }
+    .sig-line { font-family: 'Georgia', serif; font-style: italic; font-size: 15px; font-weight: 700; color: #4C1D95; border-bottom: 1.5px solid #0F172A; padding-bottom: 3px; margin: 10px 0 5px; }
+    .sheet-footer { border-top: 1px solid #CBD5E1; padding-top: 6px; font-size: 8.8px; color: #64748B; display: flex; justify-content: space-between; }
+    @media print { body { background: #FFFFFF; } .legal-sheet { margin: 0; box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <section class="legal-sheet">
+    <div class="coral-left-bar"></div>
+    <div>
+      <header class="sheet-header">
+        <div>
+          
+      <div style="display:inline-flex; align-items:center;">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAb8BvwMBEQACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAAAgMBBgcFBP/EADkQAQACAQMBBAULAwUBAQAAAAABAgMEBRFBBiExURIUImFxExUWIyQyQlJTgZNisdGRobLB8OEz/8QAGgEBAAIDAQAAAAAAAAAAAAAAAAECAwQGBf/EAC8RAQACAQIFAQYHAAMAAAAAAAABAhEDBAUSEyExQRUiMlFxkRRhgaGx0fAjQuH/2gAMAwEAAhEDEQA/AO4gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhlyVxY7ZL2itaxzMz0gTETM4hou5ds9Zkz2rt0UxYazxFrV9K1vf7mC2rOezo9vwbTiudacz8l+ydsM99TTBuUUml59GMtY4ms9OY8k01PSzHvOEVrSb6Pp6N1ieYiY72Zz7IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMTPcDSu2+8c87Zp7+/PMf8f8sWpf0e9wjZ9+vePp/bUIa7ooOnHQG+9jd79bweo6m/OfDHs2tP36/wCYbOnbPaXK8V2fRv1KR7s/tLaOWR5IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADx+0e712nQzesxOfJ7OKvv8/hCt7csNvY7SdzqxX0jy5na1r3te8za1p5mZnxlqzOe7tK1isYjwwhYBbpdRl0mpx6jBaa5Mc81mP/eCYmY7wxaulXVpNLeJdR2bccW6aLHqsXdzHFq9a26w26zmMuK3O3tt9WdO3p+770sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACrUZ6abDfNmtFcdI5tMz4QLUrN7RWvmXLd63PJu2vvqL8xSO7HSfw1at7c0uz2W1jbaUVjz6vhUbgAAD2OzO722rXfWWmdNmmK5I8vK37MlL4nu83iWzjcaeY+KPDpWO0Wr6UTExPhMdWy5D8pTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABiZ4BonbXefWM3zdp7/V455yzH4rdI/Zg1LZ7Q6PhGy5Y61/M+Py/NqzC94AAAAnwES3XsTvM5MXzbqL/WUjnDaetfL9mxp29HNcW2fLbrU8T5bfE8wyvEZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4XaveI2vRejit9qzRMY4/L52Uvblh6HD9nO51Mz8Mef6c38Z5nvnrM9Wq7CI7AkAAAABPFlvgy0zYrTTJS0WraOkwmJx3Y9SldSs0tGYl07Yd1x7roK5q92Svs5afls26zzRlxm8207fV5J8ej1EtUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8+v1eHRaXJqM9vRpjjmUTOIyvp6dtW8Up5lyzc9fm3LW5NVn7ptPs1/LXpDVtbmnLtdrt67fSilXyqtkAAAAAAB6WwbrfadfXL3zhvxXLWPLz/ZeluWWhv9pG50pj/tHh1DFlx5cdcmO0WpaImsx1htOOtE1nlnymIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYnugHPe2O8evar1PT3+z4Z9qY/Hf/ABDBqWzOIdRwrZdKvVvHvT/DXWF7AJAAAAAAABDb+xG8zW3zZqb90zzgtP8AvVn07ekuf4vs+/XpH1/tusSzOfZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABrna7e52/SerYLcanPHdx40r5sepbEPU4Xs+vqc9vhj+fk57ENZ1mASAAAAAAAAAzW1qWrelprasxMWjxiY8E5wrNYtExPh0zszu9d20MWtMRqMfs5a+/wA/hLapbMON320nbauI8T4/35PYWaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD49z12LbdJl1WefZpHdHW09IhEziMs230La+pGnX1ct12ry6/V5NTqJ5yZJ546RHSIaszmcu02+jXR0406+IUKs4AAAAAAAAAAD7tm3PLtWvrqccTavhkp+aq9bcstTebWu50ppP6S6jpM+PU4KZsN4vjvETW0eTacXelqWmtvMLhUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABi08d4Ob9rN3nctd8litzpcEzFePC9utmvqWzLrOGbPoafPaPen+Pk8NieqAAAAAAAAAAAAT4CJbR2L3j1bP83ai31OWfqpn8NvL4T/AHZtK2Ozw+L7Pmr16eY8t8r4M7m2QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYmeAat203r1bDO36e31+av1kx+Gk/8AcsepbEYexwnZ9S/WtHux/LRI7o4azqASAAAAAAAAAAAAAd/SePglExl0jsrvUblovQzW+04eIyf1R0s2aW5ocfxHZ/htT3Y92fD3V3ngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPP3vcse16DJqcnfMd1Kfmt0hFpxGWxtdvbcasadXLtTnyarUZM+e3pZMlvStLUmcy7TS0qadIpWO0K0MoAAAAAAAAAACu+oxU7rXjnyjvDEqZ12PpW0i3LJGvx9aWj/QOWVlNVit+Lj49wiYmHobbr8u3azHqsHfNZ7457rV6wtWeWctXc7euvpzp2/0upaHWYtbpcWowW9LHkrzHu9zbjExlxerpW0rzS3mH0jGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjktFaWtaeKxHMzPQTETM4hzLtJu07rr5mk/ZsXs4o8/O37tbUtmXXcO2cbfS7/FPl5LG9IAAAAAAAAABDNlrirzafhHUIjLzs2pyZevFfKBkiuFIkAA4DwuwWvjnmtvjE+Apbu3LsVvsaXV+qai3GHPPd/Tfz+EsulbE4eJxbZ9WnVp5j+HRon3thy7IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA07trvHoUnbNPb2rRzmtHSOlWLUt6Pc4RsueeveO3o0xgdJAhIAAAAAAAACGfLXFj9KY56RARGZeVkvbJebXnmZGWIwigAAZivKUZW1oKzK6lBTK2tBWZdI7G716/pfVdTb7TgrxzP469J+LZ075jEuU4ntOjqc9Y9237NmZHmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPK7QbrTadBbN97Nb2cVPzW/wra0VhtbPazudWKR49XMcl75ct8uW02ve02taesy1c5dpSkUrFYjtCKFwAAAAAAAACZ4jmQeVqc05skz+GO6oyVjCpCQCImUiytRWZW1oKzK6tBSZW1oKTK2tEq5fXoc+XRarHqcE8ZMc8x7/ADhNZxLBraddXTnTnxLp+2a3Fr9Hj1OH7to76z41nrEtqJzGXI62lbRvNLej7EsQAAAAAAAAAAAAAAAAAAAAAAAAAAAAACvNmphx3yZLRWlK+laZ6QJrWbTEQ5fv26X3fX2zTMxirzGKnlXz+MtW9uaXZbHaxttKK+s+XnKN4AAAAAAAABkHw67N44qz8RasPiQuAlFeUolbSgpMra0FZldSgpMra0SpMra07xXKytBWZW1onCky9zs3uU7fq/QyWn1fLPFv6Z6SyUtjs87f7brU5o8w32s8xyzudZAAAAAAAAAAAAAAAAAAAAAAAAAAAABiQaR223n5S3zbp7+zWfr5jrPSv+WHUt6Q6DhGzx/z3/T+2pMDoASAAAAAAAAA9LYNqvu+ujF7VcNI9LLeOkeUe9eleaWjv95G10ub1nw8Le9tzbTuebSajvms80vx3XrPhMK2ryzhtbTcV3GjGpX9fyl8MRz4KtjKdaeaUTK6tBjmy6lBWZW1olWZW1oKStrQUytrTvSrzLa0ThEysrRKmVla+ccik2bd2Y3KcuGNJmvM5KR7Ez+KrNS2ezwt/t+S3Ur4lsELvPAAAAAAAAAAAAAAAAAAAAAAAAAAAAeN2o3eu1aCZxzE6nJzXFXy9/7KXtyw3ths53Orifhjy5pMza02tM2taeZmfGZazsa1iIxDCFgAAAAAAAAE8OLJny0w4azfJeeK1jrKYjPZj1NSunSbWnEQ6hsG149q2+mCvtZJ78l/zW/w2q15Yw4zd7m251ZvPj0+jzu2ewRvOg9PDSPXMHtYp/N51n4/3V1Kc0M/Dd7O11fe+GfP9uVxjmtpraJiYniYnxiWs7DmiYzC2tBWZXVoKzKytEqZW1oKzK2tEq5XVoRCmVlaJVysrVKsytrUVmVlaikyvwWvhy0y47cXrPMSmOzHesXrNZbrt2rprNLXLXunwtHlLPE5c7raU6V+V9aWMAAAAAAAAAAAAAAAAAAAAAAAAABRq9Ti0umyZ894pjxxzaZM4WpS17RWvmXLt23LLumuyanLzET3Up+SvSGpa3NOXa7PbV22lFI/X85fEq2gAAAAAAAAARLduxGy/JY43LUU+svH1MT0r5/u2NOuIzLmuLbznt0a+I8/Vt0RwyvEZBz7txsUYM07ppqcY8s8Zqx+G35v3/uwalPV0XCd7No6F5+n9NWrRie1Mra0FMra0FZlbSicKTK2tEqzK2tUq5WVqKzKdaikytrVKuVlaisynWorl6O06q2j1ETP/wCVu68f9r1nDU3OjGrX822VtFoiazzE+EsrxWQAAAAAAAAAAAAAAAAAAAAAAAAYnwBoPbPefW8/qGnv9Tit9ZMfitHT4R/dg1L+kOl4RsuSOtfzPhrLC9sEgAAAAAAAAPY7L7RO7a762v2XFxOSfOelWTTpnu83iW8/D6eK/FPj+3S6VisREd0RHERDZcgkACrU4MeowZMOasWx3rNbVmPGCe61bTS3NXzDmO8bXfa9ffBbmcc+1jv+av8A7ua164l1m03UbjT5o8+v1fLWirPMra0MKzKytEqTK2tUq5WVqImVlaimVlapVysrX3CsysrUVysiqVMrK14FZl7ey6vu9WyT3x9yZ/syVn0ebu9Lvzw9hdpAAAAAAAAAAAAAAAAAAAAAAAANf7Wb182aT5LDaPWc3dT+mOtlL2xD0eG7P8Rq5t8Mf7DnTVdfEYBIAAAAAAAAC3S6fNq9Tj0+nrNsmSeIjy98+5MRntDFq6tdKk3tPaHUto27Ftmix6bD3+j9635p6y261xGHFbjXtr6k6ln3JYAAAHl7/tVNz0M0iIjNT2sVvf5fCVb15obW03M7fUz6ern/AMlal5pes1tWeJiektfDpotFozCdaCJlZWiVcra0FcrIqKTKcVSiZW1qK5TrRKkysrUVysiEqzKcVMKyspzWYmvdMT3Snwpbv5bDodRGowxb8Ud1oZInLytXTmlsPpSxgAAAAAAAAAAAAAAAAAAAAAPl3HV4tBpcmpz24x0jmff7oJmIjLJo6Vta8Up5ly3cdbl3HWZNVn+9ee6seFY6Q1LW5u7tdvoV0NOKV9HzKtgAAAAAAAAAmeImUob72N2b1TT+u6ikxnzV9mJj7lf8y2NOuIy5biu861+lT4Y/eW0MjyAAAAGJ74Bq/anava9ew1nyyxH/ACY719Xq8P3WP+K36NerRievMp1qK5W1qlWZTrUUysrURMrK0SplZFRVOsJRlOK+5KsysiopMpxUQ+nSZp0+WLR92fvR7loYNWkXh7dLRasWieYld50xjskAAAAAAAAAAAAAAAAAAAADFp4BzvtfvHzjq/VsFvs2GZ74n79us/D/AOtfUtmcOp4VsujTqWj3p/Zr7E9gAAAAAAAAAEPe7JbP85a31jPXnTYJ7+fC9vL/ALll06ZnLyuK73oafTp8U/tDo1fCGw5RkAAAAAEMlIvWa2iJrMcTE9QiZicw0vddunQaqad84rd9J93kw2jEug2246tMz59XzVqqzZWVqK5WVoKzKytEqzKcVThXKdapVynFRGU4qK5WRUVylFUqzKcVFcvv0Gaa/VW8J8FqtXXp/wBoffHgs1mQAAAAAAAAAAAAAAAAAAYmeAaz2y3r1PS+p4J41Ges8zE/cr5/GWPUtiMPV4VsuvfqX+GP5aDEcRw1nVwCQAAAAAAAAH0aDR5tw1ePS6ePbvPj0rHnK1azMsG416aGnOpbxDqe3aPFodJj02njilI4+PvbURiMOJ1tW+teb28y+qEsYAAAAAAD49y0ddbp7Y7d1vGk+UomMwy6OrOleLQ1O2G2O9qXji1Z4mGHGJe5W8WjMJVqGVkVMK5TiqVZTiqVZTiPcK5TrUVTiojKcQlXKcQKzKUQIynECsvS0+X5Snf96PFeGnevLK5KgAAAAAAAAAAAAAAAABPgD4d13HFtuhyanPPdSPZr1tbpCJnEZZtvoW19WNOrlur1OXWanJqdRbnLknmfd5Q1bTmcu10dGulSKV8QqVZgAAAAAAAACRE+HROyGy/N2j+W1FftWaObc+NI6VbVK4hyPE95+I1OWvwx/stgiOF3msgAAAAAAAcA8fetD6ces449qse3HnHmraue7d2mtyzyS8aI9zG9DKdapQsiBXKcVFZTiBXKcQImUohKuU4gRlKISqnECuU4gRMrMVppf0oTDHaMw++tvSjmPBZrYwyAAAAAAAAAAAAAAAADFrRWszMxERHUMZ7OadqN3ndNf6OK0+q4eYxx+aetv/dGtqWzOHW8M2f4fT5rfFLxmN6gAAAAAAAAADZexmz+uan17UU5wYbexE/ivHX9v7s2nTPeXicW3vTr0a+Z8/T/ANb/ABDO5lkAAAAAAAAAGJiJiYmImJ6SDX9fo/Vs0zWPq798e73Mcxh6e31ueuJ8vnrCGaZTiojKyKikylFUoynECsynFRGU4qlXLMQKzKfCcISiBGUogVmV+C3E+jPh0Sx3j1fQliAAAAAAAAAAAAAAAY5BqfbXefkcfzdp7TGTJH1sx+Gvl+/9mLVtjtD2uE7Pnv1r+I8fX5tHiOGu6YEgAAAAAAAAPs2nb8u566mmxdfv2/LXzWrXmnDV3e5rt9Ob2/R1HR6XHo8GPBgpFcdI4iG3HaMOL1NS2pab2nvL6BQAAAAAAAAAABTqMNc2KaWjx8J8iYytS81nMPDtinHe1LxxarG9Kt4tGYZiqDKcVSjKcQK5SiEomU4gVmUogVylwlCUQImUoqlWZSiBCXAjK/HbmOJ8UsdoTFQAAAAAAAAAAAAAHm77uePatBkz377+GOv5rdEWtiMtnaba251YpH6/RzDPmyajPfPmt6WTJPpWmestSZy7TT066dYrXxCtDIAAAAAAAAAzETNorWJm0zxER1kVm0R3l0nsxs0bXoYnJEes5eLZJ8vKv7NqlcQ4/iG7nc6vb4Y8f29tdoAAAAAAAAAAAAAPj1+njJWL1j26/wC8KzDPo6nLOJedWFW0nECMpxAiZSiEqzKcQYQzEJQlwK5TrCUZZEJQIyzwKpV5gRK2O+EqMgAAAAAAAAAAAAxINN7TbPvO67jN6Y8c6fH3Yo+ViPjPHmxXraZe7w/ebTb6WLZ5p89vs8n6J7x+ji/lhTpWeh7Y2vzn7H0T3j9HF/LCOlY9sbX5z9j6J7x+ji/lg6Vj2xtfnP2PonvH6OL+WDpWPbG1+c/Y+ie8fo4v5YOlY9sbX5z9j6J7x+ji/lg6Vj2xtfnP2PonvH6OL+WDpWPbG1+c/Y+ie8fo4v5YOlY9sbX5z9j6J7x+ji/lg6Vj2xtfnP2PonvH6OL+WDpWPbG1+c/Y+ie8fo4v5YT0rHtja/Ofs9zs52WyaPU11e4zS2Snfjx1nmKz5z716aePLzN/xSNanT0o7T5bZHgyvFZAAAAAAAAAAAAAAB8WbRz6U2x8cT0Vwz01sRiUI0uXyj/Uwv1qsxpsnlH+phXq1SjT5PKDB1asxgv5QlHUhKMN+sCOeEvkreRhHPBGO3kHNDPydvJKOaEopIjmgikhlL0ZEZZjmBEpCAAAAAAAAAAAAAGOIA4gDiAOIA4gDiAOIA4gDiAOIA4gGQY4gGQAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/9k=" alt="Ontop" style="width:32px; height:32px; object-fit:contain; margin-right:6px;" />
+        <span style="font-family:'Plus Jakarta Sans', 'Inter', Arial, sans-serif; font-weight:800; font-size:28px; letter-spacing:-0.03em; color:#F85A6A;">ontop</span>
+        <span style="font-family:'Plus Jakarta Sans', Arial, sans-serif; font-weight:700; font-size:11px; color:#6D28D9; background:#F3E8FF; border:1px solid #D8B4FE; border-radius:999px; padding:2px 8px; margin-left:8px; text-transform:uppercase;">Bank Credit</span>
+      </div>
+    
+          <div style="font-size:9.2px; color:#475569; font-weight:700; margin-top:2px;">
+            ONTOP HOLDINGS INC. · DIRECT DEPOSIT CLEARINGHOUSE &amp; IRS TAX COMPLIANCE DIVISION
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:9px; font-weight:800; color:#D97706; letter-spacing:0.06em;">CONVENIO BANCARIO &amp; LIQUIDACIÓN DE IMPUESTOS</div>
+          <div style="font-size:12px; font-weight:900; color:#0F172A;">ORDEN: ACH-TAX-EXP2026406</div>
+          <div style="font-size:9.5px; color:#334155;">Expediente: <strong>EXP-2026-406</strong> · Fecha: 2026-11-25 09:30</div>
+        </div>
+        <div>
+      <svg width="96" height="96" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(-14deg); filter: drop-shadow(0 2px 4px rgba(244,63,94,0.18));">
+        <!-- Borde exterior dentado tipo sello legal -->
+        <circle cx="70" cy="70" r="62" fill="none" stroke="#F44E63" stroke-width="4" stroke-dasharray="6 4" />
+        <circle cx="70" cy="70" r="55" fill="rgba(244, 78, 99, 0.05)" stroke="#F44E63" stroke-width="2.5" />
+        <circle cx="70" cy="70" r="50" fill="none" stroke="#F44E63" stroke-width="1" stroke-dasharray="3 2" />
+        <!-- Isotipo Chevron Ontop superior -->
+        <path d="M70 22 L54 47 L63 47 L70 35 L77 47 L86 47 Z" fill="#F44E63" />
+        <!-- Texto central LEGAL -->
+        <text x="70" y="76" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Arial Black', sans-serif" font-weight="900" font-size="25" letter-spacing="1" fill="#F44E63">LEGAL</text>
+        <!-- Texto inferior ontop -->
+        <text x="70" y="99" text-anchor="middle" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="700" font-size="16" fill="#F44E63">ontop</text>
+      </svg>
+    </div>
+      </header>
+
+      <h1 style="font-size:12.8px; font-weight:900; color:#0F172A; text-transform:uppercase; margin-bottom:8px;">
+        CERTIFICADO OFICIAL DE VINCULACIÓN DE DEPÓSITO DIRECTO (ACH / FEDWIRE) Y LIQUIDACIÓN DEL FEE (FIT) E IMPUESTO FEDERAL POR ENVÍO DE PRÉSTAMO
+      </h1>
+
+      <p style="font-size:10.2px; color:#334155; margin-bottom:10px; text-align:justify;">
+        <strong>ONTOPBANK · ONTOP HOLDINGS INC.</strong> (con sede oficial en <strong>66 W Flagler St Ste 900, Miami, FL 33130, Estados Unidos</strong>) certifica que el crédito aprobado de <strong>HECTOR CASTRO FABELA</strong> por un monto principal de <strong>$10,000.00 USD</strong> se encuentra vinculado al sistema de <strong>Convenios Bancarios para Depósito Directo</strong> en la cuenta receptora detallada a continuación:
+      </p>
+
+      <div class="grid-2">
+        <div class="box-card holder">
+          <div class="kicker">👤 DATOS DEL TITULAR Y EXPEDIENTE ACTIVADO</div>
+          <div style="font-size:11.5px; font-weight:800; color:#0F172A; margin-bottom:3px;">HECTOR CASTRO FABELA</div>
+          <div><strong>Identificación:</strong> Licencia EE. UU.: 007937451</div>
+          <div><strong>Residencia:</strong> 4388 poydras Bayou Lakeland LA 70752</div>
+          <div><strong>Tarjeta Ontop Vinculada:</strong> Visa Platinum •••• 6448</div>
+          <div><strong>Monto Aprobado a Recibir:</strong> <strong style="color:#059669;">$10,000.00 USD</strong></div>
+        </div>
+
+        <div class="box-card bank">
+          <div class="kicker">🏦 CONVENIO BANCARIO VINCULADO PARA DEPÓSITO DIRECTO</div>
+          <div style="font-size:11.5px; font-weight:800; color:#065F46; margin-bottom:3px;">Otro Banco Comercial (Convenio Federal ABA)</div>
+          <div><strong>Nombre del Titular de la Cuenta:</strong> HECTOR CASTRO FABELA</div>
+          <div><strong>Número de Ruta (ABA Routing):</strong> <code style="font-weight:900; color:#0F172A;">065204980</code></div>
+          <div><strong>Número de Cuenta Bancaria:</strong> <code style="font-weight:900; color:#0F172A;">0904724</code></div>
+          <div><strong>Modalidad:</strong> Checking Account (Cuenta Corriente)</div>
+        </div>
+      </div>
+
+      <!-- LEY DE IMPUESTOS APLICABLE SEGÚN EL MONTO A RECIBIR -->
+      <div class="tax-banner">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+          <div>
+            <div style="font-size:9px; font-weight:800; color:#FBBF24; letter-spacing:0.08em; text-transform:uppercase;">
+              ⚖️ LEY FEDERAL DE IMPUESTOS APLICADA (TRAMO II · STANDARD CREDIT TIER)
+            </div>
+            <div style="font-size:11.8px; font-weight:800; color:#FFFFFF;">
+              Federal Credit Wire Excise &amp; ACH Clearing Tax Act (IRC § 4371)
+            </div>
+            <div style="font-size:9.3px; color:#CBD5E1;">
+              Fundamento Legal: <strong>26 U.S.C. § 4371 &amp; Federal Electronic Fund Transfer Act (Regulation E - 12 CFR 1005)</strong>
+            </div>
+          </div>
+          <div style="background:rgba(245,158,11,0.22); border:1.5px solid #FBBF24; padding:6px 12px; border-radius:8px; text-align:right;">
+            <div style="font-size:8.5px; color:#FDE68A; font-weight:800; text-transform:uppercase;">TOTAL FIT + IMPUESTO DE ENVÍO</div>
+            <div style="font-size:14px; font-weight:900; color:#FFFFFF;">$435.00 USD</div>
+          </div>
+        </div>
+        <p style="font-size:9.7px; color:#E2E8F0; line-height:1.42;">
+          <strong>REQUISITO OBLIGATORIO PARA GENERAR EL DEPÓSITO DIRECTO:</strong> De conformidad con la normativa tributaria federal vigente en los Estados Unidos (<strong>26 U.S.C. § 4371 &amp; Federal Electronic Fund Transfer Act (Regulation E - 12 CFR 1005)</strong>), toda dispersión de capital crediticio hacia una entidad bancaria mediante Depósito Directo requiere la liquidación previa del <strong>Impuesto Federal de Transferencia (3.8% sobre $10,000.00 USD = $380.00 USD)</strong> más el <strong>Fit Operativo de Enrutamiento Bancario ABA/Fedwire ($55.00 USD)</strong>, para un total de <strong>$435.00 USD</strong>. Una vez cubierto dicho concepto tributario, el banco receptor libera el <strong>100% del préstamo ($10,000.00 USD)</strong> sin deducciones adicionales.
+        </p>
+      </div>
+
+      <div style="font-size:10.3px; font-weight:800; color:#0F172A; text-transform:uppercase; margin-bottom:5px;">
+        📊 DESGLOSE DE LIQUIDACIÓN TRIBUTARIA Y FIT DE ENVÍO BANCARIO SEGÚN MONTO APROBADO
+      </div>
+      <table class="tax-table">
+        <thead>
+          <tr>
+            <th>Concepto Financiero y Tributario</th>
+            <th>Base Legal / Referencia ABA</th>
+            <th style="text-align:right;">Tasa / Tarifa</th>
+            <th style="text-align:right;">Valor Liquidado (USD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Capital Principal del Préstamo Aprobado</strong></td>
+            <td>Expediente EXP-2026-406 · Plan 24 Meses (8.00% EA · Cuota $483.33/m)</td>
+            <td style="text-align:right;">100.00%</td>
+            <td style="text-align:right; font-weight:800; color:#059669;">$10,000.00 USD</td>
+          </tr>
+          <tr>
+            <td><strong>2. Impuesto Federal sobre Monto a Recibir</strong></td>
+            <td>Federal Credit Wire Excise &amp; ACH Clearing Tax Act (IRC § 4371)</td>
+            <td style="text-align:right; font-weight:700;">3.80%</td>
+            <td style="text-align:right; font-weight:800; color:#B45309;">$380.00 USD</td>
+          </tr>
+          <tr>
+            <td><strong>3. Fit (Fee) por Envío Bancario Directo (ACH / Fedwire)</strong></td>
+            <td>Convenio Interbancario ABA Routing #065204980 → Cuenta #0904724</td>
+            <td style="text-align:right;">Tarifa Fija Federal</td>
+            <td style="text-align:right; font-weight:800; color:#B45309;">$55.00 USD</td>
+          </tr>
+          <tr style="background:#FEF3C7;">
+            <td colspan="2"><strong>TOTAL FIT POR ENVÍO + IMPUESTO FEDERAL A PAGAR PARA GENERAR EL DEPÓSITO</strong></td>
+            <td style="text-align:right; font-weight:800; color:#92400E;">TRAMO II · STANDARD CREDIT TIER</td>
+            <td style="text-align:right; font-size:11.5px; font-weight:900; color:#92400E;">$435.00 USD</td>
+          </tr>
+          <tr style="background:#ECFDF5;">
+            <td colspan="3"><strong>MONTO LÍQUIDO TOTAL A ACREDITAR EN LA CUENTA DE HECTOR CASTRO FABELA TRAS VALIDACIÓN</strong></td>
+            <td style="text-align:right; font-size:12px; font-weight:900; color:#047857;">$10,000.00 USD</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="signatures-grid">
+        <div>
+          <div style="font-size:9.3px; font-weight:800; color:#0F172A;">AUTORIZACIÓN DE CONVENIO BANCARIO ONTOPBANK:</div>
+          <div class="sig-line">Elena Vance — Treasury &amp; Tax Compliance Officer</div>
+          <div style="font-size:8.8px; color:#334155;">OntopBank · Ontop Holdings Inc. · 66 W Flagler St Ste 900, Miami, FL 33130</div>
+          <div style="font-size:8.8px; color:#059669; font-weight:700;">Convenio de Depósito Directo Verificado</div>
+        </div>
+        <div>
+          <div style="font-size:9.3px; font-weight:800; color:#0F172A;">TITULAR DE LA CUENTA RECEPTORA:</div>
+          <div class="sig-line">HECTOR CASTRO FABELA</div>
+          <div style="font-size:8.8px; color:#334155;"><strong>Banco:</strong> Otro Banco Comercial (Convenio Federal ABA) · <strong>Ruta:</strong> 065204980</div>
+          <div style="font-size:8.8px; color:#334155;"><strong>Cuenta:</strong> 0904724 (Licencia EE. UU.: 007937451)</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="sheet-footer">
+      <span>OntopBank · Ontop Holdings Inc., 66 W Flagler St Ste 900, Miami, FL 33130, EE. UU. · Cumplimiento IRS / FATCA</span>
+      <span>Orden de Depósito Directo &amp; Liquidación Tributaria · ACH-TAX-EXP2026406</span>
+    </footer>
+  </section>
+</body>
+</html>

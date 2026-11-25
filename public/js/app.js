@@ -316,27 +316,35 @@
     }
 
     document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
-      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
-      const bytes = new Uint8Array(pdfStr.length);
-      for (let i = 0; i < pdfStr.length; i++) {
-        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-pdf?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+        const bytes = new Uint8Array(pdfStr.length);
+        for (let i = 0; i < pdfStr.length; i++) {
+          bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+        a.click();
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
-      a.click();
       showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
     };
 
     document.getElementById('btnDownloadDdTaxWord').onclick = () => {
-      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
-      a.click();
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-word?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+        a.click();
+      }
       showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
     };
 
@@ -863,27 +871,35 @@
     }
 
     document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
-      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
-      const bytes = new Uint8Array(pdfStr.length);
-      for (let i = 0; i < pdfStr.length; i++) {
-        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-pdf?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+        const bytes = new Uint8Array(pdfStr.length);
+        for (let i = 0; i < pdfStr.length; i++) {
+          bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+        a.click();
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
-      a.click();
       showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
     };
 
     document.getElementById('btnDownloadDdTaxWord').onclick = () => {
-      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
-      a.click();
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-word?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+        a.click();
+      }
       showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
     };
 
@@ -1180,27 +1196,35 @@
     }
 
     document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
-      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
-      const bytes = new Uint8Array(pdfStr.length);
-      for (let i = 0; i < pdfStr.length; i++) {
-        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-pdf?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+        const bytes = new Uint8Array(pdfStr.length);
+        for (let i = 0; i < pdfStr.length; i++) {
+          bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+        a.click();
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
-      a.click();
       showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
     };
 
     document.getElementById('btnDownloadDdTaxWord').onclick = () => {
-      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
-      a.click();
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-word?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+        a.click();
+      }
       showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
     };
 
@@ -2485,27 +2509,35 @@
     }
 
     document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
-      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
-      const bytes = new Uint8Array(pdfStr.length);
-      for (let i = 0; i < pdfStr.length; i++) {
-        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-pdf?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+        const bytes = new Uint8Array(pdfStr.length);
+        for (let i = 0; i < pdfStr.length; i++) {
+          bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+        a.click();
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
-      a.click();
       showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
     };
 
     document.getElementById('btnDownloadDdTaxWord').onclick = () => {
-      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
-      a.click();
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-word?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+        a.click();
+      }
       showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
     };
 
@@ -2550,27 +2582,35 @@
     }
 
     document.getElementById('btnDownloadDdTaxPdf').onclick = () => {
-      const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
-      const bytes = new Uint8Array(pdfStr.length);
-      for (let i = 0; i < pdfStr.length; i++) {
-        bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-pdf?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const pdfStr = window.OntopLegalContractGenerator.buildDirectDepositTaxClearancePdfBinary(client);
+        const bytes = new Uint8Array(pdfStr.length);
+        for (let i = 0; i < pdfStr.length; i++) {
+          bytes[i] = pdfStr.charCodeAt(i) & 0xff;
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
+        a.click();
       }
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.pdf`;
-      a.click();
       showToast(`Descargando Certificado de Depósito Directo e Impuestos en PDF para ${client.nombres}...`, '📥');
     };
 
     document.getElementById('btnDownloadDdTaxWord').onclick = () => {
-      const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
-      a.click();
+      if (storage.nodeBackendAvailable) {
+        window.location.href = `/api/download-word?id=${encodeURIComponent(client.id)}&type=ddtax&t=${Date.now()}`;
+      } else {
+        const blob = new Blob(['\uFEFF' + htmlDoc], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Certificado_Deposito_Directo_Impuestos_${client.id}.doc`;
+        a.click();
+      }
       showToast(`Certificado de Depósito Directo e Impuestos descargado en Word (.doc) para ${client.nombres}.`, '📝');
     };
 

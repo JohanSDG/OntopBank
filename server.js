@@ -34,6 +34,8 @@ try {
   console.warn('[Red Logo Load Warning]:', e.message);
 }
 
+const os = require('os');
+
 // Localizar Chrome o Edge instalado en Windows para renderizar el HTML exacto a PDF de alta fidelidad
 const CHROMIUM_CANDIDATES = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -49,7 +51,7 @@ function findChromiumExecutable() {
   return null;
 }
 
-// Renderiza cualquier archivo HTML a un PDF idéntico píxel por píxel usando Chromium Headless
+// Renderiza cualquier archivo HTML a un PDF idéntico píxel por píxel usando Chromium Headless con perfil aislado
 function renderExactHtmlToPdfWithChromium(htmlPath, pdfPath, fallbackBinaryFn) {
   return new Promise((resolve) => {
     const browserBin = findChromiumExecutable();
@@ -60,20 +62,34 @@ function renderExactHtmlToPdfWithChromium(htmlPath, pdfPath, fallbackBinaryFn) {
       return resolve({ ok: true, mode: 'fallback' });
     }
 
-    const fileUrl = 'file:///' + htmlPath.replace(/\\/g, '/');
+    try {
+      if (fs.existsSync(pdfPath)) {
+        fs.unlinkSync(pdfPath);
+      }
+    } catch (e) {}
+
+    const tempProfileDir = path.join(os.tmpdir(), 'topbank_chromium_pdf_profile');
+    ensureDir(tempProfileDir);
+
+    const fileUrl = 'file:///' + htmlPath.replace(/\\/g, '/').replace(/ /g, '%20');
     const args = [
-      '--headless',
+      '--headless=new',
       '--disable-gpu',
+      '--no-sandbox',
+      '--no-first-run',
+      '--no-default-browser-check',
       '--no-pdf-header-footer',
       '--print-to-pdf-no-header',
+      `--user-data-dir=${tempProfileDir}`,
       `--print-to-pdf=${pdfPath}`,
       fileUrl
     ];
 
-    execFile(browserBin, args, { timeout: 15000 }, (err) => {
-      if (!err && fs.existsSync(pdfPath) && fs.statSync(pdfPath).size > 500) {
+    execFile(browserBin, args, { timeout: 20000 }, (err) => {
+      if (fs.existsSync(pdfPath) && fs.statSync(pdfPath).size > 2000) {
         return resolve({ ok: true, mode: 'chromium-exact' });
       }
+      console.warn('[Chromium PDF Render Warning]:', err ? err.message : 'PDF vacío, usando respaldo');
       if (fallbackBinaryFn) {
         try {
           fs.writeFileSync(pdfPath, Buffer.from(fallbackBinaryFn(), 'binary'));
