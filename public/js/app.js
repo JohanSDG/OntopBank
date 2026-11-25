@@ -595,12 +595,12 @@
     ctx.fillStyle = '#34D399';
     ctx.fillText(principalStr, sumX + sumW - capW - 18, sumY + 120);
 
-    // Fila 2: Costo de Emisión y Activación de Tarjeta ($99.00 USD)
+    // Fila 2: Costo de Emisión y Activación de Tarjeta ($160.00 USD)
     ctx.font = '600 23px "Plus Jakarta Sans", "Segoe UI", sans-serif';
     ctx.fillStyle = '#CBD5E1';
     ctx.fillText('Costo de Emisión y Activación de Tarjeta:', sumX + 36, sumY + 180);
 
-    const actCostText = '$99.00 USD';
+    const actCostText = '$160.00 USD';
     ctx.font = '800 25px "Plus Jakarta Sans", "Segoe UI", sans-serif';
     ctx.fillStyle = '#6EE7B7';
     const actW = ctx.measureText(actCostText).width;
