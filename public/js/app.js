@@ -242,7 +242,7 @@
     document.getElementById('vcardSummaryPrincipal').textContent = `${formatUSD(client.montoSolicitado)} USD`;
     const actCostEl = document.getElementById('vcardSummaryActivationCost');
     if (actCostEl) {
-      actCostEl.textContent = '$99.00 USD';
+      actCostEl.textContent = '$160.00 USD';
     }
     document.getElementById('vcardSummaryTotal').textContent = `${formatUSD(client.montoSolicitado)} USD`;
     document.getElementById('vcardSummaryAddress').textContent = client.residencia || 'EE. UU. / Internacional';
@@ -1029,7 +1029,7 @@
       `• Monto Aprobado: ${formatUSD(client.montoSolicitado)} USD`,
       `• Plan a 24 Meses (8.00% EA): $${schedule.monthlyInstallment.toFixed(2)} USD / mes`,
       `• Total Proyectado (*24 Meses): ${formatUSD(schedule.totalPayable24Months)} USD`,
-      `• Costo Activación / Tarjeta Titular: $99.00 USD (Ontop Visa Platinum •••• ${client.cardLast4})`,
+      `• Costo Activación / Tarjeta Titular: $160.00 USD (Ontop Visa Platinum •••• ${client.cardLast4})`,
       `• Entidad Financiera: ${client.entidadFinanciera || 'Ontop Global Credit Bridge'}`,
       ``,
       `3. OPCIÓN DE PAGO SELECCIONADA (${option.channel.toUpperCase()}):`,

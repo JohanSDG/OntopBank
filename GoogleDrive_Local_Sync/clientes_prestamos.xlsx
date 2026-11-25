@@ -37,6 +37,31 @@
    </Row>
    
       <Row>
+        <Cell><Data ss:Type="String">EXP-2026-899</Data></Cell>
+        <Cell><Data ss:Type="String">Juan Hernandez</Data></Cell>
+        <Cell><Data ss:Type="String">Morales</Data></Cell>
+        <Cell><Data ss:Type="String">092057hdzjuan@gmail.com</Data></Cell>
+        <Cell><Data ss:Type="String">+1 (713) 972-4342</Data></Cell>
+        <Cell><Data ss:Type="String">1957-07-15</Data></Cell>
+        <Cell><Data ss:Type="String">Migrante en EE. UU. (Con ITIN)</Data></Cell>
+        <Cell><Data ss:Type="String">Pasaporte: 10000011200</Data></Cell>
+        <Cell><Data ss:Type="String">Texas</Data></Cell>
+        <Cell><Data ss:Type="String">Construcccion :1.500 a 1.800 -800 semanales</Data></Cell>
+        <Cell><Data ss:Type="String">Independiente</Data></Cell>
+        <Cell><Data ss:Type="Number">4000</Data></Cell>
+        <Cell><Data ss:Type="String">Kash</Data></Cell>
+        <Cell><Data ss:Type="Number">637</Data></Cell>
+        <Cell><Data ss:Type="Number">6000</Data></Cell>
+        <Cell><Data ss:Type="String">Compra de Vivienda / Hipotecario</Data></Cell>
+        <Cell><Data ss:Type="String">Ontop Global Credit Bridge</Data></Cell>
+        <Cell><Data ss:Type="String">4. Pre-Aprobado</Data></Cell>
+        <Cell><Data ss:Type="Number">0</Data></Cell>
+        <Cell><Data ss:Type="String">Apuntes: Unicamente son su esposa y el. 
+Gastos: 2.500 dolares - No ayuda trabaja.
+Ningun social.</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-25 10:38</Data></Cell>
+      </Row>
+      <Row>
         <Cell><Data ss:Type="String">EXP-2026-304</Data></Cell>
         <Cell><Data ss:Type="String">Valentino</Data></Cell>
         <Cell><Data ss:Type="String">Humberto Rodriguez</Data></Cell>
@@ -196,7 +221,7 @@ Ciudadana : Soltera</Data></Cell>
         <Cell><Data ss:Type="String">5. Aprobado y Desembolsado</Data></Cell>
         <Cell><Data ss:Type="Number">1</Data></Cell>
         <Cell><Data ss:Type="String">Rosa, prestamos personal con reembolso de 100 dolares por parte de la entidad.</Data></Cell>
-        <Cell><Data ss:Type="String">2026-11-25 08:11</Data></Cell>
+        <Cell><Data ss:Type="String">2026-11-25 09:43</Data></Cell>
       </Row>
       <Row>
         <Cell><Data ss:Type="String">EXP-2026-406</Data></Cell>

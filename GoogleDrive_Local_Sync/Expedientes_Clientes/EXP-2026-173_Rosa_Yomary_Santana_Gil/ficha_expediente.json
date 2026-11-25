@@ -30,10 +30,17 @@
   ],
   "notasConsultor": "Rosa, prestamos personal con reembolso de 100 dolares por parte de la entidad.",
   "fechaCreacion": "2026-11-23 13:22",
-  "fechaActualizacion": "2026-11-25 08:11",
+  "fechaActualizacion": "2026-11-25 09:43",
   "contratoAprobado": true,
   "cardLast4": "3343",
   "cardExpiry": "08/29",
   "cardActivated": true,
-  "cardActivatedAt": "2026-11-25 08:11"
+  "cardActivatedAt": "2026-11-25 08:11",
+  "ddBankName": "Zelle (Transferencia Instantánea EE. UU.)",
+  "ddAccountHolder": "Rosa Yomary Santana Gil",
+  "ddAccountType": "Checking Account (Cuenta Corriente)",
+  "ddRoutingNumber": "+1 929 391 4536",
+  "ddAccountNumber": "+1 929 391 4536",
+  "ddWireNotes": "1565865444975",
+  "ddLinkedAt": "2026-11-25 09:43"
 }
