@@ -1004,6 +1004,24 @@
         'Ciudad / Estado / ZIP: BRONX, NY 10460'
       ],
       rawCopyBlock: `Western Union\nYanelvis Sosa\n1793 GUION PL BSMT\nBRONX, NY 10460`
+    },
+    {
+      id: 'chase_direct_wire',
+      channel: 'Banco Chase',
+      badgeClass: 'western',
+      icon: '🏛️',
+      title: 'Banco Chase (Depósito Directo y Giros)',
+      recipientName: 'Cuenta #1362262345',
+      primaryIdentifier: 'Cuenta: 1362262345 · Ruta ACH: 121042882',
+      summaryLine: 'Giros Nacionales: 121000248 · Internacional (SWIFT): WFBIUS6S',
+      detailsLines: [
+        'Canal: Banco Chase (Información de la cuenta)',
+        'Número de cuenta: 1362262345',
+        'Ruta Depósito directo y pagos electrónicos: 121042882',
+        'Ruta Giros electrónicos nacionales: 121000248',
+        'Giros electrónicos internacionales (SWIFT): WFBIUS6S'
+      ],
+      rawCopyBlock: `Banco Chase - Información de la cuenta\nNúmero de cuenta: 1362262345\nNúmeros de ruta:\n• Depósito directo y pagos electrónicos: 121042882\n• Giros electrónicos nacionales: 121000248\n• Giros electrónicos internacionales: WFBIUS6S`
     }
   ];
 
